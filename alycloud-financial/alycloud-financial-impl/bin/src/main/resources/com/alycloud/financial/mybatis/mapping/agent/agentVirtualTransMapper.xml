@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.AgentVirtualTransMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_virtual_trans
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		trans_date as transDate,
+		trans_time as transTime,
+		branchno as branchno,
+		branch_name as branchName,
+		agentno as agentno,
+		agent_name as agentName,
+		cardno as cardno,
+		trans_type as transType,
+		amount_before as amountBefore,
+		amount as amount, 
+		amount_after as amountAfter, 
+		traceno as traceno,
+		trans_fee as transFee,
+		pay_type as payType,
+		type_code as typeCode,
+		status as status,
+		trans_refno as transRefno,
+		remark as remark,
+		batchno as batchno,
+		add_time as addTime,
+		login_name as loginName,
+		address as address,
+		accountno as accountno,
+		account_name as accountName,
+		bankno as bankno,
+		bank_name as bankName,
+		process_time as processTime,
+		df_type as settleType,
+		pay_status as payStatus,
+		pay_msg as payMsg,
+		channel_merchno as channelMerchno,
+		payment_type as paymentType,
+		trans_amount as transAmount
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	<trim prefix="where" prefixOverrides="and |or">
+   		<if test="agentno != null">
+   			and agentno = #{agentno}
+   		</if>
+   		<if test="startDate != null">
+	        and trans_date &gt;=#{startDate}
+	    </if>
+	    <if test="endDate != null">
+	        and trans_date &lt;=#{endDate}
+	    </if>
+   	</trim>
+	</sql>
+	<!-- 
+		添加提现流水
+	-->
+	<insert 
+		id="add" 
+		parameterType="AgentVirtualTrans"
+		useGeneratedKeys="true" 
+    	keyProperty="id">
+		insert into <include refid="tableName"/>(
+			trans_date,trans_time,branchno,branch_name,agentno,agent_name,cardno,
+			trans_type,amount,traceno,status,login_name,amount_before,amount_after,
+			trans_amount,trans_fee,type_code,trans_refno,add_time,remark,pay_status,
+			pay_msg,pay_type,batchno,address,accountno,account_name,bankno,bank_name,
+			process_time,channel_merchno,payment_type
+		)values(
+			#{transDate},#{transTime},#{branchno},#{branchName},#{agentno},#{agentName},#{cardno},
+			#{transType},#{amount},#{traceno},#{status},#{loginName},#{amountBefore},#{amountAfter},
+			#{transAmount},#{transFee},#{typeCode},#{transRefno},#{addTime},#{remark},#{payStatus},
+			#{payMsg},#{payType},#{batchno},#{address},#{accountno},#{accountName},#{bankno},#{bankName},
+			#{processTime},#{channelMerchno},#{paymentType}
+		)
+	</insert>
+	
+	<!--  
+		获取参考号
+	-->
+	<select 
+		id="genRefno" 
+		resultType="String">
+		select
+			seq('pay')
+	</select>
+	
+	<!-- 
+		根据平台自动产生的订单号获取交易信息
+	-->
+	<select 
+		id="getByTraceno" 
+		parameterType="String" 
+		resultType="AgentVirtualTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			traceno = #{traceno}
+	</select>
+	
+	<!--  
+    	分页查询－明细
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="AgentVirtualTrans4Search"
+    	resultType="AgentVirtualTrans">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc, trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+	<!--  
+    	分页查询－日列表
+    -->
+    <select 
+    	id="listByGroupByDate"
+    	parameterType="AgentVirtualTrans4Search"
+    	resultType="AgentVirtualTrans">
+    	select 
+    		trans_date as transDate,
+    		ifnull(sum(trans_amount), 0) as transAmount
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	group by trans_date     
+    	order by 
+    		trans_date desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+	
+	<!--  
+    	合计提现金额
+    -->
+    <select 
+    	id="sum"
+    	parameterType="AgentVirtualTrans4Search"
+    	resultType="java.math.BigDecimal">
+    	select 
+    		ifnull(sum(trans_amount), 0)
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    </select>
+</mapper>

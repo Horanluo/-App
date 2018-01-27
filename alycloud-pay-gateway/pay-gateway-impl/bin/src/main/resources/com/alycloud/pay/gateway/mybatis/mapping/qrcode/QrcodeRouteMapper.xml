@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.QrcodeRouteMapper">
+
+	<!-- 数据库中的表名 -->
+	<sql id="tableName">
+		qrcode_route_merch m,
+		qrcode_channel_route r,
+		qrcode_merch e,
+		channel_qrcode c
+	</sql>
+	<!-- 字段映射关系 -->
+	<sql id="fieldMapping">
+		r.id as id,
+		r.route_name as routeName,
+		m.channel_code as
+		channelCode,
+		m.partner_id as merchno,
+		e.merch_name as merchName
+	</sql>
+	<!-- 查询的条件 -->
+	<sql id="queryCondtion">
+		<trim prefix="where" prefixOverrides="and |or">
+			m.route_id = r.id
+			and m.partner_id = e.partner_id
+			and c.channel_code = m.channel_code
+			and r.status =1
+			and e.status = 1
+			and c.status=1
+			<![CDATA[
+				and r.inter_type & #{interType} = #{interType}
+				and r.scan_type & #{scanType} = #{scanType}
+				and r.pay_type & #{payType} = #{payType}
+				and r.settle_type & #{settleType} = #{settleType}
+				and r.amt_start <= #{amount}
+				and r.amt_end >= #{amount}
+				and r.time_start <= #{transTime}
+				and r.time_end >= #{transTime}
+			]]>
+		</trim>
+	</sql>
+	<!-- 获取某个商户特定的可用的渠道信息 -->
+	<select id="routeByPMerch" parameterType="HashMap" resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeRouteBean">
+		select
+		e.id as id,
+		'MERCH' as routeName,
+		e.channel_code as channelCode,
+		e.partner_id as merchno,
+		e.merch_name as merchName
+		from
+		qrcode_merch e,
+		channel_qrcode c
+		where
+		e.channel_code = c.channel_code
+		and e.status =1
+		and c.status = 1
+		and merchno = #{merchno} 
+			<![CDATA[
+				and e.scan_type & #{scanType} = #{scanType}
+				and e.pay_type & #{payType} = #{payType}
+				and e.settle_type & #{settleType} = #{settleType}
+			]]>
+	</select>
+	<!-- 获取某个商户特定的可用的渠道信息 -->
+	<select id="routeByMerch" parameterType="HashMap" resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeRouteBean">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		<include refid="queryCondtion" />
+		and r.merchno = #{merchno}
+	</select>
+	<!-- 获取某个代理特定的可用的渠道信息 -->
+	<select id="routeByAgent" parameterType="HashMap" resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeRouteBean">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		<include refid="queryCondtion" />
+		and r.branchno = #{branchno}
+		and r.agentno = #{agentno}
+		and (r.merchno is null or r.merchno = '')
+	</select>
+	<!-- 获取某个机构特定的可用的渠道信息 -->
+	<select id="routeByBranch" parameterType="HashMap" resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeRouteBean">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		<include refid="queryCondtion" />
+		and r.branchno = #{branchno}
+		and (r.merchno is null or r.merchno = '')
+		and (r.agentno is null or r.agentno = '')
+	</select>
+	<!-- 获取其他的可用的渠道信息 -->
+	<select id="routeByOther" parameterType="HashMap" resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeRouteBean">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		<include refid="queryCondtion" />
+		and (r.branchno is null or r.branchno = '')
+		and (r.agentno is null or r.agentno = '')
+		and (r.agentno is null or r.agentno = '')
+	</select>
+</mapper>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.GradeOrderMapper">	
+	<!--  
+		商户升级支付记录表
+	-->
+	<sql id="tableName">
+		grade_order
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		merch_id as merchId,
+		amount as amount,
+		refno as refno,
+		status as status,
+		add_time as addTime
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="userId !=null">
+		         and user_id = #{userId}
+		     </if>
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+		     <if test="refno !=null">
+		     	and refno = #{refno}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="status !=null">
+		         , status = #{status}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!-- 
+		添加记录
+	-->
+	<insert 
+    	id="add"
+    	parameterType="GradeOrder" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			merch_id,amount,refno,status,add_time
+    	)values(
+			#{merchId},#{amount},#{refno},#{status},#{addTime}
+    	)
+    </insert>
+	
+	<!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="GradeOrder">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	<select 
+    	id="listByPage"
+    	parameterType="GradeOrder4Search"
+    	resultType="GradeOrder">
+    	select 
+    		<include refid="fieldMapping"/> 
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		add_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+	<!--  
+    	统计金额
+    -->
+    <select 
+    	id="sumAmount"
+    	parameterType="GradeOrder4Search"
+    	resultType="java.math.BigDecimal">
+    	select 
+    		ifnull(sum(amount), 0)
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    </select>
+</mapper>

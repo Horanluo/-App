@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.PaymentTransMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		payment_trans
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as id,
+		biz_type 		as bizType,
+		trans_amount	as transAmount,
+		trans_fee 		as transFee,
+		refno	 		as refno,
+		traceno 		as traceno,
+		id_card_no	 	as idCardNo,
+		mobile	 		as mobile,
+		account_name 	as accountName,
+		account_no   	as accountNo,
+		bank_type		as bankType,
+		bank_name 		as bankName,
+		bank_no		 	as bankNo,
+		settle_type		as settleType,
+		liquidate_type	as liquidateType,
+		pay_type		as payType,
+		pay_status 		as payStatus,
+		pay_descr		as payDescr,
+		pay_orderno		as payOrderno,
+		pay_time 		as payTime,
+		pay_amount 		as payAmount,
+		channel_type	as channelType,
+		channel_merchno as channelMerchno,
+		channel_orderno	as channelOrderno,
+		is_pay_again	as isPayAgain,
+		add_time	 	as addTime
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="payStatus !=null">
+		         , pay_status = #{payStatus}
+		     </if>
+	         <if test="payMsg !=null">
+		         , pay_descr = #{payMsg}
+		     </if>
+		     <if test="processTime !=null">
+		         , pay_time = #{processTime}
+		     </if>
+		     <if test="transRefno !=null">
+		         , pay_orderno = #{transRefno}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!-- 
+		添加记录 
+	-->
+	<insert 
+		id="add" 
+		parameterType="PaymentTrans"
+		useGeneratedKeys="true" 
+    	keyProperty="id">
+		insert into <include refid="tableName"/>(
+			biz_type 		, 
+			trans_amount	, 
+			trans_fee 		, 
+			refno	 		, 
+			traceno 		, 
+			id_card_no	 	, 
+			mobile	 		, 
+			account_name 	, 
+			account_no   	, 
+			bank_type		, 
+			bank_name 		, 
+			bank_no		 	, 
+			settle_type		,
+			liquidate_type	,
+			pay_type		,
+			pay_status 		, 
+			pay_descr		, 
+			pay_orderno		, 
+			pay_time 		, 
+			pay_amount 		, 
+			channel_type	, 
+			channel_merchno , 
+			channel_orderno	, 
+			is_pay_again	, 
+			add_time		,
+			fee				,
+			withdrawFee		,
+			rate 	
+		)values(
+			#{bizType},
+			#{transAmount},
+			#{transFee},
+			#{refno},
+			#{traceno},
+			#{idCardNo},
+			#{mobile},
+			#{accountName},
+			#{accountNo},
+			#{bankType},
+			#{bankName},
+			#{bankNo},
+			#{settleType},
+			#{liquidateType},
+			#{payType},
+			#{payStatus},
+			#{payDescr},
+			#{payOrderno},
+			#{payTime},
+			#{payAmount},
+			#{channelType},
+			#{channelMerchno},
+			#{channelOrderno},
+			#{isPayAgain},
+			#{addTime},
+			#{fee},
+			#{withdrawFee},
+			#{rate}
+		)
+	</insert>
+	
+	<!--  
+		获取参考号
+	-->
+	<select 
+		id="genRefno" 
+		resultType="String">
+		select
+			seq('pay')
+	</select>
+	
+	<!--  
+		更新代付流水订单信息
+	-->
+	<select 
+		id="modifyRecord" 
+		parameterType="AgentVirtualTrans">
+		update
+    		<include refid="tableName"/>
+			<include refid="updateField"/>
+		where refno=#{traceno}
+	</select>
+	
+	<!--  
+		更新代付流水订单信息
+	-->
+	<select 
+		id="modifyMerchRecord" 
+		parameterType="MerchVirtualTrans">
+		update
+    		<include refid="tableName"/>
+			<include refid="updateField"/>
+		where refno=#{traceno}
+	</select>
+</mapper>

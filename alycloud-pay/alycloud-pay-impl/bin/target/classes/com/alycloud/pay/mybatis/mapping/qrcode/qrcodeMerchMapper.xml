@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.QrcodeMerchMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_merch
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as id,
+		merchno			as merchno,
+		channel_code 	as channelCode,
+		merch_name 		as merchName,
+		partner_id 		as partnerId,
+		partner_status	as partnerStatus,
+		partner_descr	as partnerDescr,
+		termno 			as termno,
+		status 			as status,
+		scan_type 		as scanType,
+		pay_type 		as payType,
+		settle_type 	as settleType,
+		t0_rate_type	as t0RateType,
+		t0_min_fee		as t0MinFee,
+		t0_start_time	as t0StartTime,
+		t0_end_time		as t0EndTime,
+		app_id 			as appId,
+		app_key 		as appKey,
+		merch_key 		as merchKey,
+		key_rsa 		as keyRsa,
+		df_fee			as dfFee,
+		liquidate_type	as liquidateType
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="status !=null">
+		         , status = #{status}
+		     </if>
+	         <if test="partnerStatus !=null">
+		         , partner_status = #{partnerStatus}
+		     </if>
+	         <if test="partnerDescr !=null">
+		         , partner_descr = #{partnerDescr}
+		     </if>
+		     <if test="payType !=null">
+		         , pay_type = #{payType}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="channelCode !=null">
+		         and channel_code = #{channelCode}
+		     </if>
+		     <if test="partnerId !=null">
+		         and partner_id = #{partnerId}
+		     </if>
+		     <if test="partnerStatus !=null">
+		         and partner_status = #{partnerStatus}
+		     </if>
+		     <if test="merchno !=null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<insert 
+    	id="add"
+    	parameterType="QrcodeMerch" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			merchno,channel_code,merch_name,partner_id,partner_status,partner_descr,termno,status,
+			scan_type,pay_type,settle_type,t0_rate_type,t0_min_fee,app_id,app_key,merch_key,key_rsa,df_fee,liquidate_type
+    	)values(
+			#{merchno},#{channelCode},#{merchName},#{partnerId},#{partnerStatus},#{partnerDescr},#{termno},#{status},
+			#{scanType},#{payType},#{settleType},#{t0RateType},#{t0MinFee},#{appId},#{appKey},#{merchKey},#{keyRsa},#{dfFee},#{liquidateType}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="QrcodeMerch">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="QrcodeMerch4Search"
+    	resultType="QrcodeMerch">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+    <!--  
+    	根据交易参数获取可用于交易的渠道商户。
+    	筛选说明：找到一条最符合支付条件的路由，再找配置在该路由下的可用渠道，再在这些可用渠道的筛选渠道商户。)
+    -->
+    <select 
+    	id="list4Pay"
+    	parameterType="QrcodeMerch4Search4Pay"
+    	resultType="QrcodeMerch">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 
+    	(
+	    	merchno = #{merchno} 
+	    	or
+	    	partner_id in(
+	    		select rm.partner_id from qrcode_route_merch rm where  
+   		  			rm.route_id = (select id from (select r.id from qrcode_channel_route r where r.status=1 and
+						    		  					<![CDATA[
+						    							r.pay_type&#{payType}=#{payType} 
+						    							and r.scan_type&#{scanType}=#{scanType} 
+						    							]]>
+						    							<if test="settleType !=null">
+						    							<![CDATA[and r.settle_type&#{settleType}=#{settleType} ]]>
+						    							</if>
+						    							<![CDATA[
+						    							and r.amt_start<=#{amount} 
+						    							and r.amt_end>=#{amount} 
+						    							and r.time_start<=#{time} 
+						    							and r.time_end>=#{time} 
+						    							]]>
+						    							and (r.merchno=#{merchno} or (r.agentno=${agentno} and r.merchno is null) or (r.branchno=${branchno} and r.agentno is null and r.merchno is null) or (r.branchno is null and r.agentno is null and r.merchno is null)) 
+						    							order by merchno desc, agentno desc, branchno desc limit 0,1
+						    		  					) rid
+   		  			) 
+   		  			and	exists(select 1 from channel_qrcode c where c.channel_code=rm.channel_code and c.status=1)
+	    	) 
+    	)
+    	and status=1 
+    	<if test="channelCode !=null">
+    	and channel_code=#{channelCode} 
+    	</if>
+    	<![CDATA[
+    	and pay_type&#{payType}=#{payType} 
+    	and scan_type&#{scanType}=#{scanType} 
+    	]]>
+    	<if test="settleType !=null">
+    	<![CDATA[and settle_type&#{settleType}=#{settleType} ]]>
+    	</if>
+    	and exists(select 1 from channel_qrcode c where c.channel_code=channel_code and c.status=1)
+    </select>
+    
+    <!--  
+    	查询未入驻渠道的商户号，2017.9.27上线，此前的数据虽符合，但只为兼容2017.9.27版本而补充的数据
+    -->
+    <select 
+    	id="listMerchnoNotAdd4Channel"
+    	parameterType="String"
+    	resultType="String">
+    	select 
+    		 merchno
+    	from 
+    		merch_info m
+    	where
+    	not exists(select 1 from <include refid="tableName"/> qm where qm.merchno=m.merchno and qm.channel_code=#{channelCode})
+    	and exists(select 1 from change_merch_info mi where mi.merch_id=m.id and mi.add_time>'2017-09-27 00:00:00')
+    	and exists(select 1 from change_merch_account ma where ma.merch_id=m.id and ma.add_time>'2017-09-27 00:00:00')
+    	and exists(select 1 from change_merch_qualification mq where mq.merch_id=m.id and mq.add_time>'2017-09-27 00:00:00')
+    </select>
+    
+    <delete id="delById">
+    	delete from <include refid="tableName"/> where id=#{id}
+    </delete>
+    
+</mapper>

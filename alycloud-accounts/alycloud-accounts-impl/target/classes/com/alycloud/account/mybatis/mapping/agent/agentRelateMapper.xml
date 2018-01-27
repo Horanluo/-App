@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.AgentRelateMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_relate
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="agentno !=null">
+		         and agentno = #{agentno}
+		     </if>
+		     <if test="gtAgentLevel !=null">
+		         and agent_level > #{gtAgentLevel}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id 				 	as id,
+   		agentno 		 	as agentno,
+   		super_agentno 		as superAgentno,
+   		super_agent_name 	as superAgentName,
+   		agent_level 		as agentLevel
+	</sql> 
+	
+	<!--  
+    	批量添加代理商层级关系
+    -->
+    <insert 
+    	id="batchAdd"
+    	parameterType="AgentRelate">
+    	insert into <include refid="tableName"/> (
+			agentno,super_agentno,super_agent_name,agent_level
+    	)values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    	(
+    		#{item.agentno}, #{item.superAgentno}, #{item.superAgentName}, #{item.agentLevel}
+    	)
+    	</foreach> 
+    </insert>
+    
+	<!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="AgentRelate4Search"
+    	resultType="AgentRelate">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		agent_level
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

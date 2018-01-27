@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.account.mapper.ChannelSubMerchInfoMapper">
+  <resultMap id="channelSubMerchInfoResultMap" type="com.alycloud.modules.entity.ChannelSubmerchInfo">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="branchno" jdbcType="VARCHAR" property="branchno" />
+    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
+    <result column="merchno" jdbcType="VARCHAR" property="merchno" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="channel_submerchno" jdbcType="VARCHAR" property="channelSubmerchno" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="aduit_status" jdbcType="VARCHAR" property="aduitStatus" />
+    <result column="payFeeD0" jdbcType="DECIMAL" property="payFeeD0" />
+    <result column="d0pay_rate" jdbcType="DECIMAL" property="d0payRate" />
+    <result column="t1pay_rate" jdbcType="DECIMAL" property="t1payRate" />
+    <result column="amount_min" jdbcType="DECIMAL" property="amountMin" />
+    <result column="amount_max" jdbcType="DECIMAL" property="amountMax" />
+    <result column="payFeeT1" jdbcType="DECIMAL" property="payFeeT1" />
+    <result column="pay_method" jdbcType="VARCHAR" property="payMethod" />
+  </resultMap>
+
+  <sql id="ChannelSubMerchInfo_Column_List">
+    csi.Id, csi.branchno, csi.agentno, csi.merchno, csi.createdate, csi.channel_code, csi.channel_name, csi.channel_submerchno, 
+    csi.pay_type, csi.aduit_status, csi.payFeeD0, csi.d0pay_rate, csi.t1pay_rate, cq.amount_min, 
+    cq.amount_max, csi.payFeeT1, csi.pay_method,csi.remark
+  </sql>
+  
+  <insert id="addMerchFee" parameterType="com.alycloud.modules.entity.ChannelSubmerchInfo">
+    insert into channel_submerch_info (branchno, agentno, 
+      merchno, createdate, channel_code, 
+      channel_name, channel_submerchno, pay_type, 
+      aduit_status, payFeeD0, d0pay_rate, 
+      t1pay_rate, payFeeT1, pay_method, 
+      remark,yufu_one_code_url,yufu_kj_key,yufu_term_id)
+    values (#{branchno,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR}, 
+      #{merchno,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR}, 
+      #{channelName,jdbcType=VARCHAR}, #{channelSubmerchno,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
+      #{aduitStatus,jdbcType=VARCHAR}, #{payFeeD0,jdbcType=DECIMAL}, #{d0payRate,jdbcType=DECIMAL}, 
+      #{t1payRate,jdbcType=DECIMAL}, #{payFeeT1,jdbcType=DECIMAL}, #{payMethod,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=LONGVARCHAR}, #{yufuOneCodeUrl,jdbcType=VARCHAR}, #{yufuKjKey,jdbcType=VARCHAR}, #{yufuTermId,jdbcType=VARCHAR})
+  </insert>
+  
+  <update id="updateMerchFee" parameterType="HashMap">
+    update channel_submerch_info
+    set
+    <if test="feeRateType == 'd0'"> 
+    	d0pay_rate = #{payRate,jdbcType=VARCHAR}
+    </if>
+    <if test="feeRateType == 'd1'"> 
+      t1pay_rate = #{payRate,jdbcType=VARCHAR}
+    </if>
+    where merchno=#{merchno} and pay_type=#{payType} and pay_method=#{payMethod}
+  </update>
+  
+  <select 
+    	id="getChannelMerchInfoList"
+    	parameterType="HashMap"
+    	resultMap="channelSubMerchInfoResultMap">
+		select 
+			<include refid="ChannelSubMerchInfo_Column_List" />
+    	from 
+    		channel_submerch_info csi left join channel_qrcode cq on csi.channel_code=cq.channel_code
+		where 1=1
+		<if test="merchno != null">
+			and csi.merchno=#{merchno}
+		</if>
+		<if test="payType != null">
+			and csi.pay_type=#{payType}
+		</if>
+		<if test="channelCode != null">
+			and csi.channel_code = #{channelCode,jdbcType=VARCHAR}
+		</if>
+		<if test="aduitStatus != null">
+			and csi.aduit_status = #{aduitStatus,jdbcType=VARCHAR}
+		</if>
+		order by csi.Id
+  </select>
+    
+  <select 
+    	id="getChannelInfo"
+    	parameterType="HashMap"
+    	resultMap="channelSubMerchInfoResultMap">
+		select 
+			csi.Id, csi.branchno, csi.agentno, csi.merchno, csi.createdate, csi.channel_code, csi.channel_name, csi.channel_submerchno, 
+    		csi.pay_type, csi.aduit_status, csi.payFeeD0, csi.d0pay_rate, csi.t1pay_rate,csi.payFeeT1, csi.pay_method
+    	from 
+    		channel_submerch_info csi
+		where 
+			csi.merchno=#{merchno} and csi.channel_code=#{channelCode}
+   </select>
+   
+   <update id="updateRecord" parameterType="com.alycloud.modules.entity.ChannelSubmerchInfo">
+    update channel_submerch_info
+    set
+      <if test="branchno != null">
+        branchno = #{branchno,jdbcType=VARCHAR}
+      </if>
+      <if test="agentno != null">
+        ,agentno = #{agentno,jdbcType=VARCHAR}
+      </if>
+      <if test="merchno != null">
+        ,merchno = #{merchno,jdbcType=VARCHAR}
+      </if>
+      <if test="createdate != null">
+        ,createdate = #{createdate,jdbcType=TIMESTAMP}
+      </if>
+      <if test="channelCode != null">
+        ,channel_code = #{channelCode,jdbcType=VARCHAR}
+      </if>
+      <if test="channelName != null">
+        ,channel_name = #{channelName,jdbcType=VARCHAR}
+      </if>
+      <if test="channelSubmerchno != null">
+        ,channel_submerchno = #{channelSubmerchno,jdbcType=VARCHAR}
+      </if>
+      <if test="payType != null">
+        ,pay_type = #{payType,jdbcType=VARCHAR}
+      </if>
+      <if test="aduitStatus != null">
+        ,aduit_status = #{aduitStatus,jdbcType=VARCHAR}
+      </if>
+      <if test="payFeeD0 != null">
+        ,payFeeD0 = #{payFeeD0,jdbcType=DECIMAL}
+      </if>
+      <if test="d0payRate != null">
+        ,d0pay_rate = #{d0payRate,jdbcType=DECIMAL}
+      </if>
+      <if test="t1payRate != null">
+        ,t1pay_rate = #{t1payRate,jdbcType=DECIMAL}
+      </if>
+      <if test="payFeeT1 != null">
+        ,payFeeT1 = #{payFeeT1,jdbcType=DECIMAL}
+      </if>
+      <if test="payMethod != null">
+        ,pay_method = #{payMethod,jdbcType=VARCHAR}
+      </if>
+      <if test="remark != null">
+        ,remark = #{remark,jdbcType=LONGVARCHAR}
+      </if>
+      <if test="yufuOneCodeUrl != null">
+        ,yufu_one_code_url = #{yufuOneCodeUrl,jdbcType=VARCHAR}
+      </if>
+      <if test="yufuKjKey != null">
+        ,yufu_kj_key = #{yufuKjKey,jdbcType=VARCHAR}
+      </if>
+      <if test="yufuTermId != null">
+        ,yufu_term_id = #{yufuTermId,jdbcType=VARCHAR}
+      </if>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="addChannelSubMerchInfoList" parameterType="List">
+    insert into channel_submerch_info (branchno, agentno, 
+      merchno, createdate, channel_code, 
+      channel_name, channel_submerchno, pay_type, 
+      aduit_status, payFeeD0, d0pay_rate, 
+      t1pay_rate, payFeeT1, pay_method, 
+      remark)
+    values
+    <foreach collection ="list" item ="item" index ="index" separator =","> 
+	    (#{item.branchno,jdbcType=VARCHAR}, #{item.agentno,jdbcType=VARCHAR}, 
+	      #{item.merchno,jdbcType=VARCHAR}, #{item.createdate,jdbcType=TIMESTAMP}, #{item.channelCode,jdbcType=VARCHAR}, 
+	      #{item.channelName,jdbcType=VARCHAR}, #{item.channelSubmerchno,jdbcType=VARCHAR}, #{item.payType,jdbcType=VARCHAR}, 
+	      #{item.aduitStatus,jdbcType=VARCHAR}, #{item.payFeeD0,jdbcType=DECIMAL}, #{item.d0payRate,jdbcType=DECIMAL}, 
+	      #{item.t1payRate,jdbcType=DECIMAL}, #{item.payFeeT1,jdbcType=DECIMAL}, #{item.payMethod,jdbcType=VARCHAR}, 
+	      #{item.remark,jdbcType=LONGVARCHAR})
+	 </foreach>
+  </insert>
+  
+  <delete id="deleteRecord" parameterType="java.lang.Integer">
+    delete from channel_submerch_info
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  
+  <!-- 仅做测试
+  <select id="searchYufuSubmerchInfo" resultType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean" parameterType="HashMap">
+		select
+		id as id,
+		plat_merchno as platMerchno,
+		branch_id as branchId,
+		merch_name as
+		merchName,
+		merch_short_name as merchShortName,
+		merch_level as
+		merchLevel,
+		parent_merch_id as parentMerchId,
+		open_type as openType,
+		gszc_name as gszcName,
+		merch_addr as merchAddr,
+		province as province,
+		city as city,
+		id_card as idCard,
+		yyzz_code as yyzzCode,
+		zzjg_code as
+		zzjgCode,
+		swdj_code as swdjCode,
+		khxk_code as khxkCode,
+		account_type as
+		accountType,
+		account_no as accountNo,
+		account_name as accountName,
+		bank_code as bankCode,
+		bank_name as bankName,
+		open_branch as openBranch,
+		merch_contacts as merchContacts,
+		phone as phone,
+		count_role as
+		countRole,
+		state as state,
+		merch_id as merchId,
+		term_id as termId,
+		remark
+		as remark,
+		one_code_url as oneCodeUrl,
+		kj_key as kjKey
+		from
+		channel_merch_yufu
+		<trim prefix="where" prefixOverrides="and |or">
+		     <if test="phone !=null">
+		         and phone = #{phone}
+		     </if>
+		     <if test="platMerchno !=null">
+		         and plat_merchno = #{platMerchno}
+		     </if>
+		     and (state = '0' OR state = '1')
+	     </trim>
+	</select>
+	
+	<insert id="addChannelSubMerchInfo" parameterType="ChannelSubmerchInfo">
+		insert into channel_submerch_info (branchno, agentno,
+		merchno, createdate, channel_code,
+		channel_name, channel_submerchno, pay_type,
+		aduit_status, payFeeD0, d0pay_rate,
+		t1pay_rate, payFeeT1, pay_method,
+		remark,yufu_one_code_url,yufu_kj_key,yufu_term_id)
+		values
+		(#{branchno,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR},
+		#{merchno,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR},
+		#{channelName,jdbcType=VARCHAR},
+		#{channelSubmerchno,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR},
+		#{aduitStatus,jdbcType=VARCHAR}, #{payFeeD0,jdbcType=DECIMAL},
+		#{d0payRate,jdbcType=DECIMAL},
+		#{t1payRate,jdbcType=DECIMAL}, #{payFeeT1,jdbcType=DECIMAL}, #{payMethod,jdbcType=VARCHAR},
+		#{remark,jdbcType=LONGVARCHAR},#{yufuOneCodeUrl,jdbcType=VARCHAR},#{yufuKjKey,jdbcType=VARCHAR},#{yufuTermId,jdbcType=VARCHAR})
+	</insert>
+	仅做测试 -->
+</mapper>

@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.QrcodeTransMapper">
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as  id, 
+		branchno 		as branchno,
+		branch_name 	as branchName, 
+		merchno 		as merchno,
+		merch_name 		as merchName,
+		trans_date 		as transDate,
+		trans_time 		as transTime, 
+		orderno 		as orderno,
+		trans_amount 	as transAmount,
+		bar_code 		as barCode,
+		partner_id 		as partnerId,
+		termno 			as termno,
+		channel_orderno as channelOrdern,
+		pay_type 		as payType,
+		discount_amount as discountAmoun,
+		reback_amount 	as rebackAmount,
+		status 			as status,
+		remark  		as remark,
+		check_status 	as checkStatus,
+		check_time 		as checkTime,
+		total_fee 		as totalFee,
+		channel_fee 	as channelFee,
+		branch_fee 		as branchFee,
+		agentno 		as agentno,
+		agent_name 		as agentName,
+		traceno 		as traceno,
+		backup_orderno 	as backupOrderno,
+		channel_code 	as channelCode,
+		scan_type 		as scanType,
+		inter_type 		as interType,
+		mobile_seller 	as mobileSeller,
+		mobile_buyer 	as mobileBuyer,
+		notify_url 		as notifyUrl,
+		return_url 		as returnUrl,
+		settle_type 	as settleType,
+		certno 			as certno,
+		accountno 		as accountno,
+		account_name 	as accountName,
+		t0_add_fee 		as t0AddFee,
+		pay_status 		as payStatus,
+		pay_desc 		as payDesc,
+		mobile 			as mobile,
+		bankno 			as bankno,
+		bank_name 		as bankName,
+		bank_type 		as bankType,
+		liquidator 		as liquidator,
+		notify_status 	as notifyStatus,
+		recharge_status as rechargeStatus,
+		payment_status 	as paymentStatus,
+		payment_fee		as paymentFee,
+		payer_remark	as payerRemark,
+		payer_type		as payerType,
+		payer			as payer,
+		payer_biz		as payerBiz,
+		liquidate_type	as liquidateType,
+		fee				as fee,
+		receiveFee		as receiveFee,
+		rate			as rate
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="orderno != null">
+		         and orderno =#{orderno}
+		     </if>
+	     </trim>
+	</sql>
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="status !=null">
+		         , status = #{status}
+		     </if>
+		     <if test="paymentStatus !=null">
+		         , payment_status = #{paymentStatus}
+		     </if>
+		     <if test="notifyStatus !=null">
+		         , notify_status = #{notifyStatus}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!-- 
+		添加记录 
+	-->
+	<insert 
+		id="add" 
+		parameterType="QrcodeTrans">
+		insert into qrcode_trans_today(
+			branchno, branch_name, merchno, merch_name, trans_date,
+			trans_time, orderno, trans_amount, bar_code, partner_id,
+			termno, status, remark, total_fee, channel_fee, 
+			branch_fee, agentno, agent_name, traceno, scan_type,
+			inter_type, channel_code, mobile_buyer,mobile_seller,discount_amount,
+			reback_amount,pay_type,notify_url,return_url,channel_orderno,
+			backup_orderno,settle_type,accountno,account_name,certno,
+			t0_add_fee,mobile,bankno,bank_name,bank_type,bankCardType,
+			payment_fee,payer_remark,payer_type,payer,payer_biz,
+			liquidate_type,fee,receiveFee,rate	
+		)values(
+			#{branchno}, #{branchName}, #{merchno}, #{merchName}, #{transDate},
+			#{transTime}, #{orderno}, #{transAmount}, #{barCode}, #{partnerId},
+			#{termno}, #{status}, #{remark}, #{totalFee}, #{channelFee},
+			#{branchFee}, #{agentno}, #{agentName}, #{traceno}, #{scanType},
+			#{interType}, #{channelCode}, #{mobileBuyer}, #{mobileSeller}, #{discountAmount},
+			#{rebackAmount},#{payType},#{notifyUrl},#{returnUrl},#{channelOrderno},
+			#{backupOrderno},#{settleType},#{accountno},#{accountName},#{certno},
+			#{t0AddFee},#{mobile},#{bankno},#{bankName},#{bankType},#{bankCardType},
+			#{paymentFee},#{payerRemark},#{payerType},#{payer},#{payerBiz},
+			#{liquidateType},#{fee},#{receiveFee},#{rate}
+		)
+	</insert>
+	
+	<!-- 
+    	更新记录 
+    -->
+    <update 
+		id="modOnToday" 
+		parameterType="QrcodeOrder">
+		update
+			qrcode_trans_today
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	<update 
+		id="modOnHistory" 
+		parameterType="QrcodeOrder">
+		update
+			qrcode_trans_history
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	<!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPageOnToday"
+    	parameterType="QrcodeTrans4Search"
+    	resultType="QrcodeTrans">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		qrcode_trans_today
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc,trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <select 
+    	id="listByPageOnHistory"
+    	parameterType="QrcodeTrans4Search"
+    	resultType="QrcodeTrans">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		qrcode_trans_history
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc,trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+	<!-- 
+		更新充值状态
+	-->
+	<update 
+		id="updateRechargeStatusOnToday"
+		parameterType="HashMap">
+		update
+			qrcode_trans_today
+		set
+			liquidator = #{liquidator},
+			recharge_status = #{rechargeStatus}
+		where
+			orderno = #{orderno}
+	</update>
+	<update 
+		id="updateRechargeStatusOnHistory"
+		parameterType="HashMap">
+		update
+			qrcode_trans_history
+		set
+			liquidator = #{liquidator},
+			recharge_status = #{rechargeStatus}
+		where
+			orderno = #{orderno}
+	</update>
+</mapper>

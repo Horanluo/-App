@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchVirtualCardMapper">
+  <resultMap id="BaseResultMap" type="MerchVirtualCard">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+    <result column="branchno" jdbcType="VARCHAR" property="branchno" />
+    <result column="merchno" jdbcType="VARCHAR" property="merchno" />
+    <result column="valid_date" jdbcType="VARCHAR" property="validDate" />
+    <result column="biz_type" jdbcType="INTEGER" property="bizType" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="rate_code" jdbcType="VARCHAR" property="rateCode" />
+    <result column="passwd" jdbcType="VARCHAR" property="passwd" />
+    <result column="avail_amount" jdbcType="DECIMAL" property="availAmount" />
+    <result column="transit_amount" jdbcType="DECIMAL" property="transitAmount" />
+    <result column="accountno" jdbcType="VARCHAR" property="accountno" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="bankno" jdbcType="VARCHAR" property="bankno" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
+    <result column="frozen_time" jdbcType="VARCHAR" property="frozenTime" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="pay_key" jdbcType="VARCHAR" property="payKey" />
+    <result column="channel_type" jdbcType="INTEGER" property="channelType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cardno, branchno, merchno, valid_date, biz_type, status, rate_code, passwd, avail_amount, 
+    transit_amount, accountno, account_name, bankno, bank_name, add_time, frozen_time, 
+    pay_type, pay_key, channel_type
+  </sql>
+  <select id="getMerchVirtualCard" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merch_virtual_card
+    where merchno = #{merchno,jdbcType=VARCHAR} and channel_type=-1
+  </select>
+  
+  <update id="modifyMerchVirtualCard" parameterType="MerchVirtualCard">
+    update merch_virtual_card
+    set
+      avail_amount = #{availAmount,jdbcType=DECIMAL},
+      transit_amount = #{transitAmount,jdbcType=DECIMAL}
+    where merchno = #{merchno,jdbcType=VARCHAR} and channel_type = #{channelType,jdbcType=INTEGER}
+  </update>
+</mapper>

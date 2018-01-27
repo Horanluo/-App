@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.QrcodeOrderMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_order
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		branchno as branchno,
+		branch_name as branchName,
+		agentno as agentno,
+		agent_name as agentName,
+		merchno as merchno,
+		merch_name as merchName,
+		trans_date as transDate,
+		trans_time as transTime,
+		pay_type as payType,
+		scan_type as scanType,
+		traceno as traceno,
+		orderno as orderno,
+		amount as amount,
+		notify_url as notifyUrl,
+		return_url as returnUrl,
+		settle_type as settleType,
+		status as status,
+		status_desc as status_desc,
+		channel_code as channelCode,
+		channel_merchno as channelMerchno,
+		channel_url as channelUrl,
+		merch_fee as merchFee,
+		channel_fee as channelFee,
+		branch_fee as branchFee,
+		open_id as openId,
+		certno as certno,
+		mobile as mobile,
+		accountno as accountno,
+		account_name as accountName,
+		bankno as bankno,
+		bank_type as bankType,
+		bank_name as bankName
+	</sql>
+	<!--  
+		获取二维码支付的参考号
+	-->
+	<select 
+		id="genRefno" 
+		resultType="String">
+		select
+			seq('qrcode')
+	</select>
+	<!-- 
+		保存二维码订单信息
+	-->
+	<insert 
+		id="insert" 
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		insert into <include refid="tableName"/>(
+			merchno,trans_date,trans_time,pay_type,scan_type,
+			traceno,orderno,amount,notify_url,return_url,
+			settle_type,status,certno,mobile,accountno,
+			account_name,bankno,bank_type,bank_name
+		)values(
+			#{merchno}, #{transDate}, #{transTime},#{payType}, #{scanType}, 
+			#{traceno}, #{orderno}, #{amount},#{notifyUrl}, #{returnUrl}, 
+			#{settleType}, #{status}, #{certno},#{mobile}, #{accountno}, 
+			#{accountName}, #{bankno}, #{bankType},#{bankName}
+		)
+	</insert>
+	<!-- 
+		更新二维码的商户和费率
+	-->
+	<update 
+		id="updateMerchInfo"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		update
+			<include refid="tableName"/>
+		set
+			branchno = #{branchno},
+			agentno = #{agentno},
+			branch_name = #{branchName},
+			agent_name = #{agentName},
+			merch_name = #{merchName},
+			merch_fee = #{merchFee},
+			branch_fee = #{branchFee}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新二维码订单商户费率信息 
+	-->
+	<update 
+		id="updateAdvanceFee"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		update
+			<include refid="tableName"/>
+		set
+			merch_fee = #{merchFee},
+			branch_fee = #{branchFee}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<!-- 
+		更新二维码的渠道信息
+	-->
+	<update 
+		id="updateChannelInfo"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		update
+			<include refid="tableName"/>
+		set
+			channel_code = #{channelCode},
+			channel_merchno = #{channelMerchno},
+			channel_fee = #{channelFee},
+			channel_url = #{channelUrl}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新二维码订单的状态
+	-->
+	<update 
+		id="updateStatusInfo"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			status = #{status},
+			status_desc = #{statusDesc}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新二维码订单的用户信息(OpenId)
+	-->
+	<update 
+		id="updateOpenId"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			open_id = #{openId}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<!-- 
+		更新二维码订单的银行卡类型
+	-->
+	<update 
+		id="updateBankCardType"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			bankCardType = #{bankCardType}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		根据商户的流水号获取交易信息
+	-->
+	<select 
+		id="getByTraceno" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			merchno = #{merchno}
+			and traceno = #{traceno}
+		order by 
+			id desc
+	</select>
+	<!-- 
+		根据参考号获取交易信息
+	-->
+	<select 
+		id="getByOrderno" 
+		parameterType="String" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			orderno = #{refno}
+	</select>
+	<!-- 
+		查询尚未支付的订单
+		拿掉and query_count <= 3
+		拿掉and id % #{threadCount} = #{id}
+	-->
+	<select 
+		id="listNotPay" 
+		parameterType="HashMap" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		<![CDATA[
+		where
+			concat(trans_date, ' ', trans_time) >= #{transTime}
+			and status = 0
+			and channel_code is not null
+		]]>
+	</select>
+	<!-- 
+		更新查询信息 
+	-->
+	<update 
+		id="updateQueryInfo" 
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			query_count = query_count + 1,
+			last_query_time = #{queryTime}
+		where
+			orderno = #{orderno}
+	</update>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="orderno != null">
+		         and orderno =#{orderno}
+		     </if>
+		     <if test="merchno != null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="startDate != null">
+		         and trans_date &gt;=#{startDate}
+		     </if>
+		     <if test="endDate != null">
+		         and trans_date &lt;=#{endDate}
+		     </if>
+		     <if test="payType !=null">
+		         and pay_type = #{payType} 
+		     </if>
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+		     <if test="traceno != null">
+		         and traceno =#{traceno}
+		     </if>
+		     <if test="scanType != null">
+		         and scan_type = #{scanType}
+		     </if>
+		     <if test="settleType != null">
+		         and settle_type = #{settleType}
+		     </if>
+		     <if test="startAmount != null">
+   			     and amount &gt;= #{startAmount}
+   			 </if>
+   			 <if test="endAmount != null">
+   			     and amount &lt;= #{endAmount}
+   			 </if>
+   			  <if test="settleType != null">
+   			 <![CDATA[
+    		    	and settle_type  = #{settleType}
+    		    ]]> 
+   			 </if>
+	     </trim>
+	</sql>
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="HashMap"
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc,trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+    <!-- 
+		根据商户的流水号获取交易信息
+	-->
+	<select 
+		id="getByRefundTraceno" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		select
+			<include refid="fieldMapping"/>
+		from
+			refund_order
+		where
+			merchno = #{merchno}
+			and traceno = #{traceno}
+		order by 
+			id desc
+	</select>
+	
+	<insert 
+		id="insertRefundOrder" 
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeOrderBean">
+		insert into refund_order(
+			merchno,trans_date,trans_time,pay_type,scan_type,
+			traceno,orderno,amount,notify_url,return_url,
+			settle_type,status,certno,mobile,accountno,
+			account_name,bankno,bank_type,bank_name
+		)values(
+			#{merchno}, #{transDate}, #{transTime},#{payType}, #{scanType}, 
+			#{traceno}, #{orderno}, #{amount},#{notifyUrl}, #{returnUrl}, 
+			#{settleType}, #{status}, #{certno},#{mobile}, #{accountno}, 
+			#{accountName}, #{bankno}, #{bankType},#{bankName}
+		)
+	</insert>
+	
+	<update 
+		id="updateRefundOrderStatusInfo"
+		parameterType="HashMap">
+		update
+			refund_order
+		set
+			status = #{status},
+			channelRefundNo = #{channelRefundNo},
+			status_desc = #{statusDesc}
+		where
+			orderno = #{orderno}
+	</update>
+</mapper>

@@ -1,0 +1,73 @@
+{
+  "agentno": "0010440304",
+  "merchName": "测试商户-新接口557",
+  "fullName": "深圳市易商云电子商户有限公司314",
+  "legalName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "mobile": "13510492707",
+  "areaCode": "440106",
+  "address": "广东省广州市冠达商务中心A305",
+  "accountno": "6214856555342173",
+  "accountName": "曾云龙",
+  "accountType": 1,
+  "bankno": "308584001354",
+  "bankName": "招商银行股份有限公司深圳科苑支行",
+  "payFee": 0.5,
+  "email": "283912449@qq.com",
+  "province": "广东省",
+  "city": "深圳市",
+  "areaName": "南山区",
+  "bankType": "招商银行股份有限公司深圳科苑支行",
+  "businessLicenseType": "NATIONAL_LEGAL",
+  "businessLicense": "440301113033001",
+  "legalPersonType": "LEGAL_PERSON",
+  "payTypes": [
+    {
+      "scanType": 2,
+      "payType": 1,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 2,
+      "payType": 1,
+      "settleType": 2,
+      "rate": 0.0038
+    },{
+      "scanType": 1,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 1,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    },{
+      "scanType": 2,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 2,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    },{
+      "scanType": 4,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 4,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    }
+  ],
+  "categoryWx": "204",
+  "categoryZfb": "2015091000052157",
+  "quickPayD0Rate": 0.0038,
+  "quickPayT1Rate": 0.0035,
+  "version": "1.2",
+  "sign": "DSFFGG85542030"
+}

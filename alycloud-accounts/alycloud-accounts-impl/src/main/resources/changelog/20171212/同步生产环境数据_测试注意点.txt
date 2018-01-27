@@ -1,0 +1,15 @@
+1,清除merch_user表  一个登陆账号多条记录的问题,执行20171212_del.sql脚本
+
+2,执行20171206_alter.sql脚本，修改表结构
+
+3,批量更新数据，执行20171212_bat_upd.sql脚本
+
+4,执行存储过程20171211_pro.sql,更新推荐人信息
+
+5,手动添加快捷通道,HXTC,YUFU,HXTC_JF
+
+6,删除agent_trans表商户200541100000017的记录
+
+7,执行脚本20171220channel_qrcode通道数据初始化.sql
+
+8,修改表结构merch_virtual_card  pay_key,channel_type可以为空

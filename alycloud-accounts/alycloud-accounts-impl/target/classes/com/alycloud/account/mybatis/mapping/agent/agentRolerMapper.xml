@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.AgentRolerMapper">	
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_roler
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		branchno as branchno,
+		agentno as agentno,
+		roler_name as name,
+		roler_memo as memo,
+		roler_auth as auth,
+		roler_type as type
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="branchno !=null">
+		         and branchno = #{branchno}
+		     </if>
+		     <if test="type !=null">
+		         and roler_type = #{type}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<select 
+    	id="listByPage"
+    	parameterType="AgentRoler4Search"
+    	resultType="AgentRoler">
+    	select 
+    		<include refid="fieldMapping"/> 
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		id desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

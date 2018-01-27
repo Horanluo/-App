@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.channel.YufuChannelMerchMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		channel_merch_yufu
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="state !=null">
+		         and state = #{state}
+		     </if>
+		     <if test="branchId !=null">
+		         and branch_id = #{branchId}
+		     </if>
+		     <if test="phone !=null">
+		         and phone = #{phone}
+		     </if>
+		     <if test="platMerchno !=null">
+		         and plat_merchno = #{platMerchno}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		plat_merchno as platMerchno,
+		branch_id as branchId,
+		merch_name as merchName,
+		merch_short_name as merchShortName,
+		merch_level as merchLevel,
+		parent_merch_id as parentMerchId,
+		open_type as openType,
+		gszc_name as gszcName,
+		merch_addr as merchAddr,
+		province as province,
+		city as city,
+		id_card as idCard,
+		yyzz_code as yyzzCode,
+		zzjg_code as zzjgCode,
+		swdj_code as swdjCode,
+		khxk_code as khxkCode,
+		account_type as accountType,
+		account_no as accountNo,
+		account_name as accountName,
+		bank_code as bankCode,
+		bank_name as bankName,
+		open_branch as openBranch,
+		merch_contacts as merchContacts,
+		phone as phone,
+		count_role as countRole,
+		state as state,
+		merch_id as merchId,
+		term_id as termId,
+		remark as remark,
+		one_code_url as oneCodeUrl,
+		kj_key as kjKey
+	</sql> 
+	
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="state !=null">
+		         , state = #{state}
+		     </if>
+	         <if test="merchId !=null">
+		         , merch_id = #{merchId}
+		     </if>
+		     <if test="termId !=null">
+		         , term_id = #{termId}
+		     </if>
+		     <if test="oneCodeUrl !=null">
+		         , one_code_url = #{oneCodeUrl}
+		     </if>
+		     <if test="remark !=null">
+		         , remark = #{remark}
+		     </if>
+	         <if test="kjKey !=null">
+		         , kj_key = #{kjKey}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<insert 
+    	id="insertYufuMerch"
+    	parameterType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean"
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+    		plat_merchno,branch_id,merch_name,merch_short_name,merch_level,
+    		parent_merch_id,open_type,gszc_name,merch_addr,province,
+    		city,id_card,yyzz_code,zzjg_code,swdj_code,khxk_code,
+    		account_type,account_no,account_name,bank_code,bank_name,
+    		open_branch,merch_contacts,phone,count_role,state,
+    		merch_id,term_id,remark,one_code_url,kj_key
+    	)values(
+    		#{platMerchno},#{branchId},#{merchName},#{merchShortName},#{merchLevel},
+    		#{parentMerchId},#{openType},#{gszcName},#{merchAddr},#{province},
+    		#{city},#{idCard},#{yyzzCode},#{zzjgCode},#{swdjCode},#{khxkCode},
+    		#{accountType},#{accountNo},#{accountName},#{bankCode},#{bankName},
+    		#{openBranch},#{merchContacts},#{phone},#{countRole},#{state},
+    		#{merchId}, #{termId}, #{remark},#{oneCodeUrl},#{kjKey}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="upYufuChannelMerch" 
+		parameterType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="HashMap"
+    	resultType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <!--  
+    	[Moyq5 2017.8.7]查询未入驻御付渠道的商户号
+    -->
+    <select 
+    	id="listNoApplyMerchno"
+    	resultType="String">
+    	select 
+    		 merchno
+    	from 
+    		merch_info
+    	where 
+    		not exists(select 1 from <include refid="tableName"/> where plat_merchno=merchno)
+    </select>
+    
+    <delete id="delByMerchno">
+    	delete from <include refid="tableName"/> where plat_merchno=#{merchno}
+    </delete>
+    
+    <select 
+    	id="searchByKey"
+    	resultType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    </select>
+    
+</mapper>

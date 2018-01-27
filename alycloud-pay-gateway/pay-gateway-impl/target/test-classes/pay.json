@@ -1,0 +1,37 @@
+{
+  "merchno": "001440154110006",
+  "merchKey": "0BC8E7291D494E3C34D2DBEFAD1388D9",
+  "traceno": "20091101050005",
+  "amount": 1,
+  "payType": 2,
+  "settleType": 1,
+  "channel":"wxPubQR",
+  "notifyUrl": "http://www.baidu.com/notify/",
+  "goodsName": "",
+  "remark": "曾云龙支付"
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  "merchno": "001440154110002",
+  "merchKey": "474E35F4A39584B7AC26145BA105203B",
+  "traceno": "20091101000004",
+  "amount": 0.01,
+  "payType": 2,
+  "settleType": 1,
+  "channel":"wxPub",
+  "notifyUrl": "http://www.baidu.com/notify/",
+  "goodsName": "",
+  "remark": "曾云龙支付"
+}

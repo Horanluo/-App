@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="cn.yzyue.common.dao.AgentUpgradeRuleDao">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_vip_rule
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		agentno as agentno,
+		status as status,
+		detail as detail
+	</sql> 
+	
+    <!--  
+    	根据代理商编号获取代理商升级规则
+    -->
+    <select 
+    	id="getByAgentno"
+    	parameterType="String"
+    	resultType="AgentUpgradeRule">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 
+    		agentno = #{agentno}
+    </select>
+    
+</mapper>

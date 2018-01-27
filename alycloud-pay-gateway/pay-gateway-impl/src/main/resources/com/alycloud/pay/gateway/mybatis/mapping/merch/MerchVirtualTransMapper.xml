@@ -1,0 +1,572 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchVirtualTransMapper">
+  <resultMap id="BaseResultMap" type="MerchVirtualTrans">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="trans_date" jdbcType="VARCHAR" property="transDate" />
+    <result column="trans_time" jdbcType="VARCHAR" property="transTime" />
+    <result column="branchno" jdbcType="VARCHAR" property="branchno" />
+    <result column="branch_name" jdbcType="VARCHAR" property="branchName" />
+    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
+    <result column="agent_name" jdbcType="VARCHAR" property="agentName" />
+    <result column="merchno" jdbcType="VARCHAR" property="merchno" />
+    <result column="merch_name" jdbcType="VARCHAR" property="merchName" />
+    <result column="cardno" jdbcType="VARCHAR" property="cardno" />
+    <result column="trans_type" jdbcType="INTEGER" property="transType" />
+    <result column="amount" jdbcType="DECIMAL" property="amount" />
+    <result column="traceno" jdbcType="VARCHAR" property="traceno" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="amount_before" jdbcType="DECIMAL" property="amountBefore" />
+    <result column="amount_after" jdbcType="DECIMAL" property="amountAfter" />
+    <result column="trans_amount" jdbcType="DECIMAL" property="transAmount" />
+    <result column="trans_fee" jdbcType="DECIMAL" property="transFee" />
+    <result column="type_code" jdbcType="VARCHAR" property="typeCode" />
+    <result column="trans_refno" jdbcType="VARCHAR" property="transRefno" />
+    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="pay_status" jdbcType="INTEGER" property="payStatus" />
+    <result column="pay_msg" jdbcType="VARCHAR" property="payMsg" />
+    <result column="pay_type" jdbcType="INTEGER" property="payType" />
+    <result column="batchno" jdbcType="VARCHAR" property="batchno" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="accountno" jdbcType="VARCHAR" property="accountno" />
+    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+    <result column="bankno" jdbcType="VARCHAR" property="bankno" />
+    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+    <result column="process_time" jdbcType="VARCHAR" property="processTime" />
+    <result column="df_type" jdbcType="INTEGER" property="dfType" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="bank_type" jdbcType="VARCHAR" property="bankType" />
+    <result column="channel_merchno" jdbcType="VARCHAR" property="channelMerchno" />
+    <result column="payment_type" jdbcType="INTEGER" property="paymentType" />
+    <result column="fee" jdbcType="DECIMAL" property="fee" />
+    <result column="withdrawFee" jdbcType="DECIMAL" property="withdrawFee" />
+    <result column="rate" jdbcType="DECIMAL" property="rate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, trans_date, trans_time, branchno, branch_name, agentno, agent_name, merchno, 
+    merch_name, cardno, trans_type, amount, traceno, status, login_name, amount_before, 
+    amount_after, trans_amount, trans_fee, type_code, trans_refno, add_time, remark, 
+    pay_status, pay_msg, pay_type, batchno, address, accountno, account_name, bankno, 
+    bank_name, process_time, df_type, mobile, bank_type, channel_merchno, payment_type, 
+    fee, withdrawFee, rate
+  </sql>
+  <select id="getMerchVirtualTrans" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merch_virtual_trans
+    where traceno = #{traceno,jdbcType=VARCHAR}
+  </select>
+  <select id="getMerchVirtualTransList" parameterType="MerchVirtualTrans" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merch_virtual_trans
+    where pay_status = #{payStatus,jdbcType=VARCHAR} and batchno is null;
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from merch_virtual_trans
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="createMerchVirtualTrans" parameterType="MerchVirtualTrans">
+    insert into merch_virtual_trans (id, trans_date, trans_time, 
+      branchno, branch_name, agentno, 
+      agent_name, merchno, merch_name, 
+      cardno, trans_type, amount, 
+      traceno, status, login_name, 
+      amount_before, amount_after, trans_amount, 
+      trans_fee, type_code, trans_refno, 
+      add_time, remark, pay_status, 
+      pay_msg, pay_type, batchno, 
+      address, accountno, account_name, 
+      bankno, bank_name, process_time, 
+      df_type, mobile,bank_type, 
+      channel_merchno, payment_type, fee, 
+      withdrawFee, rate)
+    values (#{id,jdbcType=INTEGER}, #{transDate,jdbcType=VARCHAR}, #{transTime,jdbcType=VARCHAR}, 
+      #{branchno,jdbcType=VARCHAR}, #{branchName,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR}, 
+      #{agentName,jdbcType=VARCHAR}, #{merchno,jdbcType=VARCHAR}, #{merchName,jdbcType=VARCHAR}, 
+      #{cardno,jdbcType=VARCHAR}, #{transType,jdbcType=INTEGER}, #{amount,jdbcType=DECIMAL}, 
+      #{traceno,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER}, #{loginName,jdbcType=VARCHAR}, 
+      #{amountBefore,jdbcType=DECIMAL}, #{amountAfter,jdbcType=DECIMAL}, #{transAmount,jdbcType=DECIMAL}, 
+      #{transFee,jdbcType=DECIMAL}, #{typeCode,jdbcType=VARCHAR}, #{transRefno,jdbcType=VARCHAR}, 
+      #{addTime,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, #{payStatus,jdbcType=INTEGER}, 
+      #{payMsg,jdbcType=VARCHAR}, #{payType,jdbcType=INTEGER}, #{batchno,jdbcType=VARCHAR}, 
+      #{address,jdbcType=VARCHAR}, #{accountno,jdbcType=VARCHAR}, #{accountName,jdbcType=VARCHAR}, 
+      #{bankno,jdbcType=VARCHAR}, #{bankName,jdbcType=VARCHAR}, #{processTime,jdbcType=VARCHAR}, 
+      #{dfType,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{bankType,jdbcType=VARCHAR}, 
+      #{channelMerchno,jdbcType=VARCHAR}, #{paymentType,jdbcType=INTEGER}, #{fee,jdbcType=DECIMAL}, 
+      #{withdrawFee,jdbcType=DECIMAL}, #{rate,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="MerchVirtualTrans">
+    insert into merch_virtual_trans
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="transDate != null">
+        trans_date,
+      </if>
+      <if test="transTime != null">
+        trans_time,
+      </if>
+      <if test="branchno != null">
+        branchno,
+      </if>
+      <if test="branchName != null">
+        branch_name,
+      </if>
+      <if test="agentno != null">
+        agentno,
+      </if>
+      <if test="agentName != null">
+        agent_name,
+      </if>
+      <if test="merchno != null">
+        merchno,
+      </if>
+      <if test="merchName != null">
+        merch_name,
+      </if>
+      <if test="cardno != null">
+        cardno,
+      </if>
+      <if test="transType != null">
+        trans_type,
+      </if>
+      <if test="amount != null">
+        amount,
+      </if>
+      <if test="traceno != null">
+        traceno,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="loginName != null">
+        login_name,
+      </if>
+      <if test="amountBefore != null">
+        amount_before,
+      </if>
+      <if test="amountAfter != null">
+        amount_after,
+      </if>
+      <if test="transAmount != null">
+        trans_amount,
+      </if>
+      <if test="transFee != null">
+        trans_fee,
+      </if>
+      <if test="typeCode != null">
+        type_code,
+      </if>
+      <if test="transRefno != null">
+        trans_refno,
+      </if>
+      <if test="addTime != null">
+        add_time,
+      </if>
+      <if test="remark != null">
+        remark,
+      </if>
+      <if test="payStatus != null">
+        pay_status,
+      </if>
+      <if test="payMsg != null">
+        pay_msg,
+      </if>
+      <if test="payType != null">
+        pay_type,
+      </if>
+      <if test="batchno != null">
+        batchno,
+      </if>
+      <if test="address != null">
+        address,
+      </if>
+      <if test="accountno != null">
+        accountno,
+      </if>
+      <if test="accountName != null">
+        account_name,
+      </if>
+      <if test="bankno != null">
+        bankno,
+      </if>
+      <if test="bankName != null">
+        bank_name,
+      </if>
+      <if test="processTime != null">
+        process_time,
+      </if>
+      <if test="dfType != null">
+        df_type,
+      </if>
+      <if test="mobile != null">
+        mobile,
+      </if>
+      <if test="bankType != null">
+        bank_type,
+      </if>
+      <if test="channelMerchno != null">
+        channel_merchno,
+      </if>
+      <if test="paymentType != null">
+        payment_type,
+      </if>
+      <if test="fee != null">
+        fee,
+      </if>
+      <if test="withdrawFee != null">
+        withdrawFee,
+      </if>
+      <if test="rate != null">
+        rate,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="transDate != null">
+        #{transDate,jdbcType=VARCHAR},
+      </if>
+      <if test="transTime != null">
+        #{transTime,jdbcType=VARCHAR},
+      </if>
+      <if test="branchno != null">
+        #{branchno,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null">
+        #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentno != null">
+        #{agentno,jdbcType=VARCHAR},
+      </if>
+      <if test="agentName != null">
+        #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchno != null">
+        #{merchno,jdbcType=VARCHAR},
+      </if>
+      <if test="merchName != null">
+        #{merchName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null">
+        #{transType,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="traceno != null">
+        #{traceno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="amountBefore != null">
+        #{amountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="amountAfter != null">
+        #{amountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmount != null">
+        #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transFee != null">
+        #{transFee,jdbcType=DECIMAL},
+      </if>
+      <if test="typeCode != null">
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transRefno != null">
+        #{transRefno,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null">
+        #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payMsg != null">
+        #{payMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="batchno != null">
+        #{batchno,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="accountno != null">
+        #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankno != null">
+        #{bankno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null">
+        #{processTime,jdbcType=VARCHAR},
+      </if>
+      <if test="dfType != null">
+        #{dfType,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null">
+        #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null">
+        #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchno != null">
+        #{channelMerchno,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null">
+        #{paymentType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawFee != null">
+        #{withdrawFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rate != null">
+        #{rate,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="modifyMerchVirtualTrans" parameterType="MerchVirtualTrans">
+    update merch_virtual_trans
+    <set>
+      <if test="transDate != null">
+        trans_date = #{transDate,jdbcType=VARCHAR},
+      </if>
+      <if test="transTime != null">
+        trans_time = #{transTime,jdbcType=VARCHAR},
+      </if>
+      <if test="branchno != null">
+        branchno = #{branchno,jdbcType=VARCHAR},
+      </if>
+      <if test="branchName != null">
+        branch_name = #{branchName,jdbcType=VARCHAR},
+      </if>
+      <if test="agentno != null">
+        agentno = #{agentno,jdbcType=VARCHAR},
+      </if>
+      <if test="agentName != null">
+        agent_name = #{agentName,jdbcType=VARCHAR},
+      </if>
+      <if test="merchno != null">
+        merchno = #{merchno,jdbcType=VARCHAR},
+      </if>
+      <if test="merchName != null">
+        merch_name = #{merchName,jdbcType=VARCHAR},
+      </if>
+      <if test="cardno != null">
+        cardno = #{cardno,jdbcType=VARCHAR},
+      </if>
+      <if test="transType != null">
+        trans_type = #{transType,jdbcType=INTEGER},
+      </if>
+      <if test="amount != null">
+        amount = #{amount,jdbcType=DECIMAL},
+      </if>
+      <if test="traceno != null">
+        traceno = #{traceno,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="loginName != null">
+        login_name = #{loginName,jdbcType=VARCHAR},
+      </if>
+      <if test="amountBefore != null">
+        amount_before = #{amountBefore,jdbcType=DECIMAL},
+      </if>
+      <if test="amountAfter != null">
+        amount_after = #{amountAfter,jdbcType=DECIMAL},
+      </if>
+      <if test="transAmount != null">
+        trans_amount = #{transAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="transFee != null">
+        trans_fee = #{transFee,jdbcType=DECIMAL},
+      </if>
+      <if test="typeCode != null">
+        type_code = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="transRefno != null">
+        trans_refno = #{transRefno,jdbcType=VARCHAR},
+      </if>
+      <if test="addTime != null">
+        add_time = #{addTime,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="payStatus != null">
+        pay_status = #{payStatus,jdbcType=INTEGER},
+      </if>
+      <if test="payMsg != null">
+        pay_msg = #{payMsg,jdbcType=VARCHAR},
+      </if>
+      <if test="payType != null">
+        pay_type = #{payType,jdbcType=INTEGER},
+      </if>
+      <if test="batchno != null">
+        batchno = #{batchno,jdbcType=VARCHAR},
+      </if>
+      <if test="address != null">
+        address = #{address,jdbcType=VARCHAR},
+      </if>
+      <if test="accountno != null">
+        accountno = #{accountno,jdbcType=VARCHAR},
+      </if>
+      <if test="accountName != null">
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="bankno != null">
+        bankno = #{bankno,jdbcType=VARCHAR},
+      </if>
+      <if test="bankName != null">
+        bank_name = #{bankName,jdbcType=VARCHAR},
+      </if>
+      <if test="processTime != null">
+        process_time = #{processTime,jdbcType=VARCHAR},
+      </if>
+      <if test="dfType != null">
+        df_type = #{dfType,jdbcType=INTEGER},
+      </if>
+      <if test="mobile != null">
+        mobile = #{mobile,jdbcType=VARCHAR},
+      </if>
+      <if test="bankType != null">
+        bank_type = #{bankType,jdbcType=VARCHAR},
+      </if>
+      <if test="channelMerchno != null">
+        channel_merchno = #{channelMerchno,jdbcType=VARCHAR},
+      </if>
+      <if test="paymentType != null">
+        payment_type = #{paymentType,jdbcType=INTEGER},
+      </if>
+      <if test="fee != null">
+        fee = #{fee,jdbcType=DECIMAL},
+      </if>
+      <if test="withdrawFee != null">
+        withdrawFee = #{withdrawFee,jdbcType=DECIMAL},
+      </if>
+      <if test="rate != null">
+        rate = #{rate,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where traceno = #{traceno,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="MerchVirtualTrans">
+    update merch_virtual_trans
+    set trans_date = #{transDate,jdbcType=VARCHAR},
+      trans_time = #{transTime,jdbcType=VARCHAR},
+      branchno = #{branchno,jdbcType=VARCHAR},
+      branch_name = #{branchName,jdbcType=VARCHAR},
+      agentno = #{agentno,jdbcType=VARCHAR},
+      agent_name = #{agentName,jdbcType=VARCHAR},
+      merchno = #{merchno,jdbcType=VARCHAR},
+      merch_name = #{merchName,jdbcType=VARCHAR},
+      cardno = #{cardno,jdbcType=VARCHAR},
+      trans_type = #{transType,jdbcType=INTEGER},
+      amount = #{amount,jdbcType=DECIMAL},
+      traceno = #{traceno,jdbcType=VARCHAR},
+      status = #{status,jdbcType=INTEGER},
+      login_name = #{loginName,jdbcType=VARCHAR},
+      amount_before = #{amountBefore,jdbcType=DECIMAL},
+      amount_after = #{amountAfter,jdbcType=DECIMAL},
+      trans_amount = #{transAmount,jdbcType=DECIMAL},
+      trans_fee = #{transFee,jdbcType=DECIMAL},
+      type_code = #{typeCode,jdbcType=VARCHAR},
+      trans_refno = #{transRefno,jdbcType=VARCHAR},
+      add_time = #{addTime,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      pay_status = #{payStatus,jdbcType=INTEGER},
+      pay_msg = #{payMsg,jdbcType=VARCHAR},
+      pay_type = #{payType,jdbcType=INTEGER},
+      batchno = #{batchno,jdbcType=VARCHAR},
+      address = #{address,jdbcType=VARCHAR},
+      accountno = #{accountno,jdbcType=VARCHAR},
+      account_name = #{accountName,jdbcType=VARCHAR},
+      bankno = #{bankno,jdbcType=VARCHAR},
+      bank_name = #{bankName,jdbcType=VARCHAR},
+      process_time = #{processTime,jdbcType=VARCHAR},
+      df_type = #{dfType,jdbcType=INTEGER},
+      mobile = #{mobile,jdbcType=VARCHAR},
+      bank_type = #{bankType,jdbcType=VARCHAR},
+      channel_merchno = #{channelMerchno,jdbcType=VARCHAR},
+      payment_type = #{paymentType,jdbcType=INTEGER},
+      fee = #{fee,jdbcType=DECIMAL},
+      withdrawFee = #{withdrawFee,jdbcType=DECIMAL},
+      rate = #{rate,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  
+  <insert id="createBatchMerchVirtualTrans" parameterType="List">
+    insert into merch_virtual_trans (trans_date, trans_time, 
+      branchno, branch_name, agentno, 
+      agent_name, merchno, merch_name, 
+      cardno, trans_type, amount, 
+      traceno, status, login_name, 
+      amount_before, amount_after, trans_amount, 
+      trans_fee, type_code, trans_refno, 
+      add_time, remark, pay_status, 
+      pay_msg, pay_type, batchno, 
+      address, accountno, account_name, 
+      bankno, bank_name, process_time, 
+      df_type, mobile,bank_type, 
+      channel_merchno, payment_type, fee, 
+      withdrawFee, rate)
+    values 
+    <foreach collection ="list" item ="item" index ="index" separator =","> 
+      (#{item.transDate,jdbcType=VARCHAR}, #{item.transTime,jdbcType=VARCHAR}, 
+      #{item.branchno,jdbcType=VARCHAR}, #{item.branchName,jdbcType=VARCHAR}, #{item.agentno,jdbcType=VARCHAR}, 
+      #{item.agentName,jdbcType=VARCHAR}, #{item.merchno,jdbcType=VARCHAR}, #{item.merchName,jdbcType=VARCHAR}, 
+      #{item.cardno,jdbcType=VARCHAR}, #{item.transType,jdbcType=INTEGER}, #{item.amount,jdbcType=DECIMAL}, 
+      #{item.traceno,jdbcType=VARCHAR}, #{item.status,jdbcType=INTEGER}, #{item.loginName,jdbcType=VARCHAR}, 
+      #{item.amountBefore,jdbcType=DECIMAL}, #{item.amountAfter,jdbcType=DECIMAL}, #{item.transAmount,jdbcType=DECIMAL}, 
+      #{item.transFee,jdbcType=DECIMAL}, #{item.typeCode,jdbcType=VARCHAR}, #{item.transRefno,jdbcType=VARCHAR}, 
+      #{item.addTime,jdbcType=VARCHAR}, #{item.remark,jdbcType=VARCHAR}, #{item.payStatus,jdbcType=INTEGER}, 
+      #{item.payMsg,jdbcType=VARCHAR}, #{item.payType,jdbcType=INTEGER}, #{item.batchno,jdbcType=VARCHAR}, 
+      #{item.address,jdbcType=VARCHAR}, #{item.accountno,jdbcType=VARCHAR}, #{item.accountName,jdbcType=VARCHAR}, 
+      #{item.bankno,jdbcType=VARCHAR}, #{item.bankName,jdbcType=VARCHAR}, #{item.processTime,jdbcType=VARCHAR}, 
+      #{item.dfType,jdbcType=INTEGER}, #{item.mobile,jdbcType=VARCHAR}, #{item.bankType,jdbcType=VARCHAR}, 
+      #{item.channelMerchno,jdbcType=VARCHAR}, #{item.paymentType,jdbcType=INTEGER}, #{item.fee,jdbcType=DECIMAL}, 
+      #{item.withdrawFee,jdbcType=DECIMAL}, #{item.rate,jdbcType=DECIMAL})
+    </foreach>
+  </insert>
+  
+  <select id="getBatchList" parameterType="MerchVirtualTrans" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />,sum(amount) as totalProxyAmount,count(id) as totalRecord
+    from merch_virtual_trans
+    where pay_status = #{payStatus,jdbcType=VARCHAR} and batchno !='' group by batchno
+  </select>
+  
+  <select id="getInfoByBatchno" parameterType="String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from merch_virtual_trans
+    where batchno = #{batchno,jdbcType=VARCHAR}
+  </select>
+</mapper>

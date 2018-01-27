@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.AgentInfoMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_info
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="agentno !=null">
+		         and agentno = #{agentno}
+		     </if>
+		     <if test="branchno !=null">
+		         and branchno = #{branchno}
+		     </if>
+		     <if test="mobile !=null">
+		         and mobile = #{mobile}
+		     </if>
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+		     <if test="superAgent != null">
+		         and super_agent =#{superAgent}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		agentno as agentno,
+		agent_name as agentName,
+		full_name as fullName,
+		divide as divide,
+		legal_name as legalName,
+		identity_card as identityCard,
+		link_man as linkMan,
+		email as email,
+		telephone as telephone,
+		mobile as mobile,
+		member_fee as memberFee,
+		assurance_fee as assuranceFee,
+		area_code as areaCode,
+		address as address,
+		super_agent as superAgent,
+		status as status,
+		open_time as openTime,
+		audit_status as auditStatus,
+		audit_agentno as auditAgentno,
+		accountno as accountno,
+		account_type as accountType,
+		account_name as accountName,
+		bankno as bankno,
+		bank_name as bankName,
+		identity_card_img as identityCardImg,
+		contract_img as contractImg,
+		other_file as otherFile,
+		add_time as addTime,
+		agent_level as agentLevel,
+		agent_type as agentType,
+		branchno as branchno,
+		agentno_first as agentnoFirst,
+		biz_type as bizType,
+		bank_card_img as bankCardImg,
+		withdrawal_fee as withdrawalFee,
+		t0_divide as t0Divide,
+		pos_debit_rate as posDebitRate,
+		pos_debit_fixed as posDebitFixed,
+		pos_credit_rate as posCreditRate,
+		app_debit_rate as appDebitRate,
+		app_debit_fixed as appDebitFixed,
+		app_credit_rate as appCreditRate,
+		pos_t0_rate as posT0Rate,
+		app_t0_rate as appT0Rate,
+		online_rate as onlineRate,
+		fastpay_rate_t0 as fastPayRateT0,
+		fastpay_rate_t1 as fastPayRateT1,
+		gateway_rate_t0 as gatewayRateT0
+	</sql> 
+	
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="fastpayRateT0 !=null">
+		         , fastpay_rate_t0 = #{fastpayRateT0}
+		     </if>
+	         <if test="fastpayRateT1 !=null">
+		         , fastpay_rate_t1 = #{fastpayRateT1}
+		     </if>
+		     <if test="gatewayRateT0 !=null">
+		         , gateway_rate_t0 = #{gatewayRateT0}
+		     </if>
+		     <if test="memberFee !=null">
+		         , member_fee = #{memberFee}
+		     </if>
+		     <if test="accountName !=null">
+		         , account_name = #{accountName}
+		     </if>
+	         <if test="accountno !=null">
+		         , accountno = #{accountno}
+		     </if>
+		     <if test="accountType !=null">
+		         , account_type = #{accountType}
+		     </if>
+	         <if test="bankName !=null">
+		         , bank_name = #{bankName}
+		     </if>
+		     <if test="bankno !=null">
+		         , bankno = #{bankno}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<insert 
+    	id="add"
+    	parameterType="AgentInfo">
+    	insert into <include refid="tableName"/>(
+    		agentno,agent_name,divide,legal_name,identity_card,
+    		link_man,email,telephone,mobile,member_fee,
+    		assurance_fee,area_code,address,
+    		account_type,accountno,account_name,bankno,bank_name,
+    		identity_card_img,contract_img,other_file,add_time,super_agent,
+    		status,audit_status,audit_agentno,full_name,
+    		agent_level,user_id,agent_type,branchno,agentno_first,biz_type,
+            bank_card_img,t0_divide,withdrawal_fee,pos_debit_rate,pos_debit_fixed,pos_credit_rate,
+    		app_debit_rate,app_debit_fixed,app_credit_rate,pos_t0_rate,app_t0_rate,online_rate,
+    		gateway_rate_t0,gateway_fixed,fastpay_rate_t0,fastpay_rate_t1
+    	)values(
+    		#{agentno},#{agentName},#{divide},#{legalName},#{identityCard},
+    		#{linkMan},#{email},#{telephone},#{mobile},#{memberFee},
+    		#{assuranceFee},#{areaCode},#{address},
+    		#{accountType},#{accountno},#{accountName},#{bankno},#{bankName},
+    		#{identityCardImg},#{contractImg},#{otherFile},#{addTime},#{superAgent},
+    		#{status}, #{auditStatus}, #{auditAgentno},#{fullName},
+    		#{agentLevel},#{userId},#{agentType},#{branchno},#{agentnoFirst},#{bizType},
+    		#{bankCardImg},#{t0Divide},#{withdrawalFee},#{posDebitRate},#{posDebitFixed},#{posCreditRate},#{appDebitRate}
+    		,#{appDebitFixed},#{appCreditRate},#{posT0Rate},#{appT0Rate},#{onlineRate},
+    		#{gatewayRateT0},#{gatewayFixed},#{fastpayRateT0},#{fastpayRateT1}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="AgentInfo">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="AgentInfo4Search"
+    	resultType="AgentInfo">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		add_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <!--  
+    	根据代理商编号获取代理商信息
+    -->
+    <select 
+    	id="getByAgentno"
+    	parameterType="String"
+    	resultType="AgentInfo">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 
+    		agentno = #{agentno}
+    </select>
+    <!--  
+    	名称:
+    		获取最大的代理商编号(前4位的地区代码除外)
+    	用途:
+    		1.用于新增代理商的时候生成代理商编号
+    -->
+    <select 
+    	id="getMaxAgentnoByAgentno"
+    	parameterType="String"
+    	resultType="String">
+    	select 
+    		max(agentno)	
+    	from 
+    		<include refid="tableName"/> 
+    	where
+    		agentno like concat(substr(#{agentno}, 0,4), '%')
+    </select>
+    
+</mapper>

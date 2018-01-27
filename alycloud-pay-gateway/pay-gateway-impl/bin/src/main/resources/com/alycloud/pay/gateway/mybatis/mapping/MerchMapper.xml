@@ -1,0 +1,619 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchMapper">
+	<select id="getByBranchno" parameterType="String"
+		resultType="com.alycloud.modules.entity.MerchInfo">
+    <![CDATA[
+		select
+    		branchno as branchno,
+    		branch_name as branchName,
+    		biz_code as bizCode,
+    		merch_default_mcc as mcc,
+    		open_multi as openMulti,
+    		open_t0 as openT0,
+    		t0_min_amount as t0MinAmount,
+    		t0_rate as t0Rate,
+			fastpay_rate_t0 as fastPayRateT0,
+			fastpay_rate_t1 as fastPayRateT1
+    	from
+    		branch_info
+    	where
+    		branchno = #{branchno}
+        ]]>
+	</select>
+	
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		merch_info
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+		     <if test="superAgent != null">
+		         and super_agent =#{superAgent}
+		     </if>
+	     </trim>
+	</sql>
+	<!-- 
+		根据平台商户号获取通联的渠道商户号 
+	-->
+	<select 
+		id="listT0Merchno" 
+		parameterType="String" 
+		resultType="String">
+		select
+			channel_merchno
+		from
+			channel_merch
+		where
+			channel_code = 'TL0PAY'
+			and platform_merchno = #{merchno}
+	</select>
+    <!--  
+    	名称:
+    		根据代理商简称查询代理商数量
+    	用途:
+    		1.用于新增和修改的时候验证代理商名称是否重复
+    -->
+    <select 
+    	id="validMerchName"
+    	parameterType="String"
+    	resultType="Integer">
+    	select 
+    		count(id)
+    	from 
+    		merch_info
+    	where
+    		merch_name = #{merchName}
+    </select>
+    <!--  
+    	名称:
+    		根据商户全称查询商户数量
+    	用途:
+    		1.用于新增和修改的时候验证商户名称是否重复
+    -->
+    <select 
+    	id="validFullName" 
+    	parameterType="String"
+    	resultType="Integer">
+    	select
+    		count(id)
+    	from
+    		merch_info
+    	where
+    		full_name = #{fullName}
+    </select>
+    <!--  
+    	根据登陆用户名获取用户信息
+    -->
+    <select 
+    	id="getByLoginName"
+    	parameterType="HashMap"
+    	resultType="com.alycloud.modules.entity.MerchUser">
+		select 
+			merch_id as merchId,
+			login_name loginName,
+			password as password,
+			true_name as trueName,
+			status as status,
+			last_login as lastLogin,
+			login_error_date as loginErrorDate,
+			error_count as errorCount
+    	from 
+    		merch_user
+    	where
+    		login_name = #{loginName}
+    		<if test="branchno !=null">
+		         and branchno = #{branchno}
+		     </if>
+    		
+    </select>
+    <!--  
+    	名称:
+    		根据商户编号查询商户信息
+    	用途:
+    		1.用于风控中查询商户信息
+    -->
+    
+    <select 
+    	id="searchByAgentno"
+    	parameterType="String"
+    	resultType="com.alycloud.modules.entity.MerchInfo">
+    	select 
+			id as id,
+			merchno as merchno,
+			branchno as branchno,
+			first_agentno as firstAgentno,
+			merch_name as merchName,
+			full_name as fullName,
+			merch_type as merchType,
+			industry_type as industryType,
+			organ_no as organNo,
+			biz_license as bizLicense,
+			legal_name as legalName,
+			super_agent as superAgent,
+			identity_card as identityCard,
+			link_man as linkMan,
+			email as email,
+			telephone as telephone,
+			mobile as mobile,
+			address as address,
+			area_code as areaCode,
+			mcc as mcc,
+			status as status,
+			audit_status as auditStatus,
+			audit_agentno as auditAgentno,
+			judg_status as judgStatus,
+			debit_rate as debitRate,
+			debit_fixed as debitFixed,
+			credit_rate as creditRate,
+			settle_type as settleType,
+			def_settle_type as defSettleType,
+			accountno as accountno,
+			account_type as accountType,
+			account_name as accountName,
+			bankno as bankno,
+			bank_name as bankName,
+			amt_limit as amtLimit,
+			day_limit as dayLimit,
+			month_limit as monthLimit,
+			trans_ctrl as transCtrl,
+			biz_license_img as bizLicenseImg,
+			account_img as accountImg,
+			identity1_img as identity1Img,
+			identity2_img as identity2Img,
+			identity3_img as identity3Img,
+			card1_img as card1Img,
+			card2_img as card2Img,
+			cashier_img as cashierImg,
+			place_img as placeImg,
+			head_img as headImg,
+			contract_img as contractImg,
+			other_file as otherFile,
+			add_time as addTime,
+			open_time as openTime,
+			agent_fee_id as agentFeeId,
+			biz_type as bizType,
+			t0_rate as t0Rate,
+			merch_level as merchLevel,
+			customerno as customerno,
+			silence_merch as silenceMerch,
+			merch_key as merchKey,
+			online_url_notify as onlineUrlNotify,
+			online_url_return as onlineUrlReturn,
+			fastpay_rate_t0 as fastPayRateT0,
+			fastpay_rate_t1 as fastPayRateT1,
+			hfbankT1MerchNo,hfbankD0MerchNo,hpMerCode
+    	from 
+    		merch_info
+    	where
+    		super_agent = #{agentno}
+    </select>
+    <select 
+    	id="getByMerchno"
+    	parameterType="String"
+    	resultType="com.alycloud.modules.entity.MerchInfo">
+    	select 
+			id as id,
+			merchno as merchno,
+			branchno as branchno,
+			first_agentno as firstAgentno,
+			merch_name as merchName,
+			full_name as fullName,
+			merch_type as merchType,
+			industry_type as industryType,
+			organ_no as organNo,
+			biz_license as bizLicense,
+			legal_name as legalName,
+			super_agent as superAgent,
+			identity_card as identityCard,
+			link_man as linkMan,
+			email as email,
+			telephone as telephone,
+			mobile as mobile,
+			address as address,
+			area_code as areaCode,
+			mcc as mcc,
+			status as status,
+			audit_status as auditStatus,
+			audit_agentno as auditAgentno,
+			judg_status as judgStatus,
+			debit_rate as debitRate,
+			debit_fixed as debitFixed,
+			credit_rate as creditRate,
+			settle_type as settleType,
+			def_settle_type as defSettleType,
+			accountno as accountno,
+			account_type as accountType,
+			account_name as accountName,
+			bankno as bankno,
+			bank_name as bankName,
+			amt_limit as amtLimit,
+			day_limit as dayLimit,
+			month_limit as monthLimit,
+			trans_ctrl as transCtrl,
+			biz_license_img as bizLicenseImg,
+			account_img as accountImg,
+			identity1_img as identity1Img,
+			identity2_img as identity2Img,
+			identity3_img as identity3Img,
+			card1_img as card1Img,
+			card2_img as card2Img,
+			cashier_img as cashierImg,
+			place_img as placeImg,
+			head_img as headImg,
+			contract_img as contractImg,
+			other_file as otherFile,
+			add_time as addTime,
+			open_time as openTime,
+			agent_fee_id as agentFeeId,
+			biz_type as bizType,
+			t0_rate as t0Rate,
+			merch_level as merchLevel,
+			customerno as customerno,
+			silence_merch as silenceMerch,
+			merch_key as merchKey,
+			online_url_notify as onlineUrlNotify,
+			online_url_return as onlineUrlReturn,
+			fastpay_rate_t0 as fastPayRateT0,
+			fastpay_rate_t1 as fastPayRateT1,
+			hfbankT1MerchNo,hfbankD0MerchNo,hpMerCode
+    	from 
+    		merch_info
+    	where
+    		merchno = #{merchno}
+    </select>
+    <!--  
+    	名称:
+    		获取最大的商户编号
+    	用途:
+    		1.用于终审商户的时候生成商户编号
+    -->
+    <select 
+    	id="getMerchMaxId"
+    	parameterType="String"
+    	resultType="String">
+    	select 
+    		max(substr(merchno, 12,4))
+    	from 
+    		merch_info
+    	where
+    		merchno like concat(#{merchno}, '%')
+    </select>
+    <!-- 
+    	修改商户的结算费率 
+    -->
+    <update 
+    	id="modMerchRate"
+        parameterType="com.alycloud.modules.entity.MerchInfo">
+        update 
+            merch_info
+        set 
+           debit_rate = #{debitRate},
+           debit_fixed = #{debitFixed},
+		   credit_rate = #{creditRate},
+		   t0_rate = #{t0Rate}
+		where 
+		   id = #{id}
+    </update>
+    <!-- 
+    	修改商户的结算账户 
+    -->
+    <update 
+    	id="modMerchAccount"
+        parameterType="com.alycloud.modules.entity.MerchInfo">
+        update 
+            merch_info
+        set 
+            accountno = #{accountno},
+			account_type = #{accountType},
+			account_name = #{accountName},
+			bankno = #{bankno},
+			bank_name = #{bankName}
+		where 
+		    id = #{id}
+	</update>
+	<!-- 
+		根据虚拟机身号获取商户编号
+	-->
+	<select 
+		id="getMerchBySerialno" 
+		parameterType="String" 
+		resultType="String">
+		select
+			merchno 
+		from 
+			term_info
+		where 
+			serialno = #{serialno}
+	</select>
+	<!-- 
+		根据卡号获取发卡行名称
+	-->
+	<select 
+		id="getBankByCardno"
+		parameterType="String"
+		resultType="String">
+		select 
+			bank_name 
+		from 
+			system_card_bin 
+		where 
+			#{cardno} like concat(card_bin, '%') 
+			and card_length = length(#{cardno})	
+		limit 1
+	</select>
+	
+	
+	<insert 
+    	id="addMerchInfo"
+    	parameterType="com.alycloud.modules.entity.MerchInfo" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into merch_info(
+			merchno,branchno,merch_name,email,mobile,address,status,open_time,audit_agentno,
+			audit_status,judg_status,debit_rate,debit_fixed,credit_rate,credit_fixed,
+			accountno,account_type,account_name,bankno,bank_name,add_time,t0_rate,biz_type,merch_type,
+			mcc,manu_rate,link_man,industry_type,app_rate,app_fixed,app_credit,app_t0_rate,super_agent,
+			merch_key,merch_level,trans_ctrl,identity_card,province,city,area_code,hpMerCode
+    	)values(
+			#{merchno},#{branchno},#{merchName},#{email},#{mobile},#{address},#{status},#{openTime},#{auditAgentno},
+			#{auditStatus},#{judgStatus},#{debitRate},#{debitFixed},#{creditRate},#{creditFixed},
+			#{accountno},#{accountType},#{accountName},#{bankno},#{bankName},#{addTime},#{t0Rate},#{bizType},#{merchType},
+			#{mcc},#{manuRate},#{linkMan},1,#{appRate},#{appFixed},#{appCredit},#{appT0Rate},#{superAgent},
+			#{merchKey},#{merchLevel},#{transCtrl},#{identityCard},#{province},#{city},#{areaCode},#{hpMerCode}
+    	)
+    </insert>
+    <select 
+    	id="countByMobile"
+    	parameterType="String"
+    	resultType="Integer">
+    	select 
+			count(id)
+    	from 
+    		merch_info
+    	where
+    		mobile = #{mobile}
+    </select>
+    
+     <insert 
+    	id="addMerchRelate" 
+    	parameterType="com.alycloud.pay.gateway.models.MerchRelateBean">
+    	insert into merch_relate(
+	    	merch_id,agentno,agent_name,agent_level
+    	)
+    	values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    	(
+    		#{item.merchId}, #{item.agentno}, #{item.agentName}, #{item.agentLevel}
+    	)
+    	</foreach>  
+    </insert>
+    <insert 
+    	id="addSaleMerchRelate"
+    	parameterType="com.alycloud.pay.gateway.models.SaleMerchRelateBean" >
+    	insert into sale_merch_relate(
+    		merch_id,sm_1_id,sm_2_id,sm_3_id
+    	)
+    	values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    	(
+    		#{item.merchId}, #{item.sm1Id}, #{item.sm2Id}, #{item.sm3Id}
+    	)
+    	</foreach>  
+    </insert>
+  
+    <select id="getSaleByMerchId"
+     parameterType="String"
+     resultType="com.alycloud.pay.gateway.models.SaleMerchRelateBean">
+     	select 
+    		merch_id as merchId,
+    		sm_1_id as sm1Id,
+    		sm_2_id as sm2Id,	
+    		sm_3_id as sm13d
+    	from 
+    		sale_merch_relate
+    		where merch_id=#{merchId}
+     </select>
+    <insert 
+    	id="addRelate" 
+    	parameterType="com.alycloud.pay.gateway.models.MerchRelateBean">
+    	insert into merch_relate(
+	    	merch_id,agentno,agent_name,agent_level
+    	)
+    	values
+    	(
+    		#{merchId}, #{agentno}, #{agentName}, #{agentLevel}
+    	)
+    </insert>    
+    <select id="getMerchRolerId"
+     parameterType="String"
+     resultType="Integer">
+     	select
+     		id
+     	from 
+     		merch_roler
+     	where
+     		branchno = #{branchno}
+     </select>
+    <update 
+    	 id="realName"
+    	 parameterType="HashMap">
+    	 update merch_info
+    	 set
+    	 	identity_card=#{card},
+    	 	accountno = #{accountno},
+    	 	account_name = #{accountName},
+    	 	account_type = #{accountType},
+    	 	status=1,
+    	 	audit_agentno = #{branchno}
+    		where id=#{id}
+    </update>
+     <!--  
+    	批量添加商户二维码费率信息
+    -->
+    <insert 
+    	id="batchAddQrcodeChannelFee"
+    	parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchFeeBean">
+    	insert into qrcode_merch_fee(
+			branchno,agentno,merchno,scan_type,pay_type,settle_type,rate
+    	)values
+    	<foreach collection="list" item="item" index="index" separator=",">  
+      		(
+      			#{item.branchno},#{item.agentno},#{item.merchno},#{item.scanType},
+      			#{item.payType},#{item.settleType},#{item.rate}
+    		)
+    	</foreach>  
+    </insert>
+    
+    <select 
+    	id="listAgentRelate" 
+    	parameterType="String" 
+    	resultType="com.alycloud.pay.gateway.models.AgentRelateBean">
+    	select
+    		agentno as agentno,
+    		super_agentno as superAgentno,
+    		super_agent_name as superAgentName,
+    		agent_level as agentLevel
+    	from
+    		agent_relate
+    	where 
+    		agentno = #{agentno}
+    		and agent_level > 0
+    	order by 
+    		agent_level
+    </select>
+    
+    <!--  
+    	名称:
+    		根据商户Id查询商户信息
+    -->
+    
+    <select 
+    	id="getById"
+    	parameterType="String"
+    	resultType="com.alycloud.modules.entity.MerchInfo">
+    	select 
+			id as id,
+			merchno as merchno,
+			branchno as branchno,
+			first_agentno as firstAgentno,
+			merch_name as merchName,
+			full_name as fullName,
+			merch_type as merchType,
+			industry_type as industryType,
+			organ_no as organNo,
+			biz_license as bizLicense,
+			legal_name as legalName,
+			super_agent as superAgent,
+			identity_card as identityCard,
+			link_man as linkMan,
+			email as email,
+			telephone as telephone,
+			mobile as mobile,
+			address as address,
+			area_code as areaCode,
+			mcc as mcc,
+			status as status,
+			audit_status as auditStatus,
+			audit_agentno as auditAgentno,
+			judg_status as judgStatus,
+			debit_rate as debitRate,
+			debit_fixed as debitFixed,
+			credit_rate as creditRate,
+			settle_type as settleType,
+			def_settle_type as defSettleType,
+			accountno as accountno,
+			account_type as accountType,
+			account_name as accountName,
+			bankno as bankno,
+			bank_name as bankName,
+			amt_limit as amtLimit,
+			day_limit as dayLimit,
+			month_limit as monthLimit,
+			trans_ctrl as transCtrl,
+			biz_license_img as bizLicenseImg,
+			account_img as accountImg,
+			identity1_img as identity1Img,
+			identity2_img as identity2Img,
+			identity3_img as identity3Img,
+			card1_img as card1Img,
+			card2_img as card2Img,
+			cashier_img as cashierImg,
+			place_img as placeImg,
+			head_img as headImg,
+			contract_img as contractImg,
+			other_file as otherFile,
+			add_time as addTime,
+			open_time as openTime,
+			agent_fee_id as agentFeeId,
+			biz_type as bizType,
+			t0_rate as t0Rate,
+			merch_level as merchLevel,
+			customerno as customerno,
+			silence_merch as silenceMerch,
+			merch_key as merchKey,
+			online_url_notify as onlineUrlNotify,
+			online_url_return as onlineUrlReturn
+    	from 
+    		merch_info
+    	where
+    		id = #{id}
+    </select>
+    <!-- 
+    	判断是否存在虚拟账户 
+    -->
+    <select 
+    	id="countVirtCard" 
+    	parameterType="String" 
+    	resultType="Integer">
+    	select 
+    		count(id) 
+    	from 
+    		virtual_card 
+    	where 
+    		merchno = #{merchno}
+    		and status = 1
+    </select>
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="HashMap"
+    	resultType="com.alycloud.modules.entity.MerchInfo">
+    	select 
+    		 id as id,
+    		 merchno as merchno,
+    		 merch_name as merchName,
+    		 link_man as linkMan,
+    		 mobile as mobile,
+    		 add_time as addTime
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		add_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <select 
+		id="getBankIDByBankName"
+		parameterType="String"
+		resultType="String">
+		select 
+			bank_id 
+		from 
+			system_bank_id 
+		where 
+			#{bankName} like concat('%',bank_name, '%') 
+		limit 1
+	</select>
+</mapper>

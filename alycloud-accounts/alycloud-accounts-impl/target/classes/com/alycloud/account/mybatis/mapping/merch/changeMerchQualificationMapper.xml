@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.ChangeMerchQualificationMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		change_merch_qualification
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				 as id,
+		merch_id		 as merchId,
+		img_head 	     as imgHead,
+		img_place 		 as imgPlace,
+		img_chashier 	 as imgCashier,
+		img_license	     as imgLicense,
+		img_contract	 as imgContract,
+		file_other 		 as fileOther,
+		ori_img_head 	 as oriImgHead,
+		ori_img_place 	 as oriImgPlace,
+		ori_img_cashier  as oriImgCashier,
+		ori_img_license  as oriImgLicense,
+		ori_img_contract as oriImgContract,
+		ori_file_other	 as oriFileOther,
+		audit_status 	 as auditStatus,
+		audit_descr 	 as auditDescr,
+		audit_time 		 as auditTime,
+		add_time 		 as addTime
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="auditStatus !=null">
+		         , audit_status = #{auditStatus}
+		     </if>
+	         <if test="auditDescr !=null">
+		         , audit_descr = #{auditDescr}
+		     </if>
+	         <if test="auditTime !=null">
+		         , audit_time = #{auditTime}
+		     </if>
+		     <if test="fileOther !=null">
+		         , file_other = #{fileOther}
+		     </if>
+		     <if test="imgCashier !=null">
+		         , img_chashier = #{imgCashier}
+		     </if>
+		     <if test="imgContract !=null">
+		         , img_contract = #{imgContract}
+		     </if>
+		     <if test="imgHead !=null">
+		         , img_head = #{imgHead}
+		     </if>
+		     <if test="imgLicense !=null">
+		         , img_license = #{imgLicense}
+		     </if>
+		     <if test="imgPlace !=null">
+		         , img_place = #{imgPlace}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="merchId !=null">
+		         and merch_id = #{merchId}
+		     </if>
+		     <if test="auditStatus !=null">
+		         and audit_status = #{auditStatus}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<insert 
+    	id="add"
+    	parameterType="ChangeMerchQualification" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			merch_id,img_head,img_place,img_chashier,img_license,img_contract,file_other,
+			ori_img_head,ori_img_place,ori_img_cashier,ori_img_license,ori_img_contract,ori_file_other,
+			audit_status,audit_descr,audit_time,add_time
+    	)values(
+			#{merchId},#{imgHead},#{imgPlace},#{imgCashier},#{imgLicense},#{imgContract},#{fileOther},
+			#{oriImgHead},#{oriImgPlace},#{oriImgCashier},#{oriImgLicense},#{oriImgContract},#{oriFileOther},
+			#{auditStatus},#{auditDescr},#{auditTime},#{addTime}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="ChangeMerchQualification">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="ChangeMerchQualification4Search"
+    	resultType="ChangeMerchQualification">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

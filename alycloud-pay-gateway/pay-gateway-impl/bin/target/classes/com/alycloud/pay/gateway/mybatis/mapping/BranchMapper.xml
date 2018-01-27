@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.BranchMapper">
+	<select id="getByBranchno" parameterType="String"
+		resultType="com.alycloud.pay.gateway.models.BranchBean">
+    <![CDATA[
+		select
+    		branchno as branchno,
+    		branch_name as branchName,
+    		biz_code as bizCode,
+    		merch_default_mcc as mcc,
+    		open_multi as openMulti,
+    		open_t0 as openT0,
+    		t0_min_amount as t0MinAmount,
+    		t0_rate as t0Rate,
+			fastpay_rate_t0 as fastPayRateT0,
+			fastpay_rate_t1 as fastPayRateT1
+    	from
+    		branch_info
+    	where
+    		branchno = #{branchno}
+        ]]>
+	</select>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.AgentVirtualRechargeMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_virtual_recharge
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id 			 	as id,
+   		cardno 		 	as cardno,
+		branchno	 	as branchno,
+		branch_name	 	as branchName,
+		agentno			as agentno,
+		agent_name		as agentName,
+		type			as type,
+		amount_before 	as amountBefore,
+		amount			as amount,
+		amount_after	as amountAfter,
+		status			as status,
+		remark			as remark,
+		refno			as refno,
+		login_name		as loginName,
+		add_time		as addTime,
+		ip				as ip
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	<trim prefix="where" prefixOverrides="and |or">
+   		<if test="type != null">
+   			and type = #{type}
+   		</if>
+   		<if test="refno != null">
+   			and refno = #{refno}
+   		</if>
+   	</trim>
+	</sql>
+	<!-- 
+		添加记录
+	-->
+	<insert 
+		id="add" 
+		parameterType="AgentVirtualRecharge">
+		insert into <include refid="tableName"/>(
+			cardno,
+			branchno,
+			branch_name,
+			agentno,
+			agent_name,
+			type,
+			amount_before,
+			amount,
+			amount_after,
+			status,
+			remark,
+			refno,
+			login_name,
+			add_time,
+			ip
+		)values(
+			#{cardno},
+			#{branchno},
+			#{branchName},
+			#{agentno},
+			#{agentName},
+			#{type},
+			#{amountBefore},
+			#{amount},
+			#{amountAfter},
+			#{status},
+			#{remark},
+			#{refno},
+			#{loginName},
+			#{addTime},
+			#{ip}
+		)
+	</insert>
+	<!--  
+    	分页查询
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="AgentVirtualRecharge4Search"
+    	resultType="AgentVirtualRecharge">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		add_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <!--  
+    	查询记录数
+    -->
+    <select 
+    	id="count"
+    	parameterType="AgentVirtualRecharge4Search"
+    	resultType="Integer">
+    	select 
+    		count(*)
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    </select>
+</mapper>

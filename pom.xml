@@ -1,0 +1,210 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.alycloud</groupId>
+	<artifactId>alycloud-top</artifactId>
+	<version>1.0.0</version>
+	<packaging>pom</packaging>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.5.3.RELEASE</version>
+		<relativePath /> <!-- lookup parent from repository -->
+	</parent>
+	<organization>
+		<name>hpstack, Inc</name>
+		<url>http://www.alycloud.com</url>
+	</organization>
+	<developers>
+		<developer>
+			<id>alycloud.com</id>
+			<name>曾云龙</name>
+			<email>283912449@qq.com</email>
+		</developer>
+	</developers>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<lombok.version>1.16.14</lombok.version>
+		<swagger.version>2.5.0</swagger.version>
+		<restdocs-mockmvc.version>1.1.1.RELEASE</restdocs-mockmvc.version>
+		<logstash.logback.version>4.5.1</logstash.logback.version>
+		<mysql.version>5.1.43</mysql.version>
+		<druid.version>1.1.1</druid.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-starter-parent</artifactId>
+				<version>Camden.SR7</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok</artifactId>
+				<version>${lombok.version}</version>
+				<scope>compile</scope>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.restdocs</groupId>
+				<artifactId>spring-restdocs-mockmvc</artifactId>
+				<version>${restdocs-mockmvc.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-staticdocs</artifactId>
+				<version>${swagger.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>net.logstash.logback</groupId>
+				<artifactId>logstash-logback-encoder</artifactId>
+				<version>${logstash.logback.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>${mysql.version}</version>
+			</dependency>
+
+			<!-- https://mvnrepository.com/artifact/com.alibaba/druid -->
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>druid</artifactId>
+				<version>${druid.version}</version>
+			</dependency>
+
+			<!--pagehelper
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper-spring-boot-starter</artifactId>
+				<version>1.2.1</version>
+			</dependency> -->
+
+		</dependencies>
+	</dependencyManagement>
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-snapshots-continuous</id>
+			<name>Spring Snapshots Continuous</name>
+			<url>http://repo.spring.io/libs-snapshot-continuous-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/libs-milestone-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-releases</id>
+			<name>Spring Releases</name>
+			<url>http://repo.spring.io/libs-release-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+
+		<!--repository for finagle -->
+		<!-- <repository> <id>Twitter</id> <url>http://maven.twttr.com/</url> </repository> -->
+
+		<!-- <repository> <id>jboss-cache</id> <name>jboss-cache</name> <url>http://repository.jboss.org/maven2</url> 
+			</repository> -->
+		<!-- <repository> <id>mvnsearch</id> <name>mvnsearch Maven Repository</name> 
+			<url>http://www.mvnsearch.org/maven2</url> </repository> -->
+		<!-- <repository> <id>ibiblio</id> <name>ibiblio Maven Repository</name> 
+			<url>http://www.ibiblio.org/maven2</url> </repository> -->
+		<!-- <repository> <id>mirrors.ibiblio</id> <name>mirrors.ibiblio Maven 
+			Repository</name> <url>http://mirrors.ibiblio.org/pub/mirrors/maven2</url> 
+			</repository> -->
+
+		<repository>
+			<id>mvnrepository</id>
+			<name>mvnrepository</name>
+			<url>http://mvnrepository.com</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://repo.spring.io/libs-snapshot-local</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>http://repo.spring.io/libs-milestone-local</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+	<!-- <build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+			<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <mainClass>com.xx.Application</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+		</plugins>
+	</build> -->
+	<modules>
+		<module>alycloud-modules</module>
+		<module>alycloud-core</module>
+		<module>alycloud-pay-gateway</module>
+		<module>alycloud-channel</module>
+		<module>alycloud-accounts</module>
+		<module>alycloud-schedules</module>
+		<module>alycloud-pay</module>
+		<module>alycloud-financial</module>
+	</modules>
+</project>

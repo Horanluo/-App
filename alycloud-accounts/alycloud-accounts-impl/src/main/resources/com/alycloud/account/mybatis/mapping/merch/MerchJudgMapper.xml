@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.account.mapper.MerchJudgMapper">
+
+  <insert id="insert" parameterType="MerchJudg">
+    insert into merch_judg (id, merch_id, audit_status, 
+      reason, login_name, true_name, 
+      audit_time)
+    values (#{id,jdbcType=INTEGER}, #{merchId,jdbcType=VARCHAR}, #{auditStatus,jdbcType=INTEGER}, 
+      #{reason,jdbcType=VARCHAR}, #{loginName,jdbcType=VARCHAR}, #{trueName,jdbcType=VARCHAR}, 
+      #{auditTime,jdbcType=VARCHAR})
+  </insert>
+</mapper>

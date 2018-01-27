@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.ChangeMerchAccountMapper">
+	<resultMap id="changeMerchAccountResultMap" type="ChangeMerchAccount">
+	    <id column="id" jdbcType="INTEGER" property="id" />
+	    <result column="merch_id" jdbcType="INTEGER" property="merchId" />
+	    <result column="merch_name" jdbcType="VARCHAR" property="merchName" />
+	    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
+	    <result column="ori_account_type" jdbcType="INTEGER" property="oriAccountType" />
+	    <result column="ori_accountno" jdbcType="VARCHAR" property="oriAccountno" />
+	    <result column="ori_account_name" jdbcType="VARCHAR" property="oriAccountName" />
+	    <result column="ori_bankno" jdbcType="VARCHAR" property="oriBankno" />
+	    <result column="ori_bank_name" jdbcType="VARCHAR" property="oriBankName" />
+	    <result column="ori_img_card1" jdbcType="VARCHAR" property="oriImgCard1" />
+	    <result column="ori_img_card2" jdbcType="VARCHAR" property="oriImgCard2" />
+	    <result column="account_type" jdbcType="INTEGER" property="accountType" />
+	    <result column="accountno" jdbcType="VARCHAR" property="accountno" />
+	    <result column="account_name" jdbcType="VARCHAR" property="accountName" />
+	    <result column="bankno" jdbcType="VARCHAR" property="bankno" />
+	    <result column="bank_name" jdbcType="VARCHAR" property="bankName" />
+	    <result column="img_card1" jdbcType="VARCHAR" property="imgCard1" />
+	    <result column="img_card2" jdbcType="VARCHAR" property="imgCard2" />
+	    <result column="file_path" jdbcType="VARCHAR" property="filePath" />
+	    <result column="audit_agent" jdbcType="VARCHAR" property="auditAgent" />
+	    <result column="audit_status" jdbcType="INTEGER" property="auditStatus" />
+	    <result column="audit_descr" jdbcType="VARCHAR" property="auditDescr" />
+	    <result column="audit_time" jdbcType="VARCHAR" property="auditTime" />
+	    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+	    <result column="add_time" jdbcType="VARCHAR" property="addTime" />
+  	</resultMap>
+	<sql id="Change_Merch_Account_Column_List">
+	    cma.id, cma.merch_id, cma.merch_name, cma.agentno, cma.ori_account_type, cma.ori_accountno, cma.ori_account_name, 
+	    cma.ori_bankno, cma.ori_bank_name, cma.ori_img_card1, cma.ori_img_card2, cma.account_type, cma.accountno, 
+	    cma.account_name, cma.bankno, cma.bank_name, cma.img_card1, cma.img_card2, cma.file_path, cma.audit_agent, cma.audit_status, 
+	    cma.audit_descr, cma.audit_time, cma.user_name, cma.add_time
+	</sql>
+  
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		change_merch_account
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				 	as id,
+		merch_id		 	as merchId,
+		account_type 	    as accountType,
+		accountno 		 	as accountno,
+		account_name 	 	as accountName,
+		bankno	     		as bankno,
+		bank_name	 		as bankName,
+		img_card1 		 	as imgCard1,
+		img_card2 	 		as imgCard2,
+		ori_account_type 	as oriAccountType,
+		ori_accountno  		as oriAccountno,
+		ori_account_name  	as oriAccountName,
+		ori_bankno 			as oriBankno,
+		ori_bank_name	 	as oriBankName,
+		ori_img_card1	 	as oriImgCard1,
+		ori_img_card2	 	as oriImgCard2,
+		audit_status 	 	as auditStatus,
+		audit_descr			as auditDescr,
+		audit_time 		 	as auditTime,
+		add_time 		 	as addTime
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="auditStatus !=null">
+		         , audit_status = #{auditStatus}
+		     </if>
+	         <if test="auditDescr !=null">
+		         , audit_descr = #{auditDescr}
+		     </if>
+	         <if test="auditTime !=null">
+		         , audit_time = #{auditTime}
+		     </if>
+	         <if test="imgCard1 !=null">
+		         , img_card1 = #{imgCard1}
+		     </if>
+	         <if test="imgCard2 !=null">
+		         , img_card2 = #{imgCard2}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="merchId !=null">
+		         and merch_id = #{merchId}
+		     </if>
+		     <if test="auditStatus !=null">
+		         and audit_status = #{auditStatus}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<insert 
+    	id="add"
+    	parameterType="ChangeMerchAccount" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			merch_id,merch_name,agentno,account_type,accountno,account_name,bankno,bank_name,img_card1,img_card2,
+			ori_account_type,ori_accountno,ori_account_name,ori_bankno,ori_bank_name,ori_img_card1,ori_img_card2,
+			audit_status,audit_descr,audit_time,add_time
+    	)values(
+			#{merchId},#{merchName},#{agentno},#{accountType},#{accountno},#{accountName},#{bankno},#{bankName},#{imgCard1},#{imgCard2},
+			#{oriAccountType},#{oriAccountno},#{oriAccountName},#{oriBankno},#{oriBankName},#{oriImgCard1},#{oriImgCard2},
+			#{auditStatus},#{auditDescr},#{auditTime},#{addTime}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="ChangeMerchAccount">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="ChangeMerchAccount4Search"
+    	resultType="ChangeMerchAccount">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+    <!-- Horanluo  2017.11.08 -->
+    <update 
+		id="updateToAuditInfo" 
+		parameterType="ChangeMerchAccount">
+	  update change_merch_account cma
+	  set
+      cma.merch_id = #{merchId,jdbcType=INTEGER},
+      cma.merch_name = #{merchName,jdbcType=VARCHAR},
+      cma.agentno = #{agentno,jdbcType=VARCHAR},
+      cma.ori_account_type = #{oriAccountType,jdbcType=INTEGER},
+      cma.ori_accountno = #{oriAccountno,jdbcType=VARCHAR},
+      cma.ori_account_name = #{oriAccountName,jdbcType=VARCHAR},
+      cma.ori_bankno = #{oriBankno,jdbcType=VARCHAR},
+      cma.ori_bank_name = #{oriBankName,jdbcType=VARCHAR},
+      cma.ori_img_card1 = #{oriImgCard1,jdbcType=VARCHAR},
+      cma.ori_img_card2 = #{oriImgCard2,jdbcType=VARCHAR},
+      cma.account_type = #{accountType,jdbcType=INTEGER},
+      cma.accountno = #{accountno,jdbcType=VARCHAR},
+      cma.account_name = #{accountName,jdbcType=VARCHAR},
+      cma.bankno = #{bankno,jdbcType=VARCHAR},
+      cma.bank_name = #{bankName,jdbcType=VARCHAR},
+      cma.img_card1 = #{imgCard1,jdbcType=VARCHAR},
+      cma.img_card2 = #{imgCard2,jdbcType=VARCHAR},
+      cma.file_path = #{filePath,jdbcType=VARCHAR},
+      cma.audit_agent = #{auditAgent,jdbcType=VARCHAR},
+      cma.audit_status = #{auditStatus,jdbcType=INTEGER},
+      cma.audit_descr = #{auditDescr,jdbcType=VARCHAR},
+      cma.audit_time = #{auditTime,jdbcType=VARCHAR},
+      cma.user_name = #{userName,jdbcType=VARCHAR},
+      cma.add_time = #{addTime,jdbcType=VARCHAR}
+	  where cma.id = #{id}
+	</update>
+	
+    <select 
+    	id="getChangeMerchAccount"
+    	parameterType="String"
+    	resultMap="changeMerchAccountResultMap">
+    	select 
+    		<include refid="Change_Merch_Account_Column_List"/>
+    	from change_merch_account cma
+    	left join merch_info mi on cma.merch_id=mi.id 
+    	where mi.merchno = #{merchno} order by cma.add_time desc
+    </select>
+	<!-- Horanluo  2017.11.08 -->
+</mapper>

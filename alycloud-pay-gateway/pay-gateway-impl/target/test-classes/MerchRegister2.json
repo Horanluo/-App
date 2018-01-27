@@ -1,0 +1,324 @@
+{
+	"id": 0,
+	"merchno": "string",
+	"branchno": "0010440304",
+	"branchName": "string",
+	"firstAgentno": "4403050016",
+	"merchName": "测试商户-新接口",
+	"fullName": "深圳市云智恒生科技有限公司",
+	"organNo": "string",
+	"bizLicense": "string",
+	"legalName": "string",
+	"identityCard": "string",
+	"linkMan": "string",
+	"email": "283912449@qq.com",
+	"telephone": "string",
+	"mobile": "13510492707",
+	"mcc": "5411",
+	"industryType": 0,
+	"areaCode": "440106",
+	"address": "广东省广州市冠达商务中心A305",
+	"superAgent": "4403050016",
+	"status": 0,
+	"openTime": "string",
+	"auditStatus": 0,
+	"judgStatus": 0,
+	"merchType": 0,
+	"auditAgentno": "0010440304",
+	"debitRate": 0,
+	"debitFixed": 0,
+	"creditRate": 0,
+	"creditFixed": 0,
+	"settleType": 0,
+	"defSettleType": 0,
+	"accountno": "string",
+	"accountType": 0,
+	"accountName": "string",
+	"bankno": "string",
+	"bankName": "string",
+	"amtLimit": 0,
+	"dayLimit": 0,
+	"monthLimit": 0,
+	"transCtrl": 0,
+	"bizLicenseImg": "string",
+	"accountImg": "string",
+	"identity1Img": "string",
+	"identity2Img": "string",
+	"identity3Img": "string",
+	"card1Img": "string",
+	"card2Img": "string",
+	"cashierImg": "string",
+	"placeImg": "string",
+	"headImg": "string",
+	"contractImg": "string",
+	"otherFile": "string",
+	"addTime": "string",
+	"agentFeeId": 0,
+	"superList": "string",
+	"bizType": "string",
+	"t0Rate": 0,
+	"merchLevel": 0,
+	"customerno": "string",
+	"silenceMerch": "string",
+	"credit1Img": "string",
+	"credit2Img": "string",
+	"stripeCardFixed": 0,
+	"chipCardFixed": 0,
+	"t0fixed": 0,
+	"superAgentandName": "string",
+	"maxMerchno1": "string",
+	"maxMerchno2": "string",
+	"saler": 0,
+	"rateMode": 0,
+	"salerId": 0,
+	"tradRate": 0,
+	"termno": "string",
+	"appRate": 0,
+	"appFixed": 0,
+	"manuRate": 0,
+	"manuFixed": 0,
+	"wxRate": 0,
+	"zfbRate": 0,
+	"bdRate": 0,
+	"qqRate": 0,
+	"jdRate": 0,
+	"channelMerchno": "string",
+	"merchKey": "string",
+	"onlineUrlNotify": "string",
+	"onlineUrlReturn": "string",
+	"appCredit": 0,
+	"appT0Rate": 0,
+	"type": 0,
+	"superMerchId": 0,
+	"province": "string",
+	"city": "string",
+	"fastPayRateT1": 0,
+	"fastPayRateT0": 0
+}
+
+{
+	"amount": "0.01",
+	"mchId": "000100003",
+	"outTradeNo": "920000093582",
+	"channel": "wxPubQR",
+	"sign": "334F1EBBBE7424604EF973327E9159D7",
+	"currency": "CNY",
+	"subMchId": "000100003000000062",
+	"body": "汇啦信息-恒丰银行T1收款",
+	"version": "1.3",
+	"tradeType": "cs.pay.submit"
+}
+
+
+{
+  "agentno": "4403050016",
+  "merchName": "测试商户-新接口2",
+  "fullName": "深圳市云智恒生科技有限公司",
+  "legalName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "mobile": "13510492790",
+  "mcc": "5411",
+  "areaCode": "440106",
+  "address": "广东省广州市冠达商务中心A305",
+  "t1Rate": 0.0039,
+  "t1Fixed": 25,
+  "accountno": "6214856555342173",
+  "accountName": "曾云龙",
+  "accountType": 1,
+  "bankno": "308584001354",
+  "bankName": "招商银行股份有限公司深圳科苑支行",
+  "bizType": "119",
+  "t0Rate": 0.004,
+  "payFee": "2",
+  "email": "283912449@qq.com",
+  "province": "广东省",
+  "city": "深圳市",
+  "areaName": "南山区",
+  "bankType": "招商银行股份有限公司深圳科苑支行",
+  "businessLicenseType": "NATIONAL_LEGAL",
+  "businessLicense": "440301113033001",
+  "legalPersonType": "LEGAL_PERSON",
+  "list": [
+    {
+      "scanType": 7,
+      "payType": 1,
+      "settleType": 1,
+      "rate": 0.0035
+    },{
+      "scanType": 7,
+      "payType": 1,
+      "settleType": 2,
+      "rate": 0.0030
+    },{
+      "scanType": 7,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0035
+    },{
+      "scanType": 7,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0030
+    }
+  ]
+}
+
+
+
+{
+  "agentno": "string",
+  "merchName": "string",
+  "fullName": "string",
+  "legalName": "string",
+  "identityCard": "string",
+  "mobile": "string",
+  "mcc": "string",
+  "areaCode": "string",
+  "address": "string",
+  "t1Rate": 0,
+  "t1Fixed": 0,
+  "accountno": "string",
+  "accountName": "string",
+  "accountType": 0,
+  "bankno": "string",
+  "bankName": "string",
+  "bizType": "string",
+  "t0Rate": 0,
+  "payFee": "string",
+  "email": "string",
+  "province": "string",
+  "city": "string",
+  "areaName": "string",
+  "bankType": "string",
+  "businessLicenseType": "string",
+  "businessLicense": "string",
+  "legalPersonType": "string",
+  "list": [
+    {
+      "scanType": 0,
+      "payType": 0,
+      "settleType": 0,
+      "rate": 0
+    }
+  ]
+}
+
+{
+  "agentno": "4403050016",
+  "merchName": "测试商户-新接口",
+  "fullName": "深圳市云智恒生科技有限公司",
+  "legalName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "mobile": "13510492707",
+  "mcc": "5411",
+  "areaCode": "440106",
+  "address": "广东省广州市冠达商务中心A305",
+  "t1Rate": 0.0039,
+  "t1Fixed": 25,
+  "accountno": "6214856555342173",
+  "accountName": "曾云龙",
+  "accountType": 1,
+  "bankno": "308584001354",
+  "bankName": "招商银行股份有限公司深圳科苑支行",
+  "bizType": "14",
+  "t0Rate": 0.004,
+  "payFee": "2"
+}
+
+
+
+
+{businessLicense=440301113033001, merchantShortName=测试商户-新接口3, opPhone=13510492791, bankName=招商银行股份有限公司深圳科苑支行, merchantName=深圳市云智恒生科技有限公司, legalPersonType=LEGAL_PERSON, rmk=000100004发展的代理商, cityName=深圳市, areaName=南山区, businessLicenseType=NATIONAL_LEGAL, proName=广东省, tradeType=cs.merchant.register, email=283912449@qq.com, mchId=000100004, address=广东省广州市冠达商务中心A305, payTypes=[{"payTypeCode":"alipayQR","rateType":"1","rmk":"支付宝扫码","rate":"0.45"},{"payTypeCode":"wxMicro","rateType":"1","rmk":"微信付款码","rate":"0.45"},{"payTypeCode":"wxPubQR","rateType":"1","rmk":"微信扫码","rate":"0.45"},{"payTypeCode":"wxPub","rateType":"1","rmk":"微信公众号","rate":"0.45"},{"payTypeCode":"jdQpay","rateType":"1","rmk":"京东快捷支付","rate":"0.45"}], bankCardNo=308584001354, bankType=招商银行股份有限公司深圳科苑支行, accountType=1, customerTelephone=13510492791, telephone=13510492791, version=1.3, certificateNo=430524198411046631, categoryZfb=2015091000052157, bankAccName=曾云龙, merchantOperationType=1, opName=曾云龙, categoryWx=204, certificateType=1}
+
+
+{"businessLicense":"440301113033001","merchantShortName":"测试商户-新接口3","opPhone":"13510492791","sign":"5596EB4FF2C97C1D83DDFA452257AF53","bankName":"招商银行股份有限公司深圳科苑支行","merchantName":"深圳市云智恒生科技有限公司","legalPersonType":"LEGAL_PERSON","rmk":"000100004发展的代理商","cityName":"深圳市","areaName":"南山区","businessLicenseType":"NATIONAL_LEGAL","proName":"广东省","tradeType":"cs.merchant.register","email":"283912449@qq.com","mchId":"000100004","address":"广东省广州市冠达商务中心A305","payTypes":"[{\"payTypeCode\":\"alipayQR\",\"rateType\":\"1\",\"rmk\":\"支付宝扫码\",\"rate\":\"0.45\"},{\"payTypeCode\":\"wxMicro\",\"rateType\":\"1\",\"rmk\":\"微信付款码\",\"rate\":\"0.45\"},{\"payTypeCode\":\"wxPubQR\",\"rateType\":\"1\",\"rmk\":\"微信扫码\",\"rate\":\"0.45\"},{\"payTypeCode\":\"wxPub\",\"rateType\":\"1\",\"rmk\":\"微信公众号\",\"rate\":\"0.45\"},{\"payTypeCode\":\"jdQpay\",\"rateType\":\"1\",\"rmk\":\"京东快捷支付\",\"rate\":\"0.45\"}]","bankCardNo":"308584001354","bankType":"招商银行股份有限公司深圳科苑支行","accountType":"1","customerTelephone":"13510492791","telephone":"13510492791","version":"1.3","certificateNo":"430524198411046631","categoryZfb":"2015091000052157","bankAccName":"曾云龙","merchantOperationType":"1","opName":"曾云龙","categoryWx":"204","certificateType":"1"}
+{"returnCode":"0","resultCode":"1","errCode":"payTypeCodeInvalid","errCodeDes":"所属代理商不支持的支付渠道"}
+
+{businessLicense=440301113033001, merchantShortName=测试商户-新接口3, opPhone=13510492791, bankName=招商银行股份有限公司深圳科苑支行, merchantName=深圳市云智恒生科技有限公司, legalPersonType=LEGAL_PERSON, rmk=000100003发展的代理商, cityName=深圳市, areaName=南山区, businessLicenseType=NATIONAL_LEGAL, proName=广东省, tradeType=cs.merchant.register, email=283912449@qq.com, mchId=000100003, address=广东省广州市冠达商务中心A305, payTypes=[], bankCardNo=308584001354, bankType=招商银行股份有限公司深圳科苑支行, accountType=1, customerTelephone=13510492791, telephone=13510492791, version=1.3, certificateNo=430524198411046631, categoryZfb=2015091000052157, bankAccName=曾云龙, merchantOperationType=1, opName=曾云龙, categoryWx=204, certificateType=1}
+
+{"businessLicense":"440301113033001","merchantShortName":"测试商户-新接口3","opPhone":"13510492791","sign":"5FE49F4FBDA4EBF073685560AF1E5F12","bankName":"招商银行股份有限公司深圳科苑支行","merchantName":"深圳市云智恒生科技有限公司","legalPersonType":"LEGAL_PERSON","rmk":"000100003发展的代理商","cityName":"深圳市","areaName":"南山区","businessLicenseType":"NATIONAL_LEGAL","proName":"广东省","tradeType":"cs.merchant.register","email":"283912449@qq.com","mchId":"000100003","address":"广东省广州市冠达商务中心A305","payTypes":"[]","bankCardNo":"308584001354","bankType":"招商银行股份有限公司深圳科苑支行","accountType":"1","customerTelephone":"13510492791","telephone":"13510492791","version":"1.3","certificateNo":"430524198411046631","categoryZfb":"2015091000052157","bankAccName":"曾云龙","merchantOperationType":"1","opName":"曾云龙","categoryWx":"204","certificateType":"1"}
+
+
+
+{
+  "agentno": "4403050016",
+  "merchName": "测试商户-新接口3",
+  "fullName": "深圳市云智恒生科技有限公司",
+  "legalName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "mobile": "13510492791",
+  "areaCode": "440106",
+  "address": "广东省广州市冠达商务中心A305",
+  "accountno": "6214856555342173",
+  "accountName": "曾云龙",
+  "accountType": 1,
+  "bankno": "308584001354",
+  "bankName": "招商银行股份有限公司深圳科苑支行",
+  "payFee": 2,
+  "email": "283912449@qq.com",
+  "province": "广东省",
+  "city": "深圳市",
+  "areaName": "南山区",
+  "bankType": "招商银行股份有限公司深圳科苑支行",
+  "businessLicenseType": "NATIONAL_LEGAL",
+  "businessLicense": "440301113033001",
+  "legalPersonType": "LEGAL_PERSON",
+  "payTypes": [
+    {
+      "scanType": 2,
+      "payType": 1,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 2,
+      "payType": 1,
+      "settleType": 2,
+      "rate": 0.0038
+    },{
+      "scanType": 1,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 1,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    },{
+      "scanType": 2,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 2,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    },{
+      "scanType": 4,
+      "payType": 2,
+      "settleType": 1,
+      "rate": 0.0045
+    },{
+      "scanType": 4,
+      "payType": 2,
+      "settleType": 2,
+      "rate": 0.0042
+    },{
+      "scanType": 1,
+      "payType": 5,
+      "settleType": 1,
+      "rate": 0.0045
+    }
+  ],
+  "categoryWx": "204",
+  "categoryZfb": "2015091000052157",
+  "quickPayD0Rate": 0.0042,
+  "quickPayT1Rate": 0.0038,
+  "version": "1.2",
+  "sign": "DSFFGG85542030"
+}
+
+
+{"returnCode":"1","returnMsg":"系统异常。"}
+{"returnCode":"0","resultCode":"1","errCode":"subMchId Invalid","errCodeDes":"非法子商户号000100004000000139"}

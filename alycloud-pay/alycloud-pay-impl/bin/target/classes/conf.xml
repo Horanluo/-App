@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="gbk"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+	<!-- 系统类别(1-迅付金安 2-国付) -->
+	<entry key="system-type">2</entry>
+	<entry key="system-name">广州国付信息科技有限公司</entry>
+	<entry key="query_minute">30</entry>
+	
+	<!-- 如果是国付，则需要定义如下的信息 -->
+	<entry key="xfja-url">http://112.74.159.172:8081/posp-api/</entry>
+	<entry key="xfja-user">astc</entry>
+	<entry key="xfja-pass">u78jkintx89li90kiu</entry>
+	
+	<!-- 如果是迅付金安，则需要定义如下的信息 -->
+	<!-- 湖北通联的信息 -->
+	<entry key="tl-ip">59.175.205.115</entry>
+	<entry key="tl-port">48080</entry>
+	<entry key="tl-url">/PosAdmin_bak/HttpXmlServer</entry>
+	<entry key="tl-key">9876543210</entry>
+	<!-- 考拉征信的地址信息 -->
+	<entry key="kaola-url">https://access.kaolazhengxin.com:8452/identityQuery.do?_t=json</entry>
+	<entry key="kaola-id">201512160000000004</entry>
+	<entry key="kaola-key">G1Y2P1H6</entry>
+	<!-- 融宝的地址信息 -->
+	<entry key="reapal-member-id">100000000009085</entry>
+	<entry key="reapal-merch-id">100000000009085</entry>
+	<entry key="reapal-key">48958gg3a25eeabg5fdgb4d95g93d4a4gfeb92c4g02ef276518da56cb9c7a809</entry>
+	<entry key="reapal-email">850138237@qq.com</entry>
+	<entry key="reapal-version">3.1.2</entry>
+	<entry key="reapal-notify-url">http://www.aaabbb.com/reapal_notify.jsp</entry>
+	<entry key="reapal-prikey-path">/usr/apache-tomcat-7.0.56/key/card/itrus001.pfx</entry>
+	<entry key="reapal-prikey-value">123456</entry>
+	<entry key="reapal-pubkey-path">/usr/apache-tomcat-7.0.56/key/card/itrus001.cer</entry>
+	<entry key="reapal-url">http://testapi.reapal.com</entry>
+	<entry key="reapal-charset">utf-8</entry>
+	<entry key="reapal-sign-type">MD5</entry>
+	<entry key="reapal-transport">http</entry>
+	
+	
+	<entry key="yjf-enable">true</entry>
+	<entry key="yjf-file">D:/keystore/netservice</entry>
+	
+	<!-- 附件相关 -->
+	
+	<!-- 文件保存目录 -->
+	<entry key="file-local-path">D:\files\</entry>
+	<!-- 微信多媒体文件下载地址 -->
+	<entry key="file-weixin-path"><![CDATA[https://api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s]]></entry>
+	<!-- 系统文件访问路径 -->
+	<entry key="file-api-path"><![CDATA[http://ftp.esyto.com/f/]]></entry>
+	
+	<!-- 微信用户授权后返回的本地地址(必须是80端口，并且必须在公众号后台配置网页授权域名) -->
+	<entry key="code-local-url"><![CDATA[http://ftp.esyto.com/wx.jsp?refno=%s]]></entry>
+	<!-- 向进入授权地址前需要本地做个跳转，解决授权后微信重复回调code-local-url的问题 -->
+	<entry key="code-redirect-url"><![CDATA[http://ftp.esyto.com/wxRedirect.jsp?redirectUrl=%s]]></entry>
+	<!-- 向微信请求CODE的地址 -->
+	<entry key="code-request-url"><![CDATA[https://open.weixin.qq.com/connect/oauth2/authorize?appid=%s&redirect_uri=%s&response_type=code&scope=snsapi_base&state=123#wechat_redirect]]></entry>
+	<!-- 向微信请求OPENID的地址 -->
+	<entry key="openid-request-url"><![CDATA[https://api.weixin.qq.com/sns/oauth2/access_token?appid=#APPID#&secret=#SECRET#&grant_type=authorization_code&code=#CODE#]]></entry>
+	
+	<!-- 本地的服务器地址 -->
+	<!-- <entry key="qrcode-base-url">http://moyq5.oicp.net/posp-api/</entry> -->
+	<entry key="qrcode-base-url">http://moyq5.oicp.net/posp-api/</entry>
+	<entry key="qrcode-pay-url"><![CDATA[http://moyq5.oicp.net/posp-api/qrcodePay.do?m=show&merchno=%s]]></entry>
+	<entry key="scan-pay-url"><![CDATA[http://moyq5.oicp.net/posp-api/scanPay.do?m=show&branchno=%s]]></entry>
+	<entry key="fast-pay-url"><![CDATA[http://moyq5.oicp.net/posp-api/fastPay.do?m=show&branchno=%s]]></entry>
+	<entry key="offical-pay-url"><![CDATA[http://moyq5.oicp.net/posp-api/officialPay?refno=%s&code=%s]]></entry>
+	<entry key="offical-pay-barcode"><![CDATA[http://moyq5.oicp.net/posp-api/wxPayer.jsp?appId=%s&nonceStr=%s&package=%s&paySign=%s&timeStamp=%s&signType=%s&merchno=%s]]></entry>
+	
+	<!-- 公众号支付成功之后返回的页面(如果机构个性化,则需要配置qrcode-ret-url-xxxxxx参数) -->
+	<entry key="qrcode-def-url">http://gf-info.cn:8085/qrcode/return.jsp</entry>
+	<entry key="qrcode-ret-url-8660440106">http://gf-info.cn:8085/qrcode/return.jsp</entry>
+	
+	<!--  固定码T0的模式(1 生成二维码 2 直接支付)  -->
+	<entry key="emarpay-mode">2</entry>
+	<!-- 固定码的结算方式(0-T+0 1-T+1) 不指定则由商户配置决定-->
+	<entry key="emarpay-settle"></entry>
+	
+	<!-- T+0交易的时间 -->
+	<entry key="qrocde-t0-start">000000</entry>
+	<entry key="qrocde-t0-end">235959</entry>
+	
+	<!-- 交易限额配置 -->
+	<entry key="wx-min-amount">0.02</entry>
+	<entry key="wx-max-amount">50000</entry>
+	<entry key="zfb-min-amount">0.02</entry>
+	<entry key="zfb-max-amount">3000</entry>
+	
+	<!-- 交易地址限制 -->
+	<entry key="wx-limit-url">false</entry>
+	<entry key="zfb-limit-url">false</entry>
+	
+	<!-- 是否采用微信公众号推送交易 -->
+	<entry key="offical-enable">true</entry>
+	<entry key="virtual-enable">true</entry>
+	<!-- <entry key="settle-url">http://ftp.esyto.com:9001/</entry> -->
+	<entry key="settle-url">http://127.0.0.1:8080/posp-settle/</entry>
+	<entry key="settle-key">jdFkfWjDa8df3</entry>
+	<entry key="auto-query">true</entry>
+
+	<!-- 网关路由类型(DINPAY或BAOFOO或CJPAY或TFB) -->
+	<entry key="gateway-route-type">SYSTEM</entry>
+	
+	<!-- 注册 -->
+	<entry key="merch_mcc">5411</entry>
+	<entry key="merch_address">000000</entry>
+	<entry key="mpos_app_rate">0.0055</entry>
+	<entry key="mpos_app_fixed">35.00</entry>
+	<entry key="mpos_credit_rate">0.0065</entry>
+	<entry key="mpos_t0_rate">0.0007</entry>
+	<!-- 业务类型 开通 快捷 -->
+	<entry key="mpos_biz_type">64</entry>
+	<!-- 获取短信验证码 -->
+	<entry key="msg-type">6</entry>
+	<entry key="msg-url-uc-pass"><![CDATA[http://www.ucpaas.com/maap/sms/code]]></entry>
+	<entry key="msg-url-cu-fa"><![CDATA[http://106.ihuyi.com/webservice/sms.php?method=Submit&]]></entry>
+	<entry key="msg-model-register-8660440106">20845</entry>
+	
+	<!-- 快捷支付的地址 -->
+	<!-- 
+	<entry key="quick-url-request">https://testmobile.payeco.com</entry>
+	<entry key="quick-url-notify">http://120.25.246.81:7001/ylQuickNotify.do</entry>
+	<entry key="quick-merchno">502053000043</entry>
+	<entry key="quick-pri-key">MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAOL0Hcy0FYNefCMS0qxUNSf6em/57rf9Rr4bXldTEZmCeQJ4k+AmK41tHU8kk+9fAR0nZSPhtN5U3pn1QIS+Zi5VPvK292ZF/G/w9lj/EgtAUCROl1qogymuhbB2OEgiig0WY0yCNXjfSFsxnLhtZci8T7638ioSbbZGymL+QI09AgMBAAECgYAVXr0rmE1qSExSFSSnO2qh8BD1WEhlJMEzh2ozuMuwc7unQulRsuZo87xNxnjzkjONpjb80PTx9nXbc1924GLIjrOV8/PplNYWy3a/Z7PndBX1Lsyu+d+4LRgcuPdp9FSNJ+xKtObjHu1xTIIweSoTavlkhPdolWv0jSAfJWJHVQJBAPElU/EYNicRCCjji9Xw0qMF6pkEVealS/AixW3KWvz+VJVM5+j0jrym1f4I8TG5+BIjHgjCDljupZfE0geLMg8CQQDw7v0WBnOVs/TDkhSz1zThmP47E5aCnZrWT5gPmby0G0cmN9g/v0ZneLtXMSuxjAOQYQB/kR4OBOUUjCv4RGfzAkBo1Wx/tKHeK/ZbKEkjcfVwb+MEMLFTeurfc45W45DYyYxl97AeQytGclU3ghWxI4LoB6JH9m0cVmtg5mzUYLwbAkEAkHPpf9QcZsw/WyZxjSXhicUN4GOtIODXndiY5fmZ3y5fqTVgTVAkKROE1xEfDlNRK7ZM8y8RovwiUQB9uFtjKwJBAJBGVFGNQ8/T6z+Kwknqw2+u7v3yQbk32knSdtP57ZAPCr6lNqHPpBD85V4umJwIK6qFXzkDRMbnk7WMSCgIhXo=</entry>
+	<entry key="quick-pub-key">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCRxin1FRmBtwYfwK6XKVVXP0FIcF4HZptHgHu+UuON3Jh6WPXc9fNLdsw5Hcmz3F5mYWYq1/WSRxislOl0U59cEPaef86PqBUW9SWxwdmYKB1MlAn5O9M1vgczBl/YqHvuRzfkIaPqSRew11bJWTjnpkcD0H+22kCGqxtYKmv7kwIDAQAB</entry>
+ 	-->
+ 	<entry key="quick-url-request">https://mobile.payeco.com</entry>
+	<entry key="quick-url-notify">http://120.25.246.81:7001/ylQuickNotify.do</entry>
+	<entry key="quick-url-notify-2">http://120.25.246.81:7001/channel/notify.do?m=payeco</entry>
+	<entry key="quick-merchno">502050002399</entry>
+	<entry key="quick-pri-key">MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKilPOUrVO/XDPG8pu+bcYRFgf8amSYenwNcr4vdx9KBRDZ+NHVY0AeBqbUZW2PRH5LvINaJ7RwPdcFWhktGXygZluCpFpBqDfAq3DkQZxHZzoDasCBC2D2PWZPrd7s6qGB7lD477o7/1nDbxFmohFPwI9JUPcrdj1xvYtApLL09AgMBAAECgYBDW7w2zFfgc8R3ySHkEfIFIr4JZlZFI3XfoeV7t9lX+smD+mR5ej+cv+1IqBgYhi5WQaycA/rwejxOPIDnD/RxKb9Zmu0ggP/pfXq/6rk07JTm4VXqB0ZzBwJFRHvq+l99WG0PczrBbHFc2q186S/RDS9C4qezNNorUynKApIAAQJBANTpfgLWI3/EcbtTJ55w5cNOpJK5pc80Q34qtw1BrrF6MyVnwF5O5VWsJnxxiZOUElF9EFe9vI8/1Bgif7GeTD0CQQDKxmOk7xnX0Yc5WiZcHyxYH+ekoT4UBu1qyzjPza6+R+uxxNNM7+QeFsvRw9+CCVlvFCLUBmoJVDmoafcnKkUBAkAg4jcuJPiyoRqXvg4ecH1sHtdYOggb6oyKDfrbt0tN6fvASTfy2OiexMnk6nw/KN1zbId7pbhbv5X4bEugmTxZAkB8rY8HEpzpPkPO18dOTTyO0s8zQpFQ7xF74IiF/Qm8paweGc9yNu4kMhAQYkdDRUxgKBliFK+OHON20fDNfAgBAkEAxFL2aLrWxbC235miukTxSm5b5/38Q+XkELFkU2LAkAI6PSxj3xEO2duhFb2mqE0wFt/d44bm6u4e+1jg5zdQiQ==</entry>
+	<entry key="quick-pub-key">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCoymAVb04bvtIrJxczCT/DYYltVlRjBXEBFDYQpjCgSorM/4vnvVXGRb7cIaWpI5SYR6YKrWjvKTJTzD5merQM8hlbKDucxm0DwEj4JbAJvkmDRTUs/MZuYjBrw8wP7Lnr6D6uThqybENRsaJO4G8tv0WMQZ9WLUOknNv0xOzqFQIDAQAB</entry>
+
+
+	<!-- 系统标识 -->
+	<entry key="syetem-remark">0</entry>
+	
+	<!-- 测试商户信息 -->
+	<entry key="test-merchno">866440154110004</entry>
+	<entry key="test-key">888664AB728DE98C4A679A3CD77DAD24</entry>
+	
+	
+	<!-- 江苏电子 -->
+	<entry key="jsdz-key">d4a23f</entry>
+	<!-- 江苏电子代付费率 -->
+	<entry key="advance-rate">0.5</entry>
+	
+	<!-- 易联\汇享\御付费率 -->
+	<entry key="ylpay_advance_rate">2</entry><!-- 代付费 -->
+	<entry key="ylpay_quick_min_fee">0.3</entry><!-- 最低手续费 -->
+	<entry key="ylpay_quick_rate_t0">0.0038</entry><!-- 渠道T0费率 -->
+	<entry key="ylpay_quick_rate_t1">0.0035</entry><!-- 渠道T1费率 -->
+	
+	<entry key="fast-def-merch-rate-t0">0.0055</entry><!-- 商户注册后默认费率 -->
+	<entry key="fast-def-merch-rate-t1">0.005</entry><!-- 商户注册后默认费率 -->
+	
+	<!-- ################################## -->
+	
+	<!-- 江苏电子2.0 -->
+	<entry key="linkpay-type">2</entry>
+	
+	<!-- 江苏电子2.0－东方财富测试 -->
+	<entry key="linkpay-serverPath-0">http://121.41.121.164:8044/TransInterface/TransRequest</entry>
+	<entry key="linkpay-queryPath-1">http://180.96.28.2:8048/TransQueryInterface/TransRequest</entry>
+	<entry key="linkpay-publicKey-0">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDdEesuQqowl2GaRyAIjyUGEvMj2vW+ACll8UR92vazl++HeftujNiWz0MqIeYVpvJIteSxbvGs3n9bRJWsUab29fhMms+x9kaGvViWMcc9ZI9SxVXkRVex8ssC4eHZVA0yWAwzubcGj6Hv+FB7zDb/4UH5m42WGDtHu9dMpvvXbQIDAQAB</entry>
+	<entry key="linkpay-groupId-0">100528</entry>
+	<entry key="linkpay-merchantCode-0">928000000000945</entry>
+	<entry key="linkpay-terminalCode-0">00018607</entry>
+	
+	<!-- 江苏电子2.0－易商云测试 -->
+	<entry key="linkpay-serverPath-1">http://121.41.121.164:8044/TransInterface/TransRequest</entry>
+	<entry key="linkpay-queryPath-1">http://180.96.28.2:8048/TransQueryInterface/TransRequest</entry>
+	<entry key="linkpay-publicKey-1">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCJcweo5YCeCiqnHRiew9dFCddtEd8CA0AGzMsbP9lkbGSeIIMitCdyv4iqcvUvHC4VSrrmUnVaHTcLHj2LxRqGhbgsDuCRPQWkqNhcxTw8PJMR+MJagL6IHa45zA8yFB+POhyWlnu+Vy/o8YZaSUwNcSsgClxxxZ3li18lO/TQ/wIDAQAB</entry>
+	<entry key="linkpay-groupId-1">101328</entry>
+	<entry key="linkpay-merchantCode-1">928000000001642</entry>
+	<entry key="linkpay-terminalCode-1">00019631</entry>
+	
+	<!-- 江苏电子2.0－易商云正式 -->
+	<entry key="linkpay-serverPath-2">http://180.96.28.8:8044/TransInterface/TransRequest</entry>
+	<entry key="linkpay-queryPath-2">http://180.96.28.2:8048/TransQueryInterface/TransRequest</entry>
+	<entry key="linkpay-publicKey-2">MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCic2TlO82kPVvi85BTx+06vZobf009QRM8Ctw5AOdykz/ByJQTk9lLUQgLN//A+qssN8wR3O+a2ma/Q0audZbM9JViojaOhLStrFBgQuud5Shkjd+DiXPN2Z8XJYBhwtpMh46IKD34auAW2s5N936Dijn41aFx3HhuiWPi7A+f+wIDAQAB</entry>
+	<entry key="linkpay-groupId-2">107742</entry>
+	<entry key="linkpay-merchantCode-2">928000000012771</entry>
+	<entry key="linkpay-terminalCode-2">02228084</entry>
+	
+	<!-- ################################## -->
+	
+	<!-- 御付(快捷) -->
+	<entry key="yufu-fast-type">0</entry>
+	
+	<!-- 御付(快捷)正式号 -->
+	<entry key="yufu-merch-serverPath-0">http://biz.yufu99.com:9090/payserv/serverInterface/Service/services.do</entry>
+	<entry key="yufu-merch-branchNo-0">0199981022</entry>
+	<entry key="yufu-merch-key-0">ddc85fd7669b6f420348943a188ede03</entry>
+	<entry key="yufu-fast-pay-serverPath-0">http://wx.yufu99.com/xlzf_wx/api/</entry>
+	<entry key="yufu-fast-pay-payPath-0">http://xlzf.yufu99.com/xlzf/webPay/</entry>
+	<entry key="yufu-fast-pay-key-0">c57ec6fe4c911d4d59c7b9abc3357b21</entry>
+	<!-- 御付(快捷)测试号 -->
+	<entry key="yufu-merch-serverPath-1">http://140.206.72.238:8080/payserv/serverInterface/Service/services.do</entry>
+	<entry key="yufu-merch-branchNo-1">0199980034</entry>
+	<entry key="yufu-merch-key-1">123456</entry>
+	<entry key="yufu-fast-pay-serverPath-1">http://140.206.73.146/xlzf_wx/api/</entry>
+	<entry key="yufu-fast-pay-payPath-1">http://140.206.73.146/xlzf/webPay</entry>
+	<entry key="yufu-fast-pay-key-1">DKSFD324asfdwa=123</entry>
+	
+	<!-- ################################## -->
+	
+	<!-- 御付(二维码) -->
+	<entry key="yufu-qrcode-type">1</entry>
+	
+	<!-- 御付(二维码)测试号 -->
+	<entry key="yufu-cpos-serverPath-0">http://111.205.207.144:48080/tbm-server/mcht/</entry>
+	<entry key="yufu-cpos-priKeyAlias-0">cposdemo</entry>
+	<entry key="yufu-cpos-priKeyPath-0">classpath:cposdemo.jks</entry>
+	<entry key="yufu-cpos-priKeyPwd-0">cposdemo</entry>
+	<entry key="yufu-cpos-thdSysNme-0">cposdemo</entry>
+	<entry key="yufu-cpos-expanderCd-0">0199980080</entry>
+	<entry key="yufu-qrcode-pay-serverPath-0">http://140.206.72.238:10011/scanpay-api/api/</entry>
+	<entry key="yufu-qrcode-pay-key-0">611d28c87f1d4c61ab0c5042071effc3</entry>
+	<!-- 御付(二维码)正式号 -->
+	<entry key="yufu-cpos-serverPath-1">https://cpos.cmbc.com.cn:18080/tbm-server/mcht/</entry>
+	<entry key="yufu-cpos-priKeyAlias-1">esyto</entry>
+	<entry key="yufu-cpos-priKeyPath-1">classpath:esyto.jks</entry>
+	<entry key="yufu-cpos-priKeyPwd-1">2017esytoPwd</entry>
+	<entry key="yufu-cpos-thdSysNme-1">esyto</entry>
+	<entry key="yufu-cpos-expanderCd-1">0199981156</entry>
+	<entry key="yufu-qrcode-pay-serverPath-1">http://scp.yufu99.com/scanpay-api/api/</entry>
+	<entry key="yufu-qrcode-pay-key-1">f37d4321f5fabffd0c4c04b4e65c9877</entry>
+	
+	<!-- ################################## -->
+	
+	<!-- 平安 -->
+	<entry key="pingan-type">0</entry>
+	
+	<!-- 平安正式号 -->
+	<entry key="pingan-serverPath-0">https://api.orangebank.com.cn/mct1/</entry>
+	<entry key="pingan-publicKey-0">MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvi25zPmX7AldQeCfm8vbkroVC8KWATKdmDvYI6TwVbZix/gxV70V2x1LBTUspJ9AIIHUy4ZgHwx8oxUVFrAHweXPmkv03m0c4hwWTdMevIgSsoMwjYXKYpL9R2xzB9u4DLNz/GsxTiVxI6vqEtUT2jMsop9Mv82NCzMnpn/lOUDa5gVNUmzrzUe5oWrmTHNoyL6B+ory/YqdiasnJkvOg27SfS20NRJMf4tItKYz9YlJ5oIIKmGguxthOqD27z5EZwnQqNFpexkfA4GaEt2EV6OldO4p80IGY7CXFET71ShaafGtuw+K4I7oQ+s1uyIwAUlT9KT+iWlhrizpsmrvUwIDAQAB</entry>
+</properties>

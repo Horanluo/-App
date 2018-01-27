@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.AgentTransMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_trans
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as id,
+   		trans_date 		as transDate,
+   		trans_time 		as transTime,
+   		merchno 		as merchno,
+   		merch_name 		as merchName,
+   		agentno 		as agentno,
+   		agent_name 		as agentName,
+   		branchno 		as branchno,
+   		branch_name 	as branchName,
+   		type_memo 		as typeMemo,
+   		type			as type,
+   		refno 			as refno,
+   		amount 			as amount,
+   		divide 			as divide,
+   		total_fee 		as totalFee,
+   		channel_fee 	as channelFee,
+   		cost_fee 		as costFee,
+   		total_agent_fee as totalAgentFee,
+   		agent_fee 		as agentFee,
+   		trans_status 	as transStatus,
+   		liquid_status 	as liquidStatus,
+	   	liquid_date 	as liquidDate,
+	   	pay_fee 		as payFee,
+   		settle_date 	as settleDate,
+   		agent_level 	as agentLevel,
+   		divide_type 	as divideType,
+   		trans_type		as transType
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	<trim prefix="where" prefixOverrides="and |or">
+   		<if test="refno != null">
+   			and refno = #{refno}
+   		</if>
+   		<if test="agentno != null">
+   			and agentno = #{agentno}
+   		</if>
+   		<if test="type != null">
+   			and type = #{type}
+   		</if>
+   		<if test="liquidStatus != null">
+   			and liquid_status = #{liquidStatus}
+   		</if>
+   		<if test="transStatus != null">
+   			and trans_status = #{transStatus}
+   		</if>
+   		<if test="divideType != null">
+   		    and divide_type = #{divideType}
+   		</if>
+   		<if test="transType != null">
+   		    and trans_type = #{transType}
+   		</if>
+   		<if test="startDate != null and startDate != ''">
+	        and str_to_date(trans_date,'%Y-%m-%d') &gt;=
+	        str_to_date(#{startDate,jdbcType=VARCHAR},'%Y-%m-%d')
+	    </if>
+	    <if test="endDate != null and endDate != ''">
+	        and str_to_date(trans_date,'%Y-%m-%d') &lt;=
+	        str_to_date(#{endDate,jdbcType=VARCHAR},'%Y-%m-%d')
+	    </if>
+   	</trim>
+	</sql>
+	<!--  
+    	分页查询日志信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="AgentTrans4Search"
+    	resultType="AgentTrans">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc, trans_time desc
+    </select>
+	<!--  
+    	查记录数
+    -->
+    <select 
+    	id="countRecord"
+    	parameterType="AgentTrans4Search"
+    	resultType="Integer">
+    	select 
+    		count(*)
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    </select>
+	
+	<!-- 
+		创建代理商二维码分润信息 
+	-->
+	<insert 
+		id="addList" 
+		parameterType="AgentTrans">
+		insert into <include refid="tableName"/>(
+			trans_date,trans_time,merchno,merch_name,agentno,
+			agent_name,type_memo,type,refno,amount,divide,
+			total_fee,channel_fee,cost_fee,total_agent_fee,agent_fee,
+			trans_status,liquid_status,liquid_date,pay_fee,branchno,
+			branch_name,settle_date,agent_level,t0_agent_fee,divide_type,
+			trans_type
+		)values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.transDate},#{item.transTime},#{item.merchno},#{item.merchName},#{item.agentno},
+			#{item.agentName},#{item.typeMemo},#{item.type},#{item.refno},#{item.amount},#{item.divide},
+			#{item.totalFee},#{item.channelFee},#{item.costFee},#{item.totalAgentFee},#{item.agentFee},
+			#{item.transStatus},#{item.liquidStatus},#{item.liquidDate},#{item.payFee},#{item.branchno},
+			#{item.branchName},#{item.settleDate},#{item.agentLevel},#{item.t0AgentFee},#{item.divideType},
+			#{item.transType}
+		)
+		</foreach>
+	</insert>
+	
+	<!--  
+    	分页查询日志信息
+    -->
+    <select 
+    	id="listByGroupByDate"
+    	parameterType="AgentTrans4Search"
+    	resultType="AgentTrans">
+    	select 
+    		trans_date as transDate,
+    		ifnull(cast(sum(agent_fee) AS DECIMAL (5,2)), 0) as agentFee
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	group by trans_date     
+    	order by 
+    		trans_date desc
+    </select>
+    
+	<!--  
+    	累计分润
+    -->
+    <select 
+    	id="sum"
+    	parameterType="AgentTrans4Search"
+    	resultType="java.math.BigDecimal">
+    	select 
+    		ifnull(sum(agent_fee), 0)
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    </select>
+</mapper>

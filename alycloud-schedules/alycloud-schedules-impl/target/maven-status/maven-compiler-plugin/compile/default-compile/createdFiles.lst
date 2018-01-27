@@ -1,0 +1,10 @@
+com\alycloud\schedules\feign\UtilFeign.class
+com\alycloud\schedules\yufu\task\YufuCheckTask.class
+com\alycloud\schedules\yufu\task\OrderPayStatusCheckTask.class
+com\alycloud\schedules\feign\ChannelFeign.class
+com\alycloud\schedules\feign\QrcodeOrderFeign.class
+com\alycloud\schedules\feign\FastOrderFeign.class
+com\alycloud\schedules\feign\MerchInfoFeign.class
+com\alycloud\schedules\feign\ChangeMerchInfoFeign.class
+com\alycloud\schedules\feign\ChannelSubMerchInfoFeign.class
+com\alycloud\schedules\yufu\task\LoadFileTask.class

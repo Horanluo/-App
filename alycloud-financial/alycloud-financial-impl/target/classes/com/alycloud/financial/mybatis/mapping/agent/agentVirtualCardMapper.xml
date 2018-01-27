@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.AgentVirtualCardMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_virtual_card
+	</sql>
+    <!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		cardno as cardno,
+		branchno as branchno,
+		agentno as agentno,
+		valid_date as validDate,
+		biz_type as bizType,
+		status as status,
+		rate_code as rateCode,
+		avail_amount as availAmount,
+		transit_amount as transitAmount,
+		accountno as accountno,
+		account_name as accountName,
+		bankno as bankno,
+		bank_name as bankName,
+		add_time as addTime,
+		frozen_time as frozenTime,
+		pay_type as payType,
+		pay_key as payKey
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="accountName !=null">
+		         , account_name = #{accountName}
+		     </if>
+	         <if test="accountno !=null">
+		         , accountno = #{accountno}
+		     </if>
+		     <if test="bankName !=null">
+		         , bank_name = #{bankName}
+		     </if>
+		     <if test="bankno !=null">
+		         , bankno = #{bankno}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<insert 
+		id="add" 
+		parameterType="AgentVirtualCard"
+		useGeneratedKeys="true" 
+    	keyProperty="id">
+		insert into <include refid="tableName"/>(
+			cardno,branchno,agentno,valid_date,biz_type,status,rate_code,
+			passwd,avail_amount,transit_amount,accountno,account_name,bankno,bank_name,
+			add_time,frozen_time,pay_type,pay_key
+		)values(
+			#{cardno},#{branchno},#{agentno},#{validDate},#{bizType},#{status},#{rateCode},
+			#{passwd},0.00, 0.00,#{accountno},#{accountName},#{bankno},#{bankName},
+			#{addTime},#{frozenTime},#{payType},#{payKey}
+		)
+	</insert>
+	
+	<!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="AgentVirtualCard">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	<!-- 
+    	增加（或减去）可提现金额 
+    -->
+    <update 
+		id="addAvailAmount" 
+		parameterType="AgentVirtualCard">
+		update
+			<include refid="tableName"/>
+		set
+			avail_amount = avail_amount + #{availAmount}
+		where
+			id = #{id}
+	</update>
+	<!-- 
+    	增加（或减去）可在途金额 
+    -->
+    <update 
+		id="addTransitAmount" 
+		parameterType="AgentVirtualCard">
+		update
+			<include refid="tableName"/>
+		set
+			transit_amount = transit_amount + #{transitAmount}
+		where
+			id = #{id}
+	</update>
+	
+	
+    <select 
+    	id="getByAgentno"
+    	parameterType="String"
+    	resultType="AgentVirtualCard">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    	where
+    		agentno = #{agentno}
+    </select>
+    <!-- 
+    	获取虚拟账号的最大顺序号
+     -->
+    <select 
+    	id="getMaxCardo"
+    	resultType="String">
+    	select 
+    		MAX(substr(cardno,11,18))
+    	from 
+    		<include refid="tableName"/> 
+    </select>
+    
+</mapper>

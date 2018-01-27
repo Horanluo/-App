@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.QrcodeMerchMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_merch
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		channel_code as channelCode,
+		partner_id as channelMerchno,
+		termno as channelTermno,
+		merch_name as merchName,
+		merchno as platformMerchno,
+		termno as channelTermno,
+		key_rsa as keyRsa,
+		merch_key as keyMd5,
+		status as status,
+		app_id as appId,
+		app_key as appKey,
+		settle_type as settleType,
+		scan_type as scanType,
+		pay_type as payType
+	</sql>
+    <!-- 
+		根据渠道编码获取渠道信息
+	-->
+    <select 
+    	id="getByMerchno" 
+    	parameterType="HashMap" 
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchBean">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    	where
+    		channel_code = #{channelCode}
+    		and partner_id = #{channelMerchno}
+    </select>
+    <!-- 
+		根据渠道编码获取可用的渠道商户信息
+	-->
+    <select 
+    	id="listByChannelCode" 
+    	parameterType="String" 
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchBean">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    	where
+    		channel_code = #{channelCode}
+    		and status = 1
+    </select>
+	<!-- 
+		获取和融通的二维码商户
+	-->
+	<select 
+		id="listHrtMerch" 
+		parameterType="String" 
+		resultType="String">
+		select 
+			channel_merchno 
+		from 
+			channel_merch 
+		where 
+			platform_merchno = #{merchno}
+			and channel_code = 'HRT'
+	</select>
+	
+	<!-- 
+		根据渠道编码获取渠道信息
+	-->
+    <select 
+    	id="getQrcodeMerch" 
+    	parameterType="String" 
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchBean">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    	where
+    		merchno = #{merchno} and status = '1'
+    </select>
+</mapper>

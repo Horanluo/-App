@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.account.mapper.ChannelSubMerchInfoMapper">
+  <resultMap id="channelSubMerchInfoResultMap" type="com.alycloud.modules.entity.ChannelSubmerchInfo">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="branchno" jdbcType="VARCHAR" property="branchno" />
+    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
+    <result column="merchno" jdbcType="VARCHAR" property="merchno" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="channel_submerchno" jdbcType="VARCHAR" property="channelSubmerchno" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="aduit_status" jdbcType="VARCHAR" property="aduitStatus" />
+    <result column="payFeeD0" jdbcType="DECIMAL" property="payFeeD0" />
+    <result column="d0pay_rate" jdbcType="DECIMAL" property="d0payRate" />
+    <result column="t1pay_rate" jdbcType="DECIMAL" property="t1payRate" />
+    <result column="amount_min" jdbcType="DECIMAL" property="amountMin" />
+    <result column="amount_max" jdbcType="DECIMAL" property="amountMax" />
+    <result column="payFeeT1" jdbcType="DECIMAL" property="payFeeT1" />
+    <result column="pay_method" jdbcType="VARCHAR" property="payMethod" />
+  </resultMap>
+
+  <sql id="ChannelSubMerchInfo_Column_List">
+    csi.Id, csi.branchno, csi.agentno, csi.merchno, csi.createdate, csi.channel_code, csi.channel_name, csi.channel_submerchno, 
+    csi.pay_type, csi.aduit_status, csi.payFeeD0, csi.d0pay_rate, csi.t1pay_rate, cq.amount_min, 
+    cq.amount_max, csi.payFeeT1, csi.pay_method
+  </sql>
+  
+  <insert id="insert" parameterType="com.alycloud.modules.entity.ChannelSubmerchInfo">
+    insert into channel_submerch_info (Id, branchno, agentno, 
+      merchno, createdate, channel_code, 
+      channel_name, channel_submerchno, pay_type, 
+      aduit_status, payFeeD0, d0pay_rate, 
+      t1pay_rate, payFeeT1, pay_method, 
+      remark)
+    values (#{id,jdbcType=INTEGER}, #{branchno,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR}, 
+      #{merchno,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR}, 
+      #{channelName,jdbcType=VARCHAR}, #{channelSubmerchno,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
+      #{aduitStatus,jdbcType=VARCHAR}, #{payfeed0,jdbcType=DECIMAL}, #{d0payRate,jdbcType=DECIMAL}, 
+      #{t1payRate,jdbcType=DECIMAL}, #{payfeet1,jdbcType=DECIMAL}, #{payMethod,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+  
+  <update id="updateMerchFee" parameterType="HashMap">
+    update channel_submerch_info
+    set
+    <if test="feeRateType == 'd0'"> 
+    	d0pay_rate = #{payRate,jdbcType=VARCHAR}
+    </if>
+    <if test="feeRateType == 'd1'"> 
+      t1pay_rate = #{payRate,jdbcType=VARCHAR}
+    </if>
+    where merchno=#{merchno} and pay_type=#{payType} and pay_method=#{payMethod}
+  </update>
+  
+  <select 
+    	id="getChannelMerchInfoList"
+    	parameterType="HashMap"
+    	resultMap="channelSubMerchInfoResultMap">
+		select 
+			<include refid="ChannelSubMerchInfo_Column_List" />
+    	from 
+    		channel_submerch_info csi left join channel_qrcode cq on csi.channel_code=cq.channel_code
+		where 
+			csi.merchno=#{merchno} and csi.pay_type=#{payType}
+    </select>
+</mapper>

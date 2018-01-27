@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.ChannelMapper">
+	<!--  
+		数据库中的表名,二维码\快捷渠道共用一个表
+	-->
+	<sql id="tableName">
+		channel_qrcode
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as id,
+		channel_code	as channelCode,
+		channel_name 	as channelName,
+		channel_address as payUrl,
+		return_address 	as payReturnUrl,
+		notify_address	as payNotifyUrl,
+		pay_address	 	as paymentUrl,
+		pay_notify_url 	as paymentNotifyUrl,
+		cal_type 	 	as calculateType,
+		status 			as status,
+		merch_rsa_key  	as keyPrivate,
+		key_rsa  		as keyPublic,
+		key_md5 		as keyMd5,
+		t0_status		as t0Status,
+		t1_status		as t1Status,
+		amount_min		as amountMin,
+		amount_max		as amountMax,
+		amount_day		as amountDay,
+		t0_start_time	as t0StartTime,
+		t0_end_time		as t0EndTime,
+		amount_day		as amountDay,
+		remark 			as remark
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="channelCode !=null">
+		         and channel_code = #{channelCode}
+		     </if>
+	     </trim>
+	</sql>
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="Channel4Search"
+    	resultType="Channel">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

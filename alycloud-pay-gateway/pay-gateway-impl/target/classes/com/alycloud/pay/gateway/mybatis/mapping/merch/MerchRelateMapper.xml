@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchRelateMapper">
+	<!-- 
+		获取商户的层级关系 
+	-->
+	<select 
+		id="listByMerchId" 
+		parameterType="Integer" 
+		resultType="com.alycloud.pay.gateway.models.MerchRelateBean">
+		select
+			id as id,
+	    	merch_id as merchId,
+	    	agentno as agentno,
+	    	agent_name as agentName,
+	    	agent_level as agentLevel
+	    from
+	    	merch_relate
+	    where
+	    	merch_id = #{merchId}
+	    order by 
+			agent_level asc
+    </select>
+</mapper>

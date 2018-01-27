@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchFeeMapper">
+	
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_merch_fee
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		branchno as branchno,
+		agentno as agentno,
+		merchno as merchno,
+		scan_type as scanType,
+		pay_type as payType,
+		settle_type as settleType,
+		rate as rate
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="agentno !=null">
+		         and agentno = #{agentno}
+		     </if>
+		     <if test="merchno !=null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="scanType != null">
+		         and scan_type =#{scanType}
+		     </if>
+		     <if test="payType != null">
+		         and pay_type =#{payType}
+		     </if>
+		     <if test="settleType != null">
+		         and settle_type =#{settleType}
+		     </if>
+	     </trim>
+	</sql>
+    <!-- 
+		根据渠道编码获取渠道信息
+	-->
+    <select 
+    	id="list" 
+    	parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchFeeBean" 
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchFeeBean">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    </select>
+    
+    <select 
+    	id="getById" 
+    	parameterType="Integer" 
+    	resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchFeeBean">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    	where id = #{id}
+    </select>
+    
+    <update 
+		id="update"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeMerchFeeBean">
+		update
+			<include refid="tableName"/>
+		set
+			rate = #{rate},
+			settle_type = #{settleType},
+			pay_type = #{payType},
+			scan_type = #{scanType}
+		where
+			id = #{id}
+			and merchno = #{merchno}
+			and agentno = #{agentno}
+			and branchno = #{branchno}
+	</update>
+	
+	<!-- 
+		获取商户的网关费率
+	-->
+	<select 
+		id="getGatewayRate" 
+		parameterType="HashMap" 
+		resultType="BigDecimal">
+		select
+			<if test="settleType == 1">
+				gateway_rate_t0
+			</if>
+			<if test="settleType == 2">
+				manu_rate
+			</if>
+		from
+			merch_info
+		where
+			merchno = #{merchno}
+	</select>
+	<!-- 
+		获取商户的二维码费率
+	-->
+	<select 
+		id="getQrcodeRate" 
+		resultType="BigDecimal">
+		select
+			rate
+		from
+			<include refid="tableName"/>
+		where
+			merchno = #{merchno}
+			and pay_type = #{payType}
+		<![CDATA[
+			and scan_type & #{scanType} = #{scanType}
+			and settle_type & #{settleType} = #{settleType}
+		]]>
+	</select>
+</mapper>

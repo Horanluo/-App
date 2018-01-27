@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.MerchVirtualRechargeMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		merch_virtual_recharge
+	</sql>
+	
+	<!-- 
+		保存二维码支付信息 
+	-->
+	<insert 
+		id="add" 
+		parameterType="MerchVirtualRecharge">
+		insert into <include refid="tableName"/>(
+			cardno,
+			branchno,
+			branch_name,
+			agentno,
+			agent_name,
+			merchno,
+			merch_name,
+			type,
+			amount_before,
+			amount,
+			amount_after,
+			status,
+			remark,
+			refno,
+			login_name,
+			add_time,
+			ip
+		)values(
+			#{cardno},
+			#{branchno},
+			#{branchName},
+			#{agentno},
+			#{agentName},
+			#{merchno},
+			#{merchName},
+			#{type},
+			#{amountBefore},
+			#{amount},
+			#{amountAfter},
+			#{status},
+			#{remark},
+			#{refno},
+			#{loginName},
+			#{addTime},
+			#{ip}
+		)
+	</insert>
+	
+</mapper>

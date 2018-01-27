@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8" />
+    <title></title>
+</head>
+<link href="css/layer.css" type="text/css" rel="stylesheet" charset="utf-8" />
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/share.js" type="text/javascript"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<body>
+推荐人:<h1 th:text="${refer}"></h1>
+<div class="_share_weixin">点我出现弹层</div>
+</body>
+</html>
+<!--<html>  
+    <head>  
+        <meta name="layout" content="main"/>  
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />    
+    </head>
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>  
+        <script type="text/javascript" src="http://html2canvas.hertzen.com/build/html2canvas.js"></script>  
+        <script  type="text/javascript" >  
+	        $(document).ready( function(){  
+	                $(".example1").on("click", function(event) {  
+	                        event.preventDefault();  
+	                        html2canvas(document.body, {  
+	                        allowTaint: true,  
+	                        taintTest: false,  
+	                        onrendered: function(canvas) {  
+	                            canvas.id = "mycanvas";  
+	                            //document.body.appendChild(canvas);  
+	                            //生成base64图片数据  
+	                            var dataUrl = canvas.toDataURL();  
+	                            var newImg = document.createElement("img");  
+	                            newImg.src =  dataUrl;  
+	                            document.body.appendChild(newImg);  
+	                        }  
+	                    });  
+	                });   
+	               
+	        });  
+    </script>
+    <body>  
+        Hello!  
+        <div class="" style="background-color: #abc;">  
+            	计算机天堂测试html5页面截图  
+        <br/>jsjtt.com  
+        </div>  
+           
+        <textArea id="textArea" col="20" rows="10" ></textArea>  
+        <input class="example1" type="button" value="button"/>  
+        	生成界面如下：  
+    </body>  
+</html>-->

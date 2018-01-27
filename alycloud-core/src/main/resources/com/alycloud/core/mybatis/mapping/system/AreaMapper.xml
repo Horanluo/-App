@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.core.mapper.system.AreaMapper">
+	<!-- 获取所有的省市信息 -->
+	<select id="listProvince" resultType="com.alycloud.modules.system.AreaBean">
+		select
+		province
+		from
+		system_area
+		group by
+		province
+		order by area_code
+	</select>
+	<!-- 获取所有的城市信息 -->
+	<select id="listCity" parameterType="com.alycloud.modules.system.AreaBean" resultType="com.alycloud.modules.system.AreaBean">
+		select
+		area_code as areaCode,
+		area_name as areaName
+		from
+		system_area
+		where
+		province = #{province}
+		order by
+		area_level,area_name
+	</select>
+
+	<!-- 根据编号获取信息 -->
+	<!-- <select id="getByCode" parameterType="String" resultType="com.alycloud.modules.system.AreaBean">
+
+		SELECT
+		t.code AS areaCode,
+		t.district areaName,
+		t1.city city,
+		t2.province AS province
+		FROM
+		nation t
+		LEFT JOIN nation t1 ON t1.id = t.parent
+		LEFT JOIN nation t2 ON t2.id = t1.parent
+		WHERE
+		t.code = #{areaCode}
+
+	</select> -->
+	
+	<select id="getByCode" parameterType="String" resultType="com.alycloud.modules.system.AreaBean">
+
+		SELECT
+		parent as id,
+		t.code AS areaCode,
+		t.district areaName,
+		t.city city,
+		t.province AS province
+		FROM
+		nation t
+		WHERE
+		t.code = #{areaCode}
+
+	</select>
+	
+	<select id="getByParentId" parameterType="String" resultType="com.alycloud.modules.system.AreaBean">
+
+		SELECT
+		parent as id,
+		t.code AS areaCode,
+		t.district areaName,
+		t.city city,
+		t.province AS province
+		FROM
+		nation t
+		WHERE
+		t.id = #{parentId}
+
+	</select>
+
+</mapper>

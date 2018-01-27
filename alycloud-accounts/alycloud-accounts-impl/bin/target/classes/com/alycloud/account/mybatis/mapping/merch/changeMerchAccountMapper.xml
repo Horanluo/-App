@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.ChangeMerchAccountMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		change_merch_account
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				 	as id,
+		merch_id		 	as merchId,
+		account_type 	    as accountType,
+		accountno 		 	as accountno,
+		account_name 	 	as accountName,
+		bankno	     		as bankno,
+		bank_name	 		as bankName,
+		img_card1 		 	as imgCard1,
+		img_card2 	 		as imgCard2,
+		ori_account_type 	as oriAccountType,
+		ori_accountno  		as oriAccountno,
+		ori_account_name  	as oriAccountName,
+		ori_bankno 			as oriBankno,
+		ori_bank_name	 	as oriBankName,
+		ori_img_card1	 	as oriImgCard1,
+		ori_img_card2	 	as oriImgCard2,
+		audit_status 	 	as auditStatus,
+		audit_descr			as auditDescr,
+		audit_time 		 	as auditTime,
+		add_time 		 	as addTime
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="auditStatus !=null">
+		         , audit_status = #{auditStatus}
+		     </if>
+	         <if test="auditDescr !=null">
+		         , audit_descr = #{auditDescr}
+		     </if>
+	         <if test="auditTime !=null">
+		         , audit_time = #{auditTime}
+		     </if>
+	         <if test="imgCard1 !=null">
+		         , img_card1 = #{imgCard1}
+		     </if>
+	         <if test="imgCard2 !=null">
+		         , img_card2 = #{imgCard2}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="merchId !=null">
+		         and merch_id = #{merchId}
+		     </if>
+		     <if test="auditStatus !=null">
+		         and audit_status = #{auditStatus}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<insert 
+    	id="add"
+    	parameterType="ChangeMerchAccount" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			merch_id,account_type,accountno,account_name,bankno,bank_name,img_card1,img_card2,
+			ori_account_type,ori_accountno,ori_account_name,ori_bankno,ori_bank_name,ori_img_card1,ori_img_card2,
+			audit_status,audit_descr,audit_time,add_time
+    	)values(
+			#{merchId},#{accountType},#{accountno},#{accountName},#{bankno},#{bankName},#{imgCard1},#{imgCard2},
+			#{oriAccountType},#{oriAccountno},#{oriAccountName},#{oriBankno},#{oriBankName},#{oriImgCard1},#{oriImgCard2},
+			#{auditStatus},#{auditDescr},#{auditTime},#{addTime}
+    	)
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="ChangeMerchAccount">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="ChangeMerchAccount4Search"
+    	resultType="ChangeMerchAccount">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.AgentFeeMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_agent_fee
+	</sql>
+	<!-- 
+		获取代理商的网关费率
+	-->
+	<select 
+		id="getGatewayRate" 
+		parameterType="HashMap" 
+		resultType="BigDecimal">
+		select
+			<if test="settleType == 1">
+				gateway_rate_t0
+			</if>
+			<if test="settleType == 2">
+				online_rate
+			</if>
+		from
+			agent_info
+		where
+			agentno = #{agentno}
+	</select>
+	<!-- 
+		获取代理商的手续费 
+	-->
+	<select 
+		id="getQrcodeRate" 
+		parameterType="HashMap" 
+		resultType="BigDecimal">
+		select
+			rate
+		from
+			<include refid="tableName"/>
+		where
+			agentno = #{agentno}
+			and pay_type = #{payType}
+		<![CDATA[
+			and scan_type & #{scanType} = #{scanType}
+			and settle_type & #{settleType} = #{settleType}
+		]]>
+	</select>
+</mapper>

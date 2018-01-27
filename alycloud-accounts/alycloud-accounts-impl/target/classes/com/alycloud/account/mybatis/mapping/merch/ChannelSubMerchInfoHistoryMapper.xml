@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.account.mapper.ChannelSubMerchInfoHistoryMapper">
+  <resultMap id="channelHistoryResultMap" type="ChannelSubMerchInfoHistory">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="branchno" jdbcType="VARCHAR" property="branchno" />
+    <result column="agentno" jdbcType="VARCHAR" property="agentno" />
+    <result column="merchno" jdbcType="VARCHAR" property="merchno" />
+    <result column="createdate" jdbcType="TIMESTAMP" property="createdate" />
+    <result column="channel_code" jdbcType="VARCHAR" property="channelCode" />
+    <result column="channel_name" jdbcType="VARCHAR" property="channelName" />
+    <result column="channel_submerchno" jdbcType="VARCHAR" property="channelSubmerchno" />
+    <result column="pay_type" jdbcType="VARCHAR" property="payType" />
+    <result column="aduit_status" jdbcType="VARCHAR" property="aduitStatus" />
+    <result column="payFeeD0" jdbcType="DECIMAL" property="payfeed0" />
+    <result column="d0pay_rate" jdbcType="DECIMAL" property="d0payRate" />
+    <result column="t1pay_rate" jdbcType="DECIMAL" property="t1payRate" />
+    <result column="payFeeT1" jdbcType="DECIMAL" property="payfeet1" />
+    <result column="pay_method" jdbcType="VARCHAR" property="payMethod" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    Id, branchno, agentno, merchno, createdate, channel_code, channel_name, channel_submerchno, 
+    pay_type, aduit_status, payFeeD0, d0pay_rate, t1pay_rate, payFeeT1, pay_method
+  </sql>
+  
+  <insert id="addChannelInfoHistory" parameterType="ChannelSubMerchInfoHistory">
+    insert into channel_submerch_info_history (branchno, agentno, 
+      merchno, createdate, channel_code, 
+      channel_name, channel_submerchno, pay_type, 
+      aduit_status, payFeeD0, d0pay_rate, 
+      t1pay_rate, payFeeT1, pay_method, 
+      remark)
+    values (#{branchno,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR}, 
+      #{merchno,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR}, 
+      #{channelName,jdbcType=VARCHAR}, #{channelSubmerchno,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR}, 
+      #{aduitStatus,jdbcType=VARCHAR}, #{payFeeD0,jdbcType=DECIMAL}, #{d0payRate,jdbcType=DECIMAL}, 
+      #{t1payRate,jdbcType=DECIMAL}, #{payFeeT1,jdbcType=DECIMAL}, #{payMethod,jdbcType=VARCHAR}, 
+      #{remark,jdbcType=LONGVARCHAR})
+  </insert>
+</mapper>

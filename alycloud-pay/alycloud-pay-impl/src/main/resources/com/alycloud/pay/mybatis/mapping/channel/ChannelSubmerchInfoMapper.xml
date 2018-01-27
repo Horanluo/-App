@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.alycloud.pay.mapper.ChannelSubmerchInfoMapper">
+	<!-- 数据库中的表名 -->
+	<sql id="tableName">
+		channel_submerch_info
+	</sql>
+	<!-- 分页查询的条件 -->
+	<sql id="queryCondtion">
+		<trim prefix="where" prefixOverrides="and |or">
+			<if test="merchno !=null">
+				and merchno = #{merchno}
+			</if>
+			<if test="channelCode !=null">
+				and channel_code = #{channelCode}
+			</if>
+			<if test="aduitStatus !=null">
+				and aduit_status = #{aduitStatus}
+			</if>
+			<if test="payType !=null">
+				and pay_type = #{payType}
+			</if>
+			<if test="payMethod !=null">
+				and pay_method = #{payMethod}
+			</if>
+		</trim>
+	</sql>
+
+	<!-- 字段映射关系 -->
+	<sql id="fieldMapping">
+		Id as id,
+		branchno as branchno,
+		agentno as agentno,
+		merchno as
+		merchno,
+		createdate as createdate,
+		channel_code as channelCode,
+		channel_name as
+		channelName,
+		channel_submerchno as channelSubmerchno,
+		pay_type as
+		payType,
+		aduit_status as aduitStatus,
+		payFeeD0 as payFeeD0,
+		d0pay_rate as
+		d0payRate,
+		t1pay_rate as t1payRate,
+		remark as remark,
+		payFeeT1 as
+		payFeeT1,
+		pay_method as payMethod,
+		yufu_one_code_url as yufuOneCodeUrl,
+		yufu_kj_key as yufuKjKey,
+		yufu_term_id as yufuTermId
+	</sql>
+
+	<!-- 分页查询信息 -->
+	<select id="listByPage" parameterType="ChannelSubmerchInfo4Search"
+		resultType="ChannelSubmerchInfo">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		<include refid="queryCondtion" />
+		limit
+		${startIndex}, ${pageSize}
+	</select>
+
+	<select id="searchByParams" resultType="ChannelSubmerchInfo">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		where merchno = #{merchno} and pay_type = #{payType}
+	</select>
+
+	<select id="searchFastByGradeInfo" resultType="ChannelSubmerchInfo"
+		parameterType="HashMap">
+    	
+    <![CDATA[
+	   select
+		gf.rate			as d0payRate,
+		gf.fee	 			as payFeeD0
+		from grade_fee gf
+		 where  
+		   gf.channel_type&(1<<#{channelType}) =(1<<#{channelType})
+		   and gf.pay_type&(1<<6) = (1<<6)
+		   AND gf.scan_type&(1<<5) = (1<<5)
+		  and  gf.settle_type&(1<<0)= (1<<0)
+		  and gf.grade_type in (select user_rank from  merch_user where login_name in 
+		                       (select user_id from merch_info where merchno = #{merchno}))
+		  ]]>
+	</select>
+
+	<select id="searchFastByChannelCode" parameterType="HashMap"
+		resultType="ChannelSubmerchInfo">
+		select
+		<include refid="fieldMapping" />
+		from
+		<include refid="tableName" />
+		where merchno = #{merchno} and pay_type = 'QUICKPAY' and
+		channel_code=#{channelCode}
+	</select>
+
+
+	<insert id="addChannelSubMerchInfo" parameterType="ChannelSubmerchInfo">
+		insert into channel_submerch_info (branchno, agentno,
+		merchno, createdate, channel_code,
+		channel_name, channel_submerchno, pay_type,
+		aduit_status, payFeeD0, d0pay_rate,
+		t1pay_rate, payFeeT1, pay_method,
+		remark,yufu_one_code_url,yufu_kj_key,yufu_term_id)
+		values
+		(#{branchno,jdbcType=VARCHAR}, #{agentno,jdbcType=VARCHAR},
+		#{merchno,jdbcType=VARCHAR}, #{createdate,jdbcType=TIMESTAMP}, #{channelCode,jdbcType=VARCHAR},
+		#{channelName,jdbcType=VARCHAR},
+		#{channelSubmerchno,jdbcType=VARCHAR}, #{payType,jdbcType=VARCHAR},
+		#{aduitStatus,jdbcType=VARCHAR}, #{payFeeD0,jdbcType=DECIMAL},
+		#{d0payRate,jdbcType=DECIMAL},
+		#{t1payRate,jdbcType=DECIMAL}, #{payFeeT1,jdbcType=DECIMAL}, #{payMethod,jdbcType=VARCHAR},
+		#{remark,jdbcType=LONGVARCHAR},#{yufuOneCodeUrl,jdbcType=VARCHAR},#{yufuKjKey,jdbcType=VARCHAR},#{yufuTermId,jdbcType=VARCHAR})
+	</insert>
+
+	<select id="searchYufuSubmerchInfo" resultType="com.alycloud.modules.channel.yufu.YufuChannelMerchBean">
+		select
+		id as id,
+		plat_merchno as platMerchno,
+		branch_id as branchId,
+		merch_name as
+		merchName,
+		merch_short_name as merchShortName,
+		merch_level as
+		merchLevel,
+		parent_merch_id as parentMerchId,
+		open_type as openType,
+		gszc_name as gszcName,
+		merch_addr as merchAddr,
+		province as province,
+		city as city,
+		id_card as idCard,
+		yyzz_code as yyzzCode,
+		zzjg_code as
+		zzjgCode,
+		swdj_code as swdjCode,
+		khxk_code as khxkCode,
+		account_type as
+		accountType,
+		account_no as accountNo,
+		account_name as accountName,
+		bank_code as bankCode,
+		bank_name as bankName,
+		open_branch as openBranch,
+		merch_contacts as merchContacts,
+		phone as phone,
+		count_role as
+		countRole,
+		state as state,
+		merch_id as merchId,
+		term_id as termId,
+		remark
+		as remark,
+		one_code_url as oneCodeUrl,
+		kj_key as kjKey
+		from
+		channel_merch_yufu
+		<trim prefix="where" prefixOverrides="and |or">
+		     <if test="phone !=null">
+		         and phone = #{phone}
+		     </if>
+		     <if test="platMerchno !=null">
+		         and plat_merchno = #{platMerchno}
+		     </if>
+		     and (state = '0' OR state = '1')
+	     </trim>
+	</select>
+
+</mapper>

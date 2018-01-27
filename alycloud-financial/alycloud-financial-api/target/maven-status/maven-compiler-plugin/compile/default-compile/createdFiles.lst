@@ -1,0 +1,10 @@
+com\alycloud\financial\api\IMerchVirtualCardService.class
+com\alycloud\financial\api\IQrcodeTransService.class
+com\alycloud\financial\api\IAgentVirtualCardService.class
+com\alycloud\financial\api\IFastTransService.class
+com\alycloud\financial\models\DrawResultVo.class
+com\alycloud\financial\api\IAgentVirtualTransService.class
+com\alycloud\financial\api\IMerchVirtualTransService.class
+com\alycloud\financial\api\IAgentTransService.class
+com\alycloud\financial\api\IPaymentTransService.class
+com\alycloud\financial\models\AgentTransOverviewResult.class

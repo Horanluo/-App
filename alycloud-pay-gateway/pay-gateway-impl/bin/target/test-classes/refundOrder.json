@@ -1,0 +1,18 @@
+{
+  "merchno": "001440154110006",
+  "merchKey": "0BC8E7291D494E3C34D2DBEFAD1388D9",
+  "traceno": "25691151555555",
+  "channel": "weixin",
+  "sign": "YYTT0988NSTTK"
+}
+
+
+{returnCode=0, returnMsg=退款申请中, resultCode=0, sign=B43B47988FCCBF60BD55F4337EF751A5, outRefundNo=920000093634, outTradeNo=920000093634, channelRefundNo=20101099201708280000000012}
+
+{
+  "merchno": "string",
+  "merchKey": "string",
+  "traceno": "string",
+  "channel": "string",
+  "signature": "string"
+}

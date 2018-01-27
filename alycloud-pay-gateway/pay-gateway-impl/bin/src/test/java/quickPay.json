@@ -1,0 +1,37 @@
+{
+  "merchno": "200440154110001",
+  "merchKey": "7CA6AAC29A57EFCB8676DE8AA7EC171B",
+  "amount": 100,
+  "bankName": "招商银行",
+  "outTraceno": "22291101000004",
+  "mobile": "13510492707",
+  "accountName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "cardno": "5187100802078271",
+  "payerRemark": "支付测试",
+  "sign":"jjjjjjjjjj"
+}
+
+{
+  "merchno": "001440154110015",
+  "merchKey": "77BB2FBE3A39A08D2729DDB477AC6D88",
+  "amount": 900,
+  "bankName": "招商银行",
+  "outTraceno": "22291101000004",
+  "mobile": "13530492707",
+  "accountName": "曾云龙",
+  "identityCard": "430524198411046631",
+  "cardno": "5187100802078271",
+  "payerRemark": "支付测试",
+  "callbackUrl": "http://api.esyto.com",
+  "sign":"jjjjjjjjjj"
+}
+
+{
+  "merchno": "001440154110015",
+  "merchKey": "77BB2FBE3A39A08D2729DDB477AC6D88",
+  "mapping": null,
+  "respCode": "1",
+  "message": "注册成功",
+  "sign": "B5B28B902B6AFCAB9C479B77724753A4"
+}

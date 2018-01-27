@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.QrcodeTransMapper">
+	
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_trans_today
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		branchno as branchno, 
+		branch_name as branchName, 
+		merchno as merchno, 
+		merch_name as merchName, 
+		trans_date as transDate,
+		trans_time as transTime, 
+		orderno as orderno, 
+		trans_amount as transAmount, 
+		bar_code as barCode, 
+		partner_id as partnerId,
+		termno as termno, 
+		status as status, 
+		remark as remark, 
+		total_fee as totalFee, 
+		channel_fee as channelFee, 
+		branch_fee as branchFee, 
+		agentno as agentno, 
+		agent_name as agentName, 
+		traceno as traceno,
+		channel_orderno as channelOrderno,
+		backup_orderno as backupOrderno,
+		pay_type as payType,
+		discount_amount as discountAmount,
+		reback_amount as rebackAmount,
+		scan_type as scanType,
+		inter_type as interType,
+		channel_code as channelCode,
+		mobile_buyer as mobileBuyer,
+		mobile_seller as mobileSeller,
+		notify_url as notifyUrl,
+		return_url as returnUrl,
+		settle_type as settleType,
+		accountno as accountno,
+		account_name as accountName,
+		certno as certno,
+		mobile as mobile,
+		bankno as bankno,
+		bank_name as bankName,
+		bank_type as bankType,
+		bankCardType as bankCardType,
+		notify_status as notifyStatus
+	</sql>
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="notifyStatus !=null">
+		         , notify_status = #{notifyStatus}
+		     </if>
+		 </trim>
+	</sql>
+	<!-- 
+		保存二维码支付信息 
+	-->
+	<insert 
+		id="insert" 
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		insert into <include refid="tableName"/>(
+			branchno, branch_name, merchno, merch_name, trans_date,
+			trans_time, orderno, trans_amount, bar_code, partner_id,
+			termno, status, remark, total_fee, channel_fee, 
+			branch_fee, agentno, agent_name, traceno, scan_type,
+			inter_type, channel_code, mobile_buyer,mobile_seller,discount_amount,
+			reback_amount,pay_type,notify_url,return_url,channel_orderno,
+			backup_orderno,settle_type,accountno,account_name,certno,
+			t0_add_fee,mobile,bankno,bank_name,bank_type,bankCardType
+		)values(
+			#{branchno}, #{branchName}, #{merchno}, #{merchName}, #{transDate},
+			#{transTime}, #{orderno}, #{transAmount}, #{barCode}, #{partnerId},
+			#{termno}, #{status}, #{remark}, #{totalFee}, #{channelFee},
+			#{branchFee}, #{agentno}, #{agentName}, #{traceno}, #{scanType},
+			#{interType}, #{channelCode}, #{mobileBuyer}, #{mobileSeller}, #{discountAmount},
+			#{rebackAmount},#{payType},#{notifyUrl},#{returnUrl},#{channelOrderno},
+			#{backupOrderno},#{settleType},#{accountno},#{accountName},#{certno},
+			#{t0AddFee},#{mobile},#{bankno},#{bankName},#{bankType},#{bankCardType}
+		)
+	</insert>
+	<update 
+		id="mod" 
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	<!-- 
+		更新二维码的交易状态
+	-->
+	<update 
+		id="updateTransStatus"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			channel_orderno = #{channelOrderno},
+			backup_orderno = #{channelTraceno},
+			status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新二维码的T+0代付状态
+	-->
+	<update 
+		id="updatePayStatus"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		update
+			<include refid="tableName"/>
+		set
+			pay_status = #{payStatus},
+			pay_desc = #{payDesc}
+		where
+			orderno = #{orderno}
+			and pay_status != 2
+	</update>
+	<!-- 
+		更新二维码的用户信息(openId)
+	-->
+	<update 
+		id="updateOpenId"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			bar_code = #{openId}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		根据商户的流水号获取交易信息
+	-->
+	<select 
+		id="getByTraceno" 
+		parameterType="HashMap" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			merchno = #{merchno}
+			and traceno = #{traceno}
+		order by 
+			id desc
+		limit 
+			1
+	</select>
+	<!-- 
+		根据参考号获取交易信息
+	-->
+	<select 
+		id="getByOrderno" 
+		parameterType="String" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			orderno = #{orderno}
+	</select>
+	<!-- 
+		查询尚未支付的订单
+		拿掉and query_count <= 3
+	-->
+	<select 
+		id="listNotPay" 
+		parameterType="HashMap" 
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		<![CDATA[
+		where
+			concat(trans_date, ' ', trans_time) >= #{transTime}
+			and status = 0
+			and channel_code is not null
+			and id % #{threadCount} = #{id}
+		]]>
+	</select>
+	
+	<!-- 
+		根据参考号统计历史信息 
+	-->
+	<select 
+		id="getOnHisotry"
+		parameterType="String"
+		resultType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			qrcode_trans_history
+		where
+			orderno = #{orderno}
+	</select>
+	
+	<!-- 
+		更新二维码支付状态 
+	-->
+	<update 
+		id="update"
+		parameterType="com.alycloud.pay.gateway.models.qrcode.QrcodeTrans">
+		update
+			qrcode_trans_today
+		set
+			channel_orderno = #{channelOrderno},
+			backup_orderno = #{backupOrderno},
+			status = #{status},
+			bankCardType = #{bankCardType}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<!-- 
+		更新当天交易的商户通知状态 
+	-->
+	<update 
+		id="updateNotifyStatusOnToday"
+		parameterType="HashMap">
+		update
+			qrcode_trans_today
+		set
+			notify_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新当天交易的充值通知状态 
+	-->
+	<update 
+		id="updateRechargeStatusOnToday"
+		parameterType="HashMap">
+		update
+			qrcode_trans_today
+		set
+			recharge_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新当天交易的代付通知状态 
+	-->
+	<update 
+		id="updatePaymentStatusOnToday"
+		parameterType="HashMap">
+		update
+			qrcode_trans_today
+		set
+			payment_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新历史交易的商户通知状态 
+	-->
+	<update 
+		id="updateNotifyStatusOnHistory"
+		parameterType="HashMap">
+		update
+			qrcode_trans_history
+		set
+			notify_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新历史交易的充值通知状态 
+	-->
+	<update 
+		id="updateRechargeStatusOnHistory"
+		parameterType="HashMap">
+		update
+			qrcode_trans_history
+		set
+			recharge_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	<!-- 
+		更新历史交易的代付通知状态 
+	-->
+	<update 
+		id="updatePaymentStatusOnHistory"
+		parameterType="HashMap">
+		update
+			qrcode_trans_history
+		set
+			payment_status = #{status}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<!-- 
+		更新查询信息 
+	-->
+	<update 
+		id="updateQueryInfo" 
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			query_count = query_count + 1,
+			last_query_time = #{queryTime}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<!-- 
+		更新二维码订单的银行卡类型
+	-->
+	<update 
+		id="updateBankCardType"
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			bankCardType = #{bankCardType}
+		where
+			orderno = #{orderno}
+	</update>
+</mapper>

@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.QrcodeOrderMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_order
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 				as id,
+		branchno 		as branchno,
+		branch_name 	as branchName,
+		agentno 		as agentno,
+		agent_name 		as agentName,
+		merchno 		as merchno,
+		merch_name 		as merchName,
+		trans_date 		as transDate,
+		trans_time 		as transTime,
+		pay_type 		as payType,
+		scan_type 		as scanType,
+		traceno 		as traceno,
+		orderno 		as orderno,
+		amount 			as amount,
+		notify_url 		as notifyUrl,
+		notify_count	as notifyCount,
+		notify_status	as notifyStatus,
+		notify_desc		as notifyDesc,
+		notify_time		as notifyTime,
+		return_url 		as returnUrl,
+		settle_type 	as settleType,
+		status 			as status,
+		status_desc 	as statusDesc,
+		channel_code 	as channelCode,
+		channel_merchno as channelMerchno,
+		channel_url 	as channelUrl,
+		channel_orderno as channelOrderno,
+		merch_fee 		as merchFee,
+		channel_fee 	as channelFee,
+		branch_fee 		as branchFee,
+		open_id 		as openId,
+		certno 			as certno,
+		mobile 			as mobile,
+		accountno 		as accountno,
+		account_name 	as accountName,
+		bankno 			as bankno,
+		bank_type 		as bankType,
+		bank_name 		as bankName,
+		query_count		as queryCount,
+		last_query_time as lastQueryTime,
+		payment_fee		as paymentFee,
+		payer_remark	as payerRemark,
+		payer_type		as payerType,
+		payer			as payer,
+		payer_biz		as payerBiz,
+		liquidate_type	as liquidateType,
+		fee				as fee,
+		receiveFee		as receiveFee,
+		rate			as rate
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="orderno != null">
+		         and orderno =#{orderno}
+		     </if>
+		     <if test="merchno != null">
+		         and merchno =#{merchno}
+		     </if>
+		     <if test="traceno != null">
+		         and traceno =#{traceno}
+		     </if>
+		     <if test="status != null">
+		         and status =#{status}
+		     </if>
+		     <if test="notifyStatus != null">
+		         and notify_status =#{notifyStatus}
+		     </if>
+		     <if test="startDateTime != null">
+		     	 and concat(trans_date, ' ', trans_time) >= #{startDateTime}
+		     </if>
+		     
+	     </trim>
+	</sql>
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="agentno !=null">
+		         , agentno = #{agentno}
+		     </if>
+	         <if test="agentName !=null">
+		         , agent_name = #{agentName}
+		     </if>
+	         <if test="amount !=null">
+		         , amount = #{amount}
+		     </if>
+	         <if test="branchFee !=null">
+		         , branch_fee = #{branchFee}
+		     </if>
+	         <if test="branchno !=null">
+		         , branchno = #{branchno}
+		     </if>
+	         <if test="branchName !=null">
+		         , branch_name = #{branchName}
+		     </if>
+	         <if test="channelCode !=null">
+		         , channel_code = #{channelCode}
+		     </if>
+	         <if test="channelFee !=null">
+		         , channel_fee = #{channelFee}
+		     </if>
+	         <if test="channelMerchno !=null">
+		         , channel_merchno = #{channelMerchno}
+		     </if>
+	         <if test="channelOrderno !=null">
+		         , channel_orderno = #{channelOrderno}
+		     </if>
+	         <if test="channelUrl !=null">
+		         , channel_url = #{channelUrl}
+		     </if>
+	         <if test="liquidateType !=null">
+		         , liquidate_type = #{liquidateType}
+		     </if>
+	         <if test="merchFee !=null">
+		         , merch_fee = #{merchFee}
+		     </if>
+	         <if test="merchName !=null">
+		         , merch_name = #{merchName}
+		     </if>
+	         <if test="merchno !=null">
+		         , merchno = #{merchno}
+		     </if>
+	         <if test="mobile !=null">
+		         , mobile = #{mobile}
+		     </if>
+	         <if test="notifyCount !=null">
+		         , notify_count = #{notifyCount}
+		     </if>
+	         <if test="notifyStatus !=null">
+		         , notify_status = #{notifyStatus}
+		     </if>
+		     <if test="notifyDesc !=null">
+		         , notify_desc = #{notifyDesc}
+		     </if>
+	         <if test="notifyTime !=null">
+		         , notify_time = #{notifyTime}
+		     </if>
+		     <if test="notifyUrl !=null">
+		         , notify_url = #{notifyUrl}
+		     </if>
+		     <if test="paymentFee !=null">
+		         , payment_fee = #{paymentFee}
+		     </if>
+		     <if test="payType !=null">
+		         , pay_type = #{payType}
+		     </if>
+	         <if test="scanType !=null">
+		         , scan_type = #{scanType}
+		     </if>
+	         <if test="settleType !=null">
+		         , settle_type = #{settleType}
+		     </if>
+		     <if test="status !=null">
+		         , status = #{status}
+		     </if>
+	         <if test="statusDesc !=null">
+		         , status_desc = #{statusDesc}
+		     </if>
+		     <if test="fee !=null">
+		         , fee = #{fee}
+		     </if>
+		     <if test="receiveFee !=null">
+		         , receiveFee = #{receiveFee}
+		     </if>
+		     <if test="rate !=null">
+		         , rate = #{rate}
+		     </if>
+		 </trim>
+	</sql>
+	
+	
+	<insert 
+    	id="add"
+    	parameterType="QrcodeOrder" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			branchno 		   
+			,branch_name 	   
+			,agentno 		   
+			,agent_name 		
+			,merchno 		   
+			,merch_name 		
+			,trans_date 		
+			,trans_time 		
+			,pay_type 		   
+			,scan_type 		   
+			,traceno 		   
+			,orderno 		   
+			,amount 			
+			,notify_url 		
+			,return_url 		
+			,settle_type 	   
+			,status 			
+			,status_desc 	   
+			,channel_code 	   
+			,channel_merchno   
+			,channel_url 	   
+			,channel_orderno   
+			,merch_fee 		   
+			,channel_fee 	   
+			,branch_fee 		
+			,open_id 		   
+			,certno 			
+			,mobile 			
+			,accountno 		   
+			,account_name 	   
+			,bankno 			
+			,bank_type 		   
+			,bank_name 		   
+			,query_count		
+			,last_query_time   
+			,payment_fee		
+			,payer_remark	   
+			,payer_type		   
+			,payer			   
+			,payer_biz		   
+			,liquidate_type	   
+    	)values(
+			#{branchno},
+			#{branchName},
+			#{agentno},
+			#{agentName},
+			#{merchno},
+			#{merchName},
+			#{transDate},
+			#{transTime},
+			#{payType},
+			#{scanType},
+			#{traceno},
+			#{orderno},
+			#{amount},
+			#{notifyUrl},
+			#{returnUrl},
+			#{settleType},
+			#{status},
+			#{statusDesc},
+			#{channelCode},
+			#{channelMerchno},
+			#{channelUrl},
+			#{channelOrderno},
+			#{merchFee},
+			#{channelFee},
+			#{branchFee},
+			#{openId},
+			#{certno},
+			#{mobile},
+			#{accountno},
+			#{accountName},
+			#{bankno},
+			#{bankType},
+			#{bankName},
+			#{queryCount},
+			#{lastQueryTime},
+			#{paymentFee},
+			#{payerRemark},
+			#{payerType},
+			#{payer},
+			#{payerBiz},
+			#{liquidateType}
+    	)
+    </insert>
+    
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="QrcodeOrder4Search"
+    	resultType="QrcodeOrder">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc,trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+    <!--  
+		获取二维码支付的参考号
+	-->
+	<select 
+		id="genRefno" 
+		resultType="String">
+		select
+			seq('qrcode')
+	</select>
+	
+	<!-- Horanuo start 2018.01.10 -->
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="QrcodeOrder">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+	<update 
+		id="modifyQrcodeOrder" 
+		parameterType="QrcodeOrder">
+		update
+			<include refid="tableName"/>
+		set
+			status = #{status},
+			channel_orderno = #{channelOrderno},
+			status_desc = #{statusDesc}
+		where
+			orderno = #{orderno}
+	</update>
+	
+	<select 
+    	id="getOrderInfo"
+    	parameterType="QrcodeOrder"
+    	resultType="QrcodeOrder">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 1=1
+    	<if test="orderno != null">
+		     and orderno =#{orderno}
+		</if>
+		<if test="merchno != null">
+		     and merchno =#{merchno}
+		</if>
+		<if test="traceno != null">
+		     and traceno =#{traceno}
+		</if>
+		<if test="status != null">
+		     and status =#{status}
+		</if>
+		<if test="notifyStatus != null">
+		     and notify_status =#{notifyStatus}
+		</if>
+    	order by 
+    		trans_date desc,trans_time desc
+    </select>
+</mapper>

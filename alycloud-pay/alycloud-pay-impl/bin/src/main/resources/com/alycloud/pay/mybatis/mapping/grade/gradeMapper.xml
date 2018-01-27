@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.GradeMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		grade
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 			as id,
+		grade_type	as gradeType,
+		grade_name 	as gradeName,
+		quantity 	as quantity,
+		amount		as amount
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="gradeType !=null">
+		         and grade_type = #{gradeType}
+		     </if>
+	     </trim>
+	</sql>
+	
+    <!--  
+    	查询信息
+    -->
+    <select 
+    	id="list"
+    	parameterType="Grade4Search"
+    	resultType="Grade">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    </select>
+    
+    <!--  
+    	获取不大于且最靠近指定金额的等级信息
+    -->
+    <select 
+    	id="getMaxByLessThan"
+    	parameterType="java.math.BigDecimal"
+    	resultType="Grade">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 
+    	<![CDATA[ amount <= #{amount} ]]> 
+    	order by amount desc
+    	limit 0, 1
+    </select>
+    
+</mapper>

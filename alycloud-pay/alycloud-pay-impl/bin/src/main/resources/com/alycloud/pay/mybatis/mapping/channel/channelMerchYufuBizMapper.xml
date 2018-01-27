@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.ChannelMerchYufuBizMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		channel_merch_yufu_biz
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="yufuId !=null">
+		         and yufu_id = #{yufuId}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		yufu_id as yufuId,
+		pay_service as payService,
+		scale as scale,
+		debit_card_rate as debitCardRate,
+		credit_card_rate as creditCardRate,
+		limit_amount as limitAmount,
+		d0_rate as d0Rate,
+		d0_min_amount as d0MinAmount,
+		d0_fee_bi as d0FeeBi,
+		trade_type as tradeType,
+		bottom_fee as bottomFee
+	</sql> 
+	
+	<!--  
+    	批量添加代理商层级关系
+    -->
+    <insert 
+    	id="batchAdd"
+    	parameterType="ChannelMerchYufuBiz">
+    	insert into <include refid="tableName"/> (
+			yufu_id,pay_service,scale,debit_card_rate,
+			credit_card_rate,limit_amount,d0_rate,d0_min_amount,
+			d0_fee_bi,trade_type,bottom_fee
+    	)values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    	(
+    		#{item.yufuId}, #{item.payService}, #{item.scale}, #{item.debitCardRate},
+    		#{item.creditCardRate}, #{item.limitAmount}, #{item.d0Rate}, #{item.d0MinAmount}, 
+    		#{item.d0FeeBi}, #{item.tradeType}, #{item.bottomFee}
+    	)
+    	</foreach> 
+    </insert>
+    
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="ChannelMerchYufuBiz4Search"
+    	resultType="ChannelMerchYufuBiz">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+    <delete id="delByMerchno">
+    	delete from <include refid="tableName"/> where 
+    	not exists(select 1 from channel_merch_yufu m where m.id=yufu_id and m.plat_merchno=#{merchno})
+    </delete>
+    
+</mapper>

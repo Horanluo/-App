@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.ChannelSubmerchInfoMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		channel_submerch_info
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="merchno !=null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="channelCode !=null">
+		         and channel_code = #{channelCode}
+		     </if>
+		     <if test="aduitStatus !=null">
+		         and aduit_status = #{aduitStatus}
+		     </if>
+		     <if test="payType !=null">
+		         and pay_type = #{payType}
+		     </if>
+		     <if test="payMethod !=null">
+		         and pay_method = #{payMethod}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		Id as id,
+		branchno as branchno,
+		agentno as agentno,
+		merchno as merchno,
+		createdate as createdate,
+		channel_code as channelCode,
+		channel_name as channelName,
+		channel_submerchno as channelSubmerchno,
+		pay_type as payType,
+		aduit_status as aduitStatus,
+		payFeeD0 as payFeeD0,
+		d0pay_rate as d0payRate,
+		t1pay_rate as t1payRate,
+		remark as remark,
+		payFeeT1 as payFeeT1,
+		pay_method as payMethod
+	</sql> 
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="ChannelSubmerchInfo4Search"
+    	resultType="ChannelSubmerchInfo">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

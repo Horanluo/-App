@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.QrcodeBranchFeeMapper">
+
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_branch_fee
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		branchno as branchno,
+		scan_type as scanType,
+		pay_type as payType,
+		settle_type as settleType,
+		rate as rate
+	</sql>
+	
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="rate !=null">
+		         , rate = #{rate}
+		     </if>
+		     <if test="settleType !=null">
+		         , settle_type = #{settleType}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="branchno !=null">
+		         and branchno = #{branchno}
+		     </if>
+		     <if test="payType != null">
+		         and pay_type = #{payType}
+		     </if>
+		     <if test="scanType != null">
+		        <![CDATA[ and scan_type&#{scanType} = #{scanType} ]]>
+		     </if>
+		     <if test="settleType != null">
+		     	<![CDATA[ and settle_type&#{settleType} = #{settleType} ]]>
+		     </if>
+	     </trim>
+	</sql>
+    
+    <!-- 
+    	添加记录 
+    -->
+	
+    <insert 
+    	id="add"
+    	parameterType="QrcodeBranchFee" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into <include refid="tableName"/>(
+			branchno,scan_type,pay_type,settle_type,rate
+    	)values(
+			#{branchno},#{scanType},#{payType},#{settleType},#{rate}
+    	)
+    </insert>
+    
+    <!-- 
+    	批量添加 
+    -->
+	<insert 
+    	id="addList" 
+    	parameterType="QrcodeBranchFee">
+    	insert into  <include refid="tableName"/>(
+			branchno,scan_type,pay_type,settle_type,rate
+    	)values
+    	<foreach collection="list" item="item" index="index" separator=",">  
+      		(
+      			#{item.branchno},#{item.scanType},#{item.payType},#{item.settleType},#{item.rate}
+    		)
+    	</foreach>   
+    </insert>
+    
+    <!-- 
+    	更新记录 
+    -->
+    <update 
+		id="mod" 
+		parameterType="QrcodeBranchFee">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			id = #{id}
+	</update>
+	
+    <!-- 
+		查询列表
+	-->
+    <select 
+    	id="list" 
+    	parameterType="QrcodeBranchFee4Search" 
+    	resultType="QrcodeBranchFee">
+    	select
+    		<include refid="fieldMapping"/>
+    	from
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    </select>
+    
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.account.mapper.BranchInfoMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		branch_info
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		id as id,
+		branchno as branchno,
+		branch_name as branchName,
+		fastpay_rate_t0 as fastPayRateT0,
+		fastpay_rate_t1 as fastPayRateT1
+	</sql> 
+	
+	<!--  
+    	根据商户编号获取商户信息
+    -->
+    <select 
+    	id="getByBranchno"
+    	parameterType="String"
+    	resultType="BranchInfo">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    	where 
+    		branchno = #{branchno}
+    </select>
+    
+</mapper>

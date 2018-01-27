@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.AgentTransMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		agent_trans
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		trans_date as transDate,
+   		trans_time as transTime,
+   		agentno as agentno,
+   		agent_name as agentName,
+   		merchno as merchno,
+   		merch_name as merchName,
+   		type_memo as typeMemo,
+   		amount as amount,
+   		total_agent_fee as totalAgentFee,
+   		liquid_status as liquidStatus,
+	   	liquid_date as liquidDate,
+   		agent_fee as agentFee,
+   		settle_date as settleDate,
+   		divide_type as divideType
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+   		<if test="liquidStatus != null">
+   			and liquid_status = #{liquidStatus}
+   		</if>
+   		<if test="transStatus != null">
+   			and trans_status = #{transStatus}
+   		</if>
+   		<if test="type !=2 and agentno != null">
+   		    and agentno = #{agentno} 
+   		</if>
+   		<if test="type ==2 and agentno != null">
+   		    and agentno in (select agentno from agent_info where super_agent = #{agentno} )
+   		</if>
+   		<if test="agentType == 0">
+   		    and agentno != branchno
+   		</if>
+   		<if test="agentType == 1">
+   		    and agentno == branchno
+   		</if>
+   		<if test="divideType != null">
+   		    and divide_type = #{divideType}
+   		</if>
+	</sql>
+	<!--  
+    	分页查询日志信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="HashMap"
+    	resultType="com.alycloud.pay.gateway.models.agent.AgentTransBean">
+    	select 
+    		<include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/> 
+    	where
+    		trans_status = 1
+    	<include refid="queryCondtion"/>
+    	order by 
+    		trans_date desc, trans_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    <select 
+    	id="countByRefno"
+    	parameterType="String"
+    	resultType="Integer">
+    	select 
+    		count(*)
+    	from 
+    		<include refid="tableName"/> 
+    	where
+    		refno = #{refno}
+    </select>
+	<!-- 
+		创建代理商二维码分润信息 
+	-->
+	<insert 
+		id="insert" 
+		parameterType="com.alycloud.pay.gateway.models.agent.AgentTransBean">
+		insert into <include refid="tableName"/>(
+			trans_date,trans_time,merchno,merch_name,agentno,
+			agent_name,type_memo,refno,amount,divide,
+			total_fee,channel_fee,cost_fee,total_agent_fee,agent_fee,
+			trans_status,liquid_status,liquid_date,pay_fee,branchno,
+			branch_name,settle_date,agent_level,t0_agent_fee,divide_type
+		)values
+		<foreach collection="list" item="item" index="index" separator=",">
+		(
+			#{item.transDate},#{item.transTime},#{item.merchno},#{item.merchName},#{item.agentno},
+			#{item.agentName},#{item.typeMemo},#{item.refno},#{item.amount},#{item.divide},
+			#{item.totalFee},#{item.channelFee},#{item.costFee},#{item.totalAgentFee},#{item.agentFee},
+			#{item.transStatus},#{item.liquidStatus},#{item.liquidDate},#{item.payFee},#{item.branchno},
+			#{item.branchName},#{item.settleDate},#{item.agentLevel},#{item.t0AgentFee},2
+		)
+		</foreach>
+	</insert>
+	<!-- 
+		修改代理商二维码分润状态 
+	-->
+	<update 
+		id="update" 
+		parameterType="HashMap">
+		update
+			<include refid="tableName"/>
+		set
+			trans_status = #{status}
+		where
+			refno = #{refno}
+	</update>
+</mapper>

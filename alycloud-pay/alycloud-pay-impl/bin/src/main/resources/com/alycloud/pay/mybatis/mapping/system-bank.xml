@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="cn.yzyue.common.dao.SystemBankDao">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		system_bank
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="bankCode !=null">
+		         and bank_code = #{bankCode}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+   		bank_code as bankCode,
+		bank_name as bankName,
+		bank_id as bankId
+	</sql> 
+	
+    <!--  
+    	分页查询信息
+    -->
+    <select 
+    	id="listByPage"
+    	parameterType="SystemBank4Search"
+    	resultType="SystemBank">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by 
+    		bank_code
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+    
+</mapper>

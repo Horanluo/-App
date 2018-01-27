@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.BranchFeeMapper">
+	
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		qrcode_branch_fee
+	</sql>
+	<!-- 
+		获取机构的网关费率
+	-->
+	<select 
+		id="getGatewayRate" 
+		parameterType="HashMap" 
+		resultType="BigDecimal">
+		select
+			<if test="settleType == 1">
+				gateway_rate_t0
+			</if>
+			<if test="settleType == 2">
+				gateway_rate_t1
+			</if>
+		from
+			branch_info
+		where
+			branchno = #{branchno}
+	</select>
+	<!-- 
+		获取机构的二维码费率
+	-->
+	<select 
+		id="getQrcodeRate" 
+		parameterType="HashMap" 
+		resultType="BigDecimal">
+		select
+			rate
+		from
+			<include refid="tableName"/>
+		where
+			branchno = #{branchno}
+			and pay_type = #{payType}
+		<![CDATA[
+			and scan_type & #{scanType} = #{scanType}
+			and settle_type & #{settleType} = #{settleType}
+		]]>
+	</select>
+</mapper>

@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.financial.mapper.MerchVirtualTransMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		merch_virtual_trans
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id as id,
+		trans_date as transDate,
+		trans_time as transTime,
+		branchno as branchno,
+		branch_name as branchName,
+		agentno as agentno,
+		agent_name as agentName,
+		merchno as merchno,
+		merch_name as merchName,
+		cardno as cardno,
+		trans_type as transType,
+		amount_before as amountBefore,
+		amount as amount, 
+		amount_after as amountAfter, 
+		traceno as traceno,
+		trans_fee as transFee,
+		pay_type as payType,
+		type_code as typeCode,
+		status as status,
+		trans_refno as transRefno,
+		remark as remark,
+		batchno as batchno,
+		add_time as addTime,
+		login_name as loginName,
+		address as address,
+		accountno as accountno,
+		account_name as accountName,
+		bankno as bankno,
+		bank_name as bankName,
+		process_time as processTime,
+		df_type as dfType,
+		pay_status as payStatus,
+		pay_msg as payMsg,
+		channel_merchno as channelMerchno,
+		payment_type as paymentType,
+		trans_amount as transAmount
+	</sql>
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="status !=null">
+		         and status = #{status}
+		     </if>
+		     <if test="merchno !=null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="cardno !=null">
+		         and cardno = #{cardno}
+		     </if>
+		     
+	     </trim>
+	</sql>
+	<!--  
+		更新字段
+	-->
+	<sql id="updateField">
+	     <trim prefix="set" prefixOverrides=",">
+		     <if test="payStatus !=null">
+		         , pay_status = #{payStatus}
+		     </if>
+	         <if test="payMsg !=null">
+		         , pay_msg = #{payMsg}
+		     </if>
+	         <if test="remark !=null">
+		         , remark = #{remark}
+		     </if>
+		 </trim>
+	</sql>
+	
+	<!--  
+		获取参考号
+	-->
+	<select 
+		id="genRefno" 
+		resultType="String">
+		select
+			seq('pay')
+	</select>
+	<!-- 
+		保存二维码支付信息 
+	-->
+	<insert 
+		id="add" 
+		parameterType="MerchVirtualTrans">
+		insert into <include refid="tableName"/>(
+			trans_date,trans_time,branchno,branch_name,agentno,agent_name,merchno,merch_name,cardno,
+			trans_type,amount,traceno,status,login_name,amount_before,amount_after,
+			trans_amount,trans_fee,type_code,trans_refno,add_time,remark,pay_status,
+			pay_msg,pay_type,batchno,address,accountno,account_name,bankno,bank_name,
+			process_time,df_type,channel_merchno,payment_type,fee,withdrawFee,rate
+		)values(
+			#{transDate},#{transTime},#{branchno},#{branchName},#{agentno},#{agentName},#{merchno},#{merchName},#{cardno},
+			#{transType},#{amount},#{traceno},#{status},#{loginName},#{amountBefore},#{amountAfter},
+			#{transAmount},#{transFee},#{typeCode},#{transRefno},#{addTime},#{remark},#{payStatus},
+			#{payMsg},#{payType},#{batchno},#{address},#{accountno},#{accountName},#{bankno},#{bankName},
+			#{processTime},#{dfType},#{channelMerchno},#{paymentType},#{fee},#{withdrawFee},#{rate}
+		)
+	</insert>
+	<!-- 
+    	更新记录 
+    -->
+    <update 
+		id="modByTraceno" 
+		parameterType="MerchVirtualTrans">
+		update
+			<include refid="tableName"/>
+			<include refid="updateField"/>
+		where
+			traceno = #{traceno}
+	</update>
+	
+	<!-- 
+		根据平台自动产生的订单号获取交易信息
+	-->
+	<select 
+		id="getByTraceno" 
+		parameterType="String" 
+		resultType="MerchVirtualTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+		where
+			traceno = #{traceno}
+	</select>
+	<select 
+    	id="listByPage"
+    	parameterType="HashMap"
+    	resultType="MerchVirtualTrans">
+    	select 
+    		id as id,
+			cardno as cardno,
+			traceno as traceno,
+			trans_amount as transAmount,
+			trans_fee as transFee,
+			add_time as addTime,
+			remark as remark,
+			pay_status as payStatus,
+			pay_msg as payMsg
+    	from 
+    		<include refid="tableName"/> 
+    		<include refid="queryCondtion"/>
+    	order by 
+    		add_time desc
+    	limit
+    		${startIndex}, ${pageSize}
+    </select>
+	<select 
+	    	id="countNotSuccess"
+	    	parameterType="String"
+	    	resultType="Integer">
+	    	select 
+	    		count(*)
+	    	from 
+	    		<include refid="tableName"/> 
+	    	where 
+	    		merchno = #{merchno}
+	    		and pay_status != 2
+	    </select>
+	
+	<!-- 
+		根据订单号更新代付状态 
+	-->
+	<update 
+		id="updatePayStatus" 
+		parameterType="MerchVirtualTrans">
+		update
+			<include refid="tableName"/>
+		set
+			pay_status = #{payStatus},
+			pay_msg = #{payMsg},
+			process_time = #{processTime},
+			trans_refno = #{transRefno}
+		where
+			merchno = #{merchno}
+			and traceno = #{traceno}
+	</update>
+	<!-- 
+		根据订单号更新提现状态 
+	-->
+	<update 
+		id="updateTransStatus" 
+		parameterType="MerchVirtualTrans">
+		update
+			<include refid="tableName"/>
+		set
+			status = #{status}
+		where
+			merchno = #{merchno}
+			and traceno = #{traceno}
+	</update>
+	
+	<!-- Horanluo重写 -->
+	<sql id="newQueryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="payStatus !=null">
+		         and pay_status = #{payStatus}
+		     </if>
+		     <if test="merchno !=null">
+		         and merchno = #{merchno}
+		     </if>
+		     <if test="cardno !=null">
+		         and cardno = #{cardno}
+		     </if>
+	     </trim>
+	</sql>
+	
+	<select 
+		id="getResultList" 
+		parameterType="MerchVirtualTrans" 
+		resultType="MerchVirtualTrans">
+		select
+			<include refid="fieldMapping"/>
+		from
+			<include refid="tableName"/>
+			<include refid="newQueryCondtion"/> and batchno is null;
+	</select>
+	
+	<select id="getBatchList" parameterType="MerchVirtualTrans" resultType="MerchVirtualTrans">
+	    select 
+	    	<include refid="fieldMapping" />
+	    from merch_virtual_trans
+	    where pay_status = #{payStatus,jdbcType=VARCHAR} and batchno !='' group by batchno
+    </select>
+  
+   <select id="getInfoByBatchno" parameterType="String" resultType="MerchVirtualTrans">
+	    select 
+	    <include refid="fieldMapping" />
+	    from merch_virtual_trans
+	    where batchno = #{batchno,jdbcType=VARCHAR}
+   </select>
+</mapper>

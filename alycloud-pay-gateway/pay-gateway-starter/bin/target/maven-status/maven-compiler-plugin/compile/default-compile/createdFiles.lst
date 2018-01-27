@@ -1,0 +1,5 @@
+com\alycloud\pay\gateway\starter\SwaggerConfig.class
+com\alycloud\pay\gateway\starter\PayGatewayApplication.class
+com\alycloud\pay\gateway\datasource\DruidDataSourceProperties.class
+META-INF\spring-configuration-metadata.json
+com\alycloud\pay\gateway\datasource\DruidConfiguration.class

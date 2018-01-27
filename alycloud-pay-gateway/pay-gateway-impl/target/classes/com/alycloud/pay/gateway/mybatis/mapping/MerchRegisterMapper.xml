@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.alycloud.pay.gateway.mapper.MerchRegisterMapper">
+	<!--  
+    	添加商户信息
+    -->
+    <insert 
+    	id="insertMerchInfo"
+    	parameterType="com.alycloud.modules.entity.MerchInfo" 
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+    	insert into merch_info(
+			merch_name,organ_no,biz_license,legal_name,identity_card,
+			link_man,email,telephone,mobile,
+			mcc,industry_type,area_code,
+			address,super_agent,status,open_time,audit_status,
+			judg_status,audit_agentno,debit_rate,debit_fixed,settle_type,
+			accountno,account_type,account_name,bankno,bank_name,
+			amt_limit,day_limit,month_limit,trans_ctrl,biz_license_img,
+			account_img,identity1_img,identity2_img,identity3_img,card1_img,
+			cashier_img,place_img,head_img,contract_img,other_file,
+			merch_type,add_time,credit_rate,agent_fee_id,
+			full_name,card2_img,merchno,biz_type,t0_rate,
+			merch_level,customerno,silence_merch,
+			merch_key,branchno,hfbankT1MerchNo,hfbankD0MerchNo,first_agentno,fastpay_rate_t0,fastpay_rate_t1
+    	)values(
+			#{merchName,jdbcType=VARCHAR},#{organNo,jdbcType=VARCHAR},#{bizLicense,jdbcType=VARCHAR},#{legalName,jdbcType=VARCHAR},#{identityCard,jdbcType=VARCHAR},
+			#{linkMan,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},#{mobile,jdbcType=VARCHAR},
+			#{mcc,jdbcType=VARCHAR},#{industryType,jdbcType=VARCHAR},#{areaCode,jdbcType=VARCHAR},
+			#{address,jdbcType=VARCHAR},#{superAgent,jdbcType=VARCHAR},#{status,jdbcType=VARCHAR},#{openTime,jdbcType=VARCHAR},#{auditStatus,jdbcType=VARCHAR},
+			#{judgStatus,jdbcType=VARCHAR},#{auditAgentno,jdbcType=VARCHAR},#{debitRate,jdbcType=VARCHAR},#{debitFixed,jdbcType=VARCHAR},#{settleType,jdbcType=VARCHAR},
+			#{accountno,jdbcType=VARCHAR},#{accountType,jdbcType=VARCHAR},#{accountName,jdbcType=VARCHAR},#{bankno,jdbcType=VARCHAR},#{bankName,jdbcType=VARCHAR},
+			#{amtLimit,jdbcType=VARCHAR},#{dayLimit,jdbcType=VARCHAR},#{monthLimit,jdbcType=VARCHAR},#{transCtrl,jdbcType=VARCHAR},#{bizLicenseImg,jdbcType=VARCHAR},
+			#{accountImg,jdbcType=VARCHAR},#{identity1Img,jdbcType=VARCHAR},#{identity2Img,jdbcType=VARCHAR},#{identity3Img,jdbcType=VARCHAR},#{card1Img,jdbcType=VARCHAR},
+			#{cashierImg,jdbcType=VARCHAR},#{placeImg,jdbcType=VARCHAR},#{headImg,jdbcType=VARCHAR},#{contractImg,jdbcType=VARCHAR},#{otherFile,jdbcType=VARCHAR},
+			<!-- #{merchType,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR},#{creditRate,jdbcType=VARCHAR},0,#{agentFeeId,jdbcType=VARCHAR}, -->
+			#{merchType,jdbcType=VARCHAR}, #{addTime,jdbcType=VARCHAR},#{creditRate,jdbcType=VARCHAR},#{agentFeeId,jdbcType=VARCHAR},
+			#{fullName,jdbcType=VARCHAR},#{card2Img,jdbcType=VARCHAR},#{merchno,jdbcType=VARCHAR},#{bizType,jdbcType=VARCHAR},#{t0Rate,jdbcType=VARCHAR},
+			#{merchLevel,jdbcType=VARCHAR},#{customerno,jdbcType=VARCHAR},#{silenceMerch,jdbcType=VARCHAR},
+			#{merchKey,jdbcType=VARCHAR},#{branchno,jdbcType=VARCHAR},
+			#{hfbankT1MerchNo,jdbcType=VARCHAR},#{hfbankD0MerchNo,jdbcType=VARCHAR},
+			#{firstAgentno,jdbcType=VARCHAR},
+			#{fastPayRateT0,jdbcType=VARCHAR},#{fastPayRateT1,jdbcType=VARCHAR}
+    	)
+    </insert>
+    <!--  
+    	批量添加商户的层级关系
+    -->
+    <insert 
+    	id="insertMerchRelate" 
+    	parameterType="com.alycloud.pay.gateway.models.MerchRelateBean">
+    	insert into merch_relate(
+	    	merch_id,agentno,agent_name,agent_level
+    	)values
+    	<foreach collection="list" item="item" index="index" separator=",">
+    	(
+    		#{item.merchId}, #{item.agentno}, #{item.agentName}, #{item.agentLevel}
+    	)
+    	</foreach>  
+    </insert>
+    <!-- 
+                    添加商户的操作员
+     -->
+    <insert 
+		id="insertMerchUser" 
+		parameterType="com.alycloud.modules.entity.MerchUser"
+    	useGeneratedKeys="true" 
+    	keyProperty="id">
+		insert into 
+			merch_user(
+				merch_id,user_roler,login_name,true_name,
+				password,mobile,address,status,error_count
+			)values(
+				#{merchId}, #{userRoler}, #{loginName}, #{trueName},
+				#{password}, #{mobile},#{address}, #{status}, #{errorCount}
+			)
+	</insert>
+	<!-- 
+    	绑定终端信息 
+    -->
+<!-- 	<update 
+		id="bindTerm" 
+		parameterType="TermBean">
+		update
+			term_info
+		set
+			bind_status = 2,
+			merchno = #{merchno}
+		where
+			serialno = #{serialno}
+	</update> -->
+    <!--  
+    	新增绑定终端的流水记录
+    -->
+    <!-- <insert 
+    	id="insertTermHandle"
+    	parameterType="TermHandleBean">
+    	insert into term_handle(
+    		serialno,handle_type,owner,agentno,merchno,
+    		login_name,true_name,add_time
+    	)values
+   		(
+      		#{serialno},#{handleType},#{owner},#{agentno},#{merchno},
+    		#{loginName},#{trueName},#{addTime}
+    	)
+    </insert> -->	
+	<!-- 
+		获取通联T+0通道的费率信息 
+	-->
+	<select 
+		id="getTl0FeeTypeId" 
+		resultType="Integer">
+		select
+			id
+		from
+			channel_fee
+		where
+			channel_code = 'TL0PAY'
+			and industry_type = 1
+		limit 1
+	</select>
+	<!-- 
+		新增渠道商户信息 
+	-->
+	<!-- <insert 
+		id="insertChannelMerch" 
+		parameterType="ChannelMerchBean">
+		insert into channel_merch(
+			channel_code,channel_merchno,channel_merch_name,fee_type_id,settle_type,
+			platform_merchno,branchno
+		)values(
+			#{channelCode},#{channelMerchno},#{channelMerchName},#{feeTypeId},#{settleType},
+			#{platformMerchno},#{branchno}
+		)
+	</insert>
+	
+		新增渠道终端信息 
+	
+	<insert 
+		id="insertChannelTerm" 
+		parameterType="ChannelTermBean">
+		insert into channel_term(
+			channel_code,channel_merchno,channel_termno,batchno,traceno,
+			term_status,zmk,sign_status
+		)values(
+			#{channelCode},#{channelMerchno},#{channelTermno},#{batchno},#{traceno},
+			#{termStatus},#{zmk},#{signStatus}
+		)
+	</insert> -->
+</mapper>

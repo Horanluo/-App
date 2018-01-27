@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="GBK" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="com.alycloud.pay.mapper.GradeFeeMapper">
+	<!--  
+		数据库中的表名
+	-->
+	<sql id="tableName">
+		grade_fee
+	</sql>
+	<!--  
+		字段映射关系
+	-->
+	<sql id="fieldMapping">
+		id 			as id,
+		grade_type	as gradeType,
+		pay_type 	as payType,
+		scan_type 	as scanType,
+		settle_type as settleType,
+		rate		as rate,
+		fee	 		as fee
+	</sql>
+	
+	<!--  
+		分页查询的条件
+	-->
+	<sql id="queryCondtion">
+	     <trim prefix="where" prefixOverrides="and |or">
+		     <if test="gradeType !=null">
+		         and grade_type = #{gradeType}
+		     </if>
+	     </trim>
+	</sql>
+	
+    <!--  
+    	查询信息
+    -->
+    <select 
+    	id="list"
+    	parameterType="GradeFee4Search"
+    	resultType="GradeFee">
+    	select 
+    		 <include refid="fieldMapping"/>
+    	from 
+    		<include refid="tableName"/>
+    		<include refid="queryCondtion"/>
+    	order by id desc
+    </select>
+    
+</mapper>
